@@ -59,6 +59,7 @@ const LoginScreen = () => {
       />
       <View style={styles.center}>
         <Button color="#143365" title="   로그인   " />
+        <Button color="#143365" title="   로그인   " />
       </View>
     </View>
   );
