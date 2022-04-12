@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {Text, Image, Button, TextInput, View, StyleSheet} from 'react-native';
-// import Puang from '../images/푸앙_기본형.png';
+
 let imagePath = require('./images/푸앙_기본형.png');
 
 const styles = StyleSheet.create({
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontWeight: '900',
     textAlign: 'center',
+    marginTop: 50,
   },
   appTitle: {
     color: 'black',
@@ -24,24 +25,37 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     textAlign: 'center',
   },
+  textStyle: {
+    color: 'black',
+    fontSize: 15,
+    fontWeight: '900',
+    left: 20,
+  },
   boxStyle: {
-    margin: 10,
+    margin: 20,
     padding: 10,
     // marginBottom: 20,
     backgroundColor: 'white',
+    borderWidth: 3,
+    borderColor: '#143365',
+    borderRadius: 100,
   },
   center: {
-    margin: 50,
+    margin: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  image: {
-    height: 100,
-    width: 100,
-    margin: 20,
-    position: 'absolute',
+  imageContainer: {
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  image: {
+    height: 150,
+    width: 150,
+    margin: 10,
   },
 });
 
@@ -50,19 +64,32 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Text style={styles.welcomeTitle}>WELCOME</Text>
       <Text style={styles.appTitle}>CAUCLUB</Text>
-      <Image style={styles.image} source={imagePath} />
-      <TextInput style={styles.boxStyle} placeholder={'아이디'} />
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={imagePath} />
+        <Text style={styles.textStyle}>로그인은 필수앙!!</Text>
+      </View>
+      <Text style={styles.textStyle}> 아이디</Text>
+      <TextInput style={styles.boxStyle} placeholder={'아이디를 입력하세요'} />
+      <Text style={styles.textStyle}> 비밀번호</Text>
       <TextInput
         style={styles.boxStyle}
-        placeholder={'비밀번호'}
+        placeholder={'비밀번호를 입력하세요'}
         secureTextEntry={true}
       />
       <View style={styles.center}>
         <Button color="#143365" title="   로그인   " />
-        <Button color="#143365" title="   로그인   " />
+      </View>
+      <View style={styles.center}>
+        <Text>아이디 찾기</Text>
+        <Text>|</Text>
+        <Text>비밀번호 찾기</Text>
+        <Text>|</Text>
+        <Text>회원가입</Text>
       </View>
     </View>
   );
 };
-
 export default LoginScreen;
+
+// 푸앙이 사진 잘리는 거 해결방법 알아보기
+// 아이디 & 비밀번호 앞에 아이콘 넣기
