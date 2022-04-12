@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import CheckBox from '@react-native-community/checkbox';
+import Style from './Style/Style';
 
 let imagePath = require('./images/푸앙_응원.png');
 
@@ -75,10 +76,10 @@ const RegisterScreen = () => {
   const [secondCheckBox, setSecondCheckBox] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={Style.container}>
       <ScrollView>
-        <Text style={styles.welcomeTitle}>WELCOME</Text>
-        <Text style={styles.appTitle}>CAUCLUB</Text>
+        <Text style={Style.welcomeTitle}>WELCOME</Text>
+        <Text style={Style.appTitle}>CAUCLUB</Text>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={imagePath}></Image>
           <View style={styles.imageTextContainer}>
@@ -175,26 +176,6 @@ const RegisterScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#6BBEE2',
-  },
-  welcomeTitle: {
-    color: 'black',
-    fontSize: 20,
-    fontStyle: 'italic',
-    fontWeight: '900',
-    textAlign: 'center',
-    marginTop: 50,
-  },
-  appTitle: {
-    color: 'black',
-    fontSize: 50,
-    fontStyle: 'italic',
-    marginBottom: 30,
-    fontWeight: '900',
-    textAlign: 'center',
-  },
   boxStyle: {
     margin: 10,
     padding: 10,
