@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/cli": "^7.0.3",
+    "@types/react-native-material-dropdown": "^0.11.5",
     "eject": "^0.0.4",
     "name-of-your-local-dependency": "file:../",
     "react": "17.0.2",
