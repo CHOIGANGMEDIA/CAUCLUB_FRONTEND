@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -64,6 +64,14 @@ const college = [
 //   );
 // };
 
+type Validity = {
+  id: boolean;
+  password: boolean;
+  role: boolean;
+  email: boolean;
+  campus: boolean;
+};
+
 const RegisterScreen = () => {
   //   function clickCheck(target) {
   //     document
@@ -74,6 +82,57 @@ const RegisterScreen = () => {
   //   }
   const [firstCheckBox, setFirstCheckBox] = useState(false);
   const [secondCheckBox, setSecondCheckBox] = useState(false);
+  const [id, setId] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [name, setName] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [role, setRole] = useState<string>();
+  const [selectedCampus, selectCampus] = useState<string>();
+  const [selectedCollege, selectCollege] = useState<string>();
+  const [idMsg, setIdMsg] = useState<string>();
+  const [repassMsg, setRepassMsg] = useState<string>();
+  const [emailMsg, setEmailMsg] = useState<string>();
+  const isValid: Validity = {
+    id: false,
+    password: false,
+    role: false,
+    email: false,
+    campus: false,
+  };
+
+  const repasswordChanged = useCallback(
+    (repassword: string) => {
+      if (repassword === undefined || repassword === '') {
+        setRepassMsg(undefined);
+        isValid.password = false;
+      } else if (repassword !== password) {
+        setRepassMsg('비밀번호가 일치하지 않습니다');
+        isValid.password = false;
+      } else {
+        setRepassMsg('비밀번호가 일치합니다');
+        isValid.password = true;
+      }
+    },
+    [password],
+  );
+
+  const emailChanged = useCallback(
+    (email: string) => {
+      const emailRegex =
+        /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+      if (email === undefined || email === '') {
+        setEmailMsg(undefined);
+        isValid.email = false;
+      } else if (emailRegex.test(email)) {
+        setEmailMsg('');
+        isValid.email = true;
+      } else {
+        setEmailMsg('올바른 형식의 이메일을 입력해주세요 ex) example@exam.com');
+        isValid.email = false;
+      }
+    },
+    [email],
+  );
 
   return (
     <View style={Style.container}>
@@ -94,23 +153,38 @@ const RegisterScreen = () => {
         </View>
 
         <Text style={styles.textStyle}>아이디</Text>
+        {idMsg ? <Text style={Style.warnSubStyle}>{idMsg}</Text> : null}
         <TextInput style={styles.boxStyle} placeholder={'아이디 입력'} />
         <Text style={styles.textStyle}>비밀번호</Text>
         <TextInput
           style={styles.boxStyle}
           placeholder={'비밀번호 입력'}
           secureTextEntry={true}
+          onChangeText={(text: string) => {
+            setPassword(text);
+          }}
         />
-        <Text style={styles.textStyle}>비밀번호 재확인</Text>
+        <Text style={styles.textStyle}>{'비밀번호 재확인'}</Text>
+        {repassMsg ? <Text style={Style.warnSubStyle}>{repassMsg}</Text> : null}
         <TextInput
           style={styles.boxStyle}
           placeholder={'비밀번호 재확인 입력'}
           secureTextEntry={true}
+          onChangeText={(text: string) => {
+            repasswordChanged(text);
+          }}
         />
         <Text style={styles.textStyle}>이름</Text>
         <TextInput style={styles.boxStyle} placeholder={'이름 입력'} />
         <Text style={styles.textStyle}>이메일</Text>
-        <TextInput style={styles.boxStyle} placeholder={'이메일 입력'} />
+        {emailMsg ? <Text style={Style.warnSubStyle}>{emailMsg}</Text> : null}
+        <TextInput
+          style={styles.boxStyle}
+          onChangeText={(email: string) => {
+            emailChanged(email);
+          }}
+          placeholder={'이메일 입력'}
+        />
         <Text style={styles.textStyle}>동아리장/동아리원 선택</Text>
         {/* <label for="1">동아리장</label>
         <input type="checkbox" id="1" onClick={clickCheck(this)} /> */}
@@ -142,6 +216,7 @@ const RegisterScreen = () => {
             data={campus}
             onSelect={selectedItem => {
               console.log(selectedItem);
+              selectCampus(selectedItem);
             }}
             buttonTextAfterSelection={selectedItem => {
               return selectedItem;
@@ -154,6 +229,7 @@ const RegisterScreen = () => {
             data={college}
             onSelect={selectedItem => {
               console.log(selectedItem);
+              selectCollege(selectedItem);
             }}
             buttonTextAfterSelection={selectedItem => {
               return selectedItem;

@@ -8,8 +8,8 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 let imagePath = require('./images/푸앙_기본형.png');
 
 const LoginScreen = () => {
-  const [id, setId] = useState<string>(null);
-  const [password, setPassword] = useState<string>(null);
+  const [id, setId] = useState<string>();
+  const [password, setPassword] = useState<string>();
   const login = () => {
     var axios = require('axios');
     var data = JSON.stringify({
@@ -26,12 +26,11 @@ const LoginScreen = () => {
       },
       data: data,
     };
-
     axios(config)
-      .then(function (response) {
+      .then(function (response: any) {
         console.log(JSON.stringify(response.data));
       })
-      .catch(function (error) {
+      .catch(function (error: any) {
         console.log(error);
       });
   };
