@@ -214,6 +214,7 @@ const RegisterScreen = () => {
         <View style={styles.selectBox}>
           <SelectDropdown
             data={campus}
+            defaultButtonText={'캠퍼스를 선택하세요'}
             onSelect={selectedItem => {
               console.log(selectedItem);
               selectCampus(selectedItem);
@@ -227,6 +228,7 @@ const RegisterScreen = () => {
           />
           <SelectDropdown
             data={college}
+            defaultButtonText={'대학을 선택하세요'}
             onSelect={selectedItem => {
               console.log(selectedItem);
               selectCollege(selectedItem);
