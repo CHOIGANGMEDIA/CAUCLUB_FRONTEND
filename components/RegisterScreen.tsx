@@ -8,10 +8,12 @@ import {
   ScrollView,
   Button,
   Image,
+  Alert,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import CheckBox from '@react-native-community/checkbox';
 import Style from './Style/Style';
+import {isDeclareVariable, isTSVoidKeyword} from '@babel/types';
 
 let imagePath = require('./images/푸앙_응원.png');
 
@@ -67,10 +69,17 @@ const college = [
 type Validity = {
   id: boolean;
   password: boolean;
+  name: boolean;
   role: boolean;
   email: boolean;
   campus: boolean;
+  college: boolean;
 };
+
+enum Role {
+  PRESIDENT,
+  MEMBER,
+}
 
 const RegisterScreen = () => {
   //   function clickCheck(target) {
@@ -86,31 +95,54 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState<string>();
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
-  const [role, setRole] = useState<string>();
+  const [role, setRole] = useState<Role>();
   const [selectedCampus, selectCampus] = useState<string>();
   const [selectedCollege, selectCollege] = useState<string>();
   const [idMsg, setIdMsg] = useState<string>();
   const [repassMsg, setRepassMsg] = useState<string>();
   const [emailMsg, setEmailMsg] = useState<string>();
-  const isValid: Validity = {
+  const [isValid, setValid] = useState<Validity>({
     id: false,
     password: false,
+    name: false,
     role: false,
     email: false,
     campus: false,
+    college: false,
+  });
+
+  const handleSubmit = () => {
+    console.log(isValid);
+    const {id, password, name, role, email, campus, college} = isValid;
+    if (!id) Alert.alert('id를 입력해 주세요');
+    else if (!password) Alert.alert('비밀번호를 확인해 주세요');
+    else if (!name) Alert.alert('이름을 입력해 주세요');
+    else if (!email) Alert.alert('email을 확인해 주세요');
+    else if (!role) Alert.alert('동아리장/동아리원 중 하나를 선택해 주세요');
+    else if (!campus) Alert.alert('캠퍼스를 선택해 주세요');
+    else if (!college) Alert.alert('대학을 선택해 주세요');
+    else Alert.alert('회원가입이 완료되었습니다');
   };
+
+  const idChanged = useCallback(
+    (id: string) => {
+      setId(id);
+      setValid({...isValid, id: !(id === undefined || id == '')});
+    },
+    [id],
+  );
 
   const repasswordChanged = useCallback(
     (repassword: string) => {
       if (repassword === undefined || repassword === '') {
         setRepassMsg(undefined);
-        isValid.password = false;
+        setValid({...isValid, password: false});
       } else if (repassword !== password) {
         setRepassMsg('비밀번호가 일치하지 않습니다');
-        isValid.password = false;
+        setValid({...isValid, password: false});
       } else {
         setRepassMsg('비밀번호가 일치합니다');
-        isValid.password = true;
+        setValid({...isValid, password: true});
       }
     },
     [password],
@@ -122,16 +154,63 @@ const RegisterScreen = () => {
         /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
       if (email === undefined || email === '') {
         setEmailMsg(undefined);
-        isValid.email = false;
+        setValid({...isValid, email: true});
       } else if (emailRegex.test(email)) {
         setEmailMsg('');
-        isValid.email = true;
+        setValid({...isValid, email: true});
       } else {
         setEmailMsg('올바른 형식의 이메일을 입력해주세요 ex) example@exam.com');
-        isValid.email = false;
+        setValid({...isValid, email: false});
       }
     },
     [email],
+  );
+
+  const nameChanged = useCallback(
+    (_name: string) => {
+      setName(_name);
+      setValid({...isValid, name: !(_name === undefined || _name == '')});
+    },
+    [name],
+  );
+
+  const firstCheckBoxChanged = useCallback(
+    (newValue: boolean) => {
+      setFirstCheckBox(newValue);
+      setRole(Role.PRESIDENT);
+      isValid.role = newValue || secondCheckBox;
+      if (secondCheckBox) setSecondCheckBox(false);
+    },
+    [firstCheckBox],
+  );
+
+  const secondCheckBoxChanged = useCallback(
+    (newValue: boolean) => {
+      setSecondCheckBox(newValue);
+      setRole(Role.PRESIDENT);
+      isValid.role = newValue || firstCheckBox;
+      if (firstCheckBox) setFirstCheckBox(false);
+    },
+    [secondCheckBox],
+  );
+
+  const campusSelected = useCallback(
+    (selectedItem: string) => {
+      console.log(selectedItem);
+      selectCampus(selectedItem);
+      setValid({...isValid, campus: true});
+      isValid.campus = true;
+    },
+    [campus],
+  );
+
+  const collegeSelected = useCallback(
+    (selectedItem: string) => {
+      console.log(selectedItem);
+      setValid({...isValid, college: true});
+      selectCollege(selectedItem);
+    },
+    [college],
   );
 
   return (
@@ -154,7 +233,13 @@ const RegisterScreen = () => {
 
         <Text style={styles.textStyle}>아이디</Text>
         {idMsg ? <Text style={Style.warnSubStyle}>{idMsg}</Text> : null}
-        <TextInput style={styles.boxStyle} placeholder={'아이디 입력'} />
+        <TextInput
+          style={styles.boxStyle}
+          placeholder={'아이디 입력'}
+          onChangeText={(id: string) => {
+            idChanged(id);
+          }}
+        />
         <Text style={styles.textStyle}>비밀번호</Text>
         <TextInput
           style={styles.boxStyle}
@@ -175,7 +260,14 @@ const RegisterScreen = () => {
           }}
         />
         <Text style={styles.textStyle}>이름</Text>
-        <TextInput style={styles.boxStyle} placeholder={'이름 입력'} />
+        <TextInput
+          style={styles.boxStyle}
+          placeholder={'이름 입력'}
+          onChangeText={(text: string) => {
+            nameChanged(text);
+          }}
+        />
+
         <Text style={styles.textStyle}>이메일</Text>
         {emailMsg ? <Text style={Style.warnSubStyle}>{emailMsg}</Text> : null}
         <TextInput
@@ -185,10 +277,10 @@ const RegisterScreen = () => {
           }}
           placeholder={'이메일 입력'}
         />
-        <Text style={styles.textStyle}>동아리장/동아리원 선택</Text>
+        {/* <Text style={styles.textStyle}>동아리장/동아리원 선택</Text> */}
         {/* <label for="1">동아리장</label>
         <input type="checkbox" id="1" onClick={clickCheck(this)} /> */}
-        <View style={styles.checkBox}>
+        {/* <View style={styles.checkBox}>
           <View style={styles.checkBox}>
             <Text style={[{color: 'black', fontWeight: '900', fontSize: 20}]}>
               동아리장
@@ -196,7 +288,9 @@ const RegisterScreen = () => {
             <CheckBox
               disabled={false}
               value={firstCheckBox}
-              onValueChange={newValue => setFirstCheckBox(newValue)}
+              onValueChange={newValue => {
+                firstCheckBoxChanged(newValue);
+              }}
             />
           </View>
           <View style={styles.checkBox}>
@@ -206,18 +300,19 @@ const RegisterScreen = () => {
             <CheckBox
               disabled={false}
               value={secondCheckBox}
-              onValueChange={newValue => setSecondCheckBox(newValue)}
+              onValueChange={newValue => {
+                secondCheckBoxChanged(newValue);
+              }}
             />
           </View>
-        </View>
+        </View> */}
         <Text style={styles.textStyle}>동아리 선택</Text>
         <View style={styles.selectBox}>
           <SelectDropdown
             data={campus}
             defaultButtonText={'캠퍼스를 선택하세요'}
             onSelect={selectedItem => {
-              console.log(selectedItem);
-              selectCampus(selectedItem);
+              campusSelected(selectedItem);
             }}
             buttonTextAfterSelection={selectedItem => {
               return selectedItem;
@@ -230,8 +325,7 @@ const RegisterScreen = () => {
             data={college}
             defaultButtonText={'대학을 선택하세요'}
             onSelect={selectedItem => {
-              console.log(selectedItem);
-              selectCollege(selectedItem);
+              collegeSelected(selectedItem);
             }}
             buttonTextAfterSelection={selectedItem => {
               return selectedItem;
@@ -246,7 +340,11 @@ const RegisterScreen = () => {
         {/* <SelectBox/> */}
 
         <View style={styles.center}>
-          <Button color="#143365" title="   회원가입   " />
+          <Button
+            color="#143365"
+            title="   회원가입   "
+            onPress={() => handleSubmit()}
+          />
         </View>
       </ScrollView>
     </View>
