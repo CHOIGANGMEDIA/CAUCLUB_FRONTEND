@@ -11,9 +11,8 @@ import {
   Alert,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import CheckBox from '@react-native-community/checkbox';
+import {customAxios} from '../src/axiosModule/customAxios';
 import Style from './Style/Style';
-import {isDeclareVariable, isTSVoidKeyword} from '@babel/types';
 
 let imagePath = require('./images/푸앙_응원.png');
 
@@ -79,6 +78,11 @@ const RegisterScreen = () => {
   const idChanged = useCallback(
     (id: string) => {
       setId(id);
+      customAxios.post(`/member/idDuplicateCheck?id=${id}`).then(response => {
+        setIdMsg(
+          response.data ? '사용 가능한 아이디입니다' : '중복된 아이디입니다',
+        );
+      });
       setValid({...isValid, id: !(id === undefined || id == '')});
     },
     [id],
