@@ -9,10 +9,10 @@ const App = () => {
   return (
     <>
       {/* <LoginScreen /> */}
-      {/* <RegisterScreen /> */}
+      <RegisterScreen />
       {/* <SearchID /> */}
       {/* <SearchPW /> */}
-      <MyPage />
+      {/* <MyPage /> */}
     </>
   );
 };

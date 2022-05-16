@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import axios from 'axios';
 import React from 'react';
 import {
   SafeAreaView,
@@ -10,6 +11,9 @@ import {
 } from 'react-native';
 import Style from './Style/Style';
 let imagePath = require('./images/푸앙_어푸앙.png');
+
+//axios
+
 const SearchID = () => {
   return (
     <SafeAreaView style={Style.container}>

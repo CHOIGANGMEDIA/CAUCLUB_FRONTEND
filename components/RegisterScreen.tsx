@@ -35,67 +35,21 @@ const college = [
   '경영경제대학',
   '사범대학',
 ];
-// const LiberalArts = []
-// const Engineering =
-// const Biotechnology =
-// const Medical =
-// const SocialSciences =
-// const Software =
-// const NaturalSciences =
-// const ICT =
-// const PhysicalEducation =
-// const ArtsEngineering =
-// const Arts =
-// const Nursing =
-// const Pharmacy =
-// const BusinessEconomics =
-
-// const SelectBox = () => {
-//   return (
-//     <select>
-//       <option key="1" value="1">
-//         학술동아리
-//       </option>
-//       <option key="2" value="2">
-//         예체능동아리
-//       </option>
-//       <option key="3" value="3">
-//         기타동아리
-//       </option>
-//     </select>
-//   );
-// };
 
 type Validity = {
   id: boolean;
   password: boolean;
   name: boolean;
-  role: boolean;
   email: boolean;
   campus: boolean;
   college: boolean;
 };
 
-enum Role {
-  PRESIDENT,
-  MEMBER,
-}
-
 const RegisterScreen = () => {
-  //   function clickCheck(target) {
-  //     document
-  //       .querySelectorAll(`input[type=checkbox]`)
-  //       .forEach(el => (el.checked = false));
-
-  //     target.checked = true;
-  //   }
-  const [firstCheckBox, setFirstCheckBox] = useState(false);
-  const [secondCheckBox, setSecondCheckBox] = useState(false);
   const [id, setId] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
-  const [role, setRole] = useState<Role>();
   const [selectedCampus, selectCampus] = useState<string>();
   const [selectedCollege, selectCollege] = useState<string>();
   const [idMsg, setIdMsg] = useState<string>();
@@ -105,7 +59,6 @@ const RegisterScreen = () => {
     id: false,
     password: false,
     name: false,
-    role: false,
     email: false,
     campus: false,
     college: false,
@@ -113,12 +66,11 @@ const RegisterScreen = () => {
 
   const handleSubmit = () => {
     console.log(isValid);
-    const {id, password, name, role, email, campus, college} = isValid;
+    const {id, password, name, email, campus, college} = isValid;
     if (!id) Alert.alert('id를 입력해 주세요');
     else if (!password) Alert.alert('비밀번호를 확인해 주세요');
     else if (!name) Alert.alert('이름을 입력해 주세요');
     else if (!email) Alert.alert('email을 확인해 주세요');
-    else if (!role) Alert.alert('동아리장/동아리원 중 하나를 선택해 주세요');
     else if (!campus) Alert.alert('캠퍼스를 선택해 주세요');
     else if (!college) Alert.alert('대학을 선택해 주세요');
     else Alert.alert('회원가입이 완료되었습니다');
@@ -172,26 +124,6 @@ const RegisterScreen = () => {
       setValid({...isValid, name: !(_name === undefined || _name == '')});
     },
     [name],
-  );
-
-  const firstCheckBoxChanged = useCallback(
-    (newValue: boolean) => {
-      setFirstCheckBox(newValue);
-      setRole(Role.PRESIDENT);
-      isValid.role = newValue || secondCheckBox;
-      if (secondCheckBox) setSecondCheckBox(false);
-    },
-    [firstCheckBox],
-  );
-
-  const secondCheckBoxChanged = useCallback(
-    (newValue: boolean) => {
-      setSecondCheckBox(newValue);
-      setRole(Role.PRESIDENT);
-      isValid.role = newValue || firstCheckBox;
-      if (firstCheckBox) setFirstCheckBox(false);
-    },
-    [secondCheckBox],
   );
 
   const campusSelected = useCallback(
@@ -277,35 +209,7 @@ const RegisterScreen = () => {
           }}
           placeholder={'이메일 입력'}
         />
-        {/* <Text style={styles.textStyle}>동아리장/동아리원 선택</Text> */}
-        {/* <label for="1">동아리장</label>
-        <input type="checkbox" id="1" onClick={clickCheck(this)} /> */}
-        {/* <View style={styles.checkBox}>
-          <View style={styles.checkBox}>
-            <Text style={[{color: 'black', fontWeight: '900', fontSize: 20}]}>
-              동아리장
-            </Text>
-            <CheckBox
-              disabled={false}
-              value={firstCheckBox}
-              onValueChange={newValue => {
-                firstCheckBoxChanged(newValue);
-              }}
-            />
-          </View>
-          <View style={styles.checkBox}>
-            <Text style={[{color: 'black', fontWeight: '900', fontSize: 20}]}>
-              동아리원
-            </Text>
-            <CheckBox
-              disabled={false}
-              value={secondCheckBox}
-              onValueChange={newValue => {
-                secondCheckBoxChanged(newValue);
-              }}
-            />
-          </View>
-        </View> */}
+
         <Text style={styles.textStyle}>동아리 선택</Text>
         <View style={styles.selectBox}>
           <SelectDropdown
