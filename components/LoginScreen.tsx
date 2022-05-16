@@ -23,10 +23,10 @@ const LoginScreen = () => {
     };
     customAxios
       .post('/member/login', data, config)
-      .then(function (response: any) {
+      .then((response: any) => {
         console.log(JSON.stringify(response.data));
       })
-      .catch(function (error: any) {
+      .catch((error: any) => {
         console.log(error);
       });
   };
