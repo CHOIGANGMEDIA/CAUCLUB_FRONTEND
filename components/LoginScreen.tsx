@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import axios from 'axios';
+import {customAxios} from '../src/axiosModule/customAxios';
 import React, {useState} from 'react';
 import {Text, Image, TouchableOpacity, TextInput, View} from 'react-native';
 import Style from './Style/Style';
@@ -11,22 +10,19 @@ const LoginScreen = () => {
   const [id, setId] = useState<string>();
   const [password, setPassword] = useState<string>();
   const login = () => {
-    var axios = require('axios');
     var data = JSON.stringify({
       id: id,
       password: password,
     });
 
     var config = {
-      method: 'post',
-      url: 'http://10.0.2.2:8080/member/login',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: 'JSESSIONID=A2EA07907A68294BC6A5BB472604429D',
       },
       data: data,
     };
-    axios(config)
+    customAxios
+      .post('/member/login', data, config)
       .then(function (response: any) {
         console.log(JSON.stringify(response.data));
       })
