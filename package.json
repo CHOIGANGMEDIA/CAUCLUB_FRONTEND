@@ -20,7 +20,7 @@
     "react-native": "^0.68.0",
     "react-native-eject": "^0.1.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-    "react-native-select-dropdown": "^1.11.0"
+    "react-native-select-dropdown": "^1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
