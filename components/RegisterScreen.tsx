@@ -9,6 +9,7 @@ import {
   Button,
   Image,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import {customAxios} from '../src/axiosModule/customAxios';
@@ -63,27 +64,47 @@ const RegisterScreen = () => {
     college: false,
   });
 
+  const newMember = () => {
+    customAxios
+      .post(
+        `/member/newMember?id=${id}&department=${
+          selectedCampus + ' ' + selectedCollege
+        }&email=${email}&name=${name}&password=${password}`,
+      )
+      .then(response => {
+        if (response.data) Alert.alert('회원가입이 정상적으로 완료되었습니다');
+      })
+      .catch(error => {
+        Alert.alert(`Error : ${error}\n관리자에게 문의하세요`);
+      });
+  };
+
   const handleSubmit = () => {
     console.log(isValid);
     const {id, password, name, email, campus, college} = isValid;
-    if (!id) Alert.alert('id를 입력해 주세요');
+    if (!id) Alert.alert('id를 확인해 주세요');
     else if (!password) Alert.alert('비밀번호를 확인해 주세요');
     else if (!name) Alert.alert('이름을 입력해 주세요');
     else if (!email) Alert.alert('email을 확인해 주세요');
     else if (!campus) Alert.alert('캠퍼스를 선택해 주세요');
     else if (!college) Alert.alert('대학을 선택해 주세요');
-    else Alert.alert('회원가입이 완료되었습니다');
+    else newMember();
   };
 
   const idChanged = useCallback(
     (id: string) => {
       setId(id);
-      customAxios.post(`/member/idDuplicateCheck?id=${id}`).then(response => {
-        setIdMsg(
-          response.data ? '사용 가능한 아이디입니다' : '중복된 아이디입니다',
-        );
-      });
-      setValid({...isValid, id: !(id === undefined || id == '')});
+      customAxios
+        .post(`/member/idDuplicateCheck?id=${id}`)
+        .then(response => {
+          setIdMsg(
+            response.data ? '사용 가능한 아이디입니다' : '중복된 아이디입니다',
+          );
+          isValid.id = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     [id],
   );
@@ -92,13 +113,13 @@ const RegisterScreen = () => {
     (repassword: string) => {
       if (repassword === undefined || repassword === '') {
         setRepassMsg(undefined);
-        setValid({...isValid, password: false});
+        isValid.password = false;
       } else if (repassword !== password) {
         setRepassMsg('비밀번호가 일치하지 않습니다');
-        setValid({...isValid, password: false});
+        isValid.password = false;
       } else {
         setRepassMsg('비밀번호가 일치합니다');
-        setValid({...isValid, password: true});
+        isValid.password = true;
       }
     },
     [password],
@@ -110,13 +131,14 @@ const RegisterScreen = () => {
         /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
       if (email === undefined || email === '') {
         setEmailMsg(undefined);
-        setValid({...isValid, email: true});
+        isValid.email = true;
       } else if (emailRegex.test(email)) {
         setEmailMsg('');
-        setValid({...isValid, email: true});
+        isValid.email = true;
+        setEmail(email);
       } else {
         setEmailMsg('올바른 형식의 이메일을 입력해주세요 ex) example@exam.com');
-        setValid({...isValid, email: false});
+        isValid.email = false;
       }
     },
     [email],
@@ -125,7 +147,7 @@ const RegisterScreen = () => {
   const nameChanged = useCallback(
     (_name: string) => {
       setName(_name);
-      setValid({...isValid, name: !(_name === undefined || _name == '')});
+      isValid.name = !(_name === undefined || _name == '');
     },
     [name],
   );
@@ -134,7 +156,6 @@ const RegisterScreen = () => {
     (selectedItem: string) => {
       console.log(selectedItem);
       selectCampus(selectedItem);
-      setValid({...isValid, campus: true});
       isValid.campus = true;
     },
     [campus],
@@ -143,7 +164,7 @@ const RegisterScreen = () => {
   const collegeSelected = useCallback(
     (selectedItem: string) => {
       console.log(selectedItem);
-      setValid({...isValid, college: true});
+      isValid.college = true;
       selectCollege(selectedItem);
     },
     [college],
@@ -168,7 +189,7 @@ const RegisterScreen = () => {
         </View>
 
         <Text style={styles.textStyle}>아이디</Text>
-        {idMsg ? <Text style={Style.warnSubStyle}>{idMsg}</Text> : null}
+        {id && idMsg ? <Text style={Style.warnSubStyle}>{idMsg}</Text> : null}
         <TextInput
           style={styles.boxStyle}
           placeholder={'아이디 입력'}
@@ -248,11 +269,15 @@ const RegisterScreen = () => {
         {/* <SelectBox/> */}
 
         <View style={styles.center}>
-          <Button
-            color="#143365"
-            title="   회원가입   "
-            onPress={() => handleSubmit()}
-          />
+          {/* 예빈 버튼 스타일 부탁해용 */}
+          <TouchableOpacity
+            style={Style.buttonStyle}
+            onPress={() => {
+              handleSubmit();
+              console.log('pressed');
+            }}>
+            <Text> 회원가입 </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
