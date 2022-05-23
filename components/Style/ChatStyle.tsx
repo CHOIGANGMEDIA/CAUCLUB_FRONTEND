@@ -3,33 +3,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 
 const ChatStyle = StyleSheet.create({
-    titleBox:{
-        height: 70,
-        backgroundColor: '#6BBEE2',
-    },
-    title:{
-        color: 'black',
-        fontSize: 50,
-        fontStyle: 'italic',
-        fontWeight: '900',
-        textAlign: 'center',
-    },
-    topBox:{
-        flex: 1,
-        height: 60,
-        // backgroundColor: '#BCF5A9',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    chatTitle:{
-        margin: 15,
-        color: 'black',
-        fontSize: 20,
-        fontWeight: '900',
-        textAlign: 'left',
-    },
     chatList:{
-        flex: 1,
         borderWidth: 1,
         borderColor: '#000000',
         margin: 5,
@@ -59,8 +33,6 @@ const ChatStyle = StyleSheet.create({
         fontSize: 12,
     },
     chatName:{
-        // borderWidth: 1,
-        // borderColor: '#6BBEE2',
         margin: 10,
         color: '#000000',
         fontSize: 18,
