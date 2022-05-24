@@ -1,13 +1,14 @@
 import {customAxios} from '../src/axiosModule/customAxios';
 import React, {useState} from 'react';
 import {Text, Image, TouchableOpacity, TextInput, View} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Style from './Style/Style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 let imagePath = require('./images/푸앙_기본형.png');
 
 const LoginScreen = () => {
-  const [id, setId] = useState<string>();
+  const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>();
   const login = () => {
     var data = JSON.stringify({
@@ -25,6 +26,9 @@ const LoginScreen = () => {
       .post('/member/login', data, config)
       .then((response: any) => {
         console.log(JSON.stringify(response.data));
+        if (response) {
+          AsyncStorage.setItem('loggedId', id);
+        }
       })
       .catch((error: any) => {
         console.log(error);
