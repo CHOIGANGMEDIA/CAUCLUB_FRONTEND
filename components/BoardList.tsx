@@ -1,21 +1,43 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight, Alert} from 'react-native';
 import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
-import BoardPost from './BoardPost';
 import {customAxios} from '../src/axiosModule/customAxios';
-import type {PostProps} from './BoardPost';
+import {useNavigation} from '@react-navigation/native';
+import BoardListEntity from './BoardListEntity';
+
+type PostProps = {
+  postId: number;
+  clubName: string;
+  title: string;
+  contents: string;
+  time?: string;
+};
+export type {PostProps};
 
 const BoardList = () => {
   const [posts, setPosts] = useState<PostProps[]>();
+
+  const navigation = useNavigation<any>();
+  const openScreen = useCallback(
+    ({postId, clubName, title, contents}: PostProps) => {
+      // console.log(postId, clubName, title, contents);
+      navigation.navigate('BoardScreen', {
+        postId: postId,
+        clubName: clubName,
+        title: title,
+        contents: contents,
+      });
+    },
+    [],
+  );
 
   useEffect(() => {
     customAxios
       .get('/post')
       .then(result => {
-        console.log(result.data);
         setPosts(result.data);
       })
       .catch(error => {
@@ -23,14 +45,20 @@ const BoardList = () => {
       });
   }, []);
 
-  const postList = posts?.map(({postId, clubName, title, contents}) => (
-    <BoardPost
-      key={postId}
-      clubName={clubName}
-      title={title}
-      contents={contents}
-    />
-  ));
+  const postList = posts?.map(({postId, clubName, title, contents}) => {
+    return (
+      <TouchableHighlight
+        key={postId}
+        style={BoardStyle.boardList}
+        onPress={() => openScreen({postId, clubName, title, contents})}>
+        <BoardListEntity
+          clubName={clubName}
+          title={title}
+          contents={contents}
+        />
+      </TouchableHighlight>
+    );
+  });
 
   return (
     <>
