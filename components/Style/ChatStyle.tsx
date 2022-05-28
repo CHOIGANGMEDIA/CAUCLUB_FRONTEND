@@ -66,7 +66,7 @@ const ChatStyle = StyleSheet.create({
     chatScrollView:{
         margin: 10,
         width: '95%',
-        height: 550,
+        height: 520,
         borderWidth: 1,
         borderColor: '#6BBEE2',
         backgroundColor: 'white',

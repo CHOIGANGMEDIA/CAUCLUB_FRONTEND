@@ -6,6 +6,7 @@ import InitialStlye from '../Style/InitialStyle';
 import ProfilePageStyle from '../Style/ProfilePageStyle';
 import Keyword from './Keyword';
 import Archieve from './Archieve';
+import BottomBox from '../BottomBox';
 
 let imagePath = require('../images/푸앙_윙크.png');
 
@@ -97,6 +98,7 @@ const ProfilePageP = () => {
             </View>
         </View>
       </KeyboardAwareScrollView>
+      <BottomBox />
     </>
   );
 };

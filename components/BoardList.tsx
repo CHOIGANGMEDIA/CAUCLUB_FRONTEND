@@ -4,6 +4,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight} from 'react-native';
 import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
+import BottomBox from './BottomBox';
 
 const BoardList = () => {
   return (
@@ -12,7 +13,7 @@ const BoardList = () => {
           <Text style={InitialStlye.title}>CAUCLUB</Text>
       </View>
       <View style={BoardStyle.topBox}>
-        <Text style={BoardStyle.boardTitle}>게시판</Text>
+        <Text style={InitialStlye.boardTitle}>게시판</Text>
         <TouchableHighlight style={BoardStyle.newContent}>
             <Text style={({color: 'white', fontSize: 12, fontWeight: '900'})}>글쓰기</Text>
         </TouchableHighlight>
@@ -101,13 +102,7 @@ const BoardList = () => {
         {/* 여기까지 */}
         {/* 반복구간 */}
       </KeyboardAwareScrollView>
-      <View style={InitialStlye.bottomBox}>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-      </View>
+      <BottomBox />
     </>
   );
 };
