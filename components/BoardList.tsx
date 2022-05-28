@@ -15,6 +15,7 @@ const BoardList = () => {
     customAxios
       .get('/post')
       .then(result => {
+        console.log(result.data);
         setPosts(result.data);
       })
       .catch(error => {
@@ -22,8 +23,13 @@ const BoardList = () => {
       });
   }, []);
 
-  const postList = posts?.map(({clubName, title, contents}) => (
-    <BoardPost clubName={clubName} title={title} contents={contents} />
+  const postList = posts?.map(({postId, clubName, title, contents}) => (
+    <BoardPost
+      key={postId}
+      clubName={clubName}
+      title={title}
+      contents={contents}
+    />
   ));
 
   return (
