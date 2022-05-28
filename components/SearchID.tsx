@@ -39,7 +39,6 @@ const SearchID = () => {
       : Alert.alert('email을 확인해 주세요');
   };
 
-  //TODO: need Test
   const certificate = () => {
     if (cert) {
       sended
