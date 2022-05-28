@@ -65,12 +65,23 @@ const RegisterScreen = () => {
   });
 
   const newMember = () => {
+    const data = JSON.stringify({
+      department: selectedCampus + ' ' + selectedCollege,
+      id: id,
+      name: name,
+      password: password,
+      email: email,
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    };
+
     customAxios
-      .post(
-        `/member/newMember?id=${id}&department=${
-          selectedCampus + ' ' + selectedCollege
-        }&email=${email}&name=${name}&password=${password}`,
-      )
+      .post(`/member/newMember`, data, config)
       .then(response => {
         if (response.data) Alert.alert('회원가입이 정상적으로 완료되었습니다');
       })
