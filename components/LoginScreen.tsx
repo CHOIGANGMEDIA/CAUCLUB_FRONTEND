@@ -11,12 +11,12 @@ const LoginScreen = () => {
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>();
   const login = () => {
-    var data = JSON.stringify({
+    const data = JSON.stringify({
       id: id,
       password: password,
     });
 
-    var config = {
+    const config = {
       headers: {
         'Content-Type': 'application/json',
       },
