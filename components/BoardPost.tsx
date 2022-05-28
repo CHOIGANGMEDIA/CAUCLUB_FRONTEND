@@ -3,9 +3,11 @@ import {Text, TouchableHighlight, View} from 'react-native';
 import BoardStyle from './Style/BoardStyle';
 
 type PostProps = {
+  postId?: number;
   clubName: string;
   title: string;
   contents: string;
+  time?: string;
 };
 
 export type {PostProps};
