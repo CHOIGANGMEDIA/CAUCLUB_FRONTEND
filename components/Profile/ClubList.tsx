@@ -5,6 +5,7 @@ import {View, Text, TouchableHighlight} from 'react-native';
 import InitialStlye from '../Style/InitialStyle';
 import ProfileStyle from '../Style/ProfileStyle';
 import Profile from './Profile';
+import BottomBox from '../BottomBox';
 
 const ProfileList = () => {
   return (
@@ -29,13 +30,7 @@ const ProfileList = () => {
         <Profile />
         <Profile />
       </KeyboardAwareScrollView>
-      <View style={InitialStlye.bottomBox}>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-      </View>
+      <BottomBox />
     </>
   );
 };

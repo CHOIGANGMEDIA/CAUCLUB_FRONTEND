@@ -5,6 +5,7 @@ import {View, Text, Image} from 'react-native';
 import InitialStlye from '../Style/InitialStyle';
 import ProfileStyle from '../Style/ProfileStyle';
 import RecommendProfile from './RecommendProfile';
+import BottomBox from '../BottomBox';
 
 let imagePath = require('../images/푸앙_기본형.png');
 
@@ -25,13 +26,7 @@ const RecommendClubList = () => {
         <RecommendProfile />
         <RecommendProfile />
       </KeyboardAwareScrollView>
-      <View style={InitialStlye.bottomBox}>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-        <Text style={({padding: 20})}>icon</Text>
-      </View>
+      <BottomBox />
     </>
   );
 };

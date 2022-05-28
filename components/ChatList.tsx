@@ -4,10 +4,11 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight} from 'react-native';
 import ChatStyle from './Style/ChatStyle';
 import InitialStlye from './Style/InitialStyle';
+import BottomBox from './BottomBox';
 
 const ChatList = () => {
   return (
-    <KeyboardAwareScrollView>
+    <View>
       <View style={InitialStlye.titleBox}>
         <Text style={InitialStlye.title}>CAUCLUB</Text>
       </View>
@@ -17,7 +18,7 @@ const ChatList = () => {
             <Text style={({color: '#000000', fontSize: 20})}>new</Text>
         </TouchableHighlight>
       </View>
-      <KeyboardAwareScrollView style={({height: 551})}>
+      <KeyboardAwareScrollView style={({height: 569})}>
         <View style={ChatStyle.chatList}>
           <TouchableHighlight style={ChatStyle.profile}>
             <></>
@@ -108,14 +109,8 @@ const ChatList = () => {
         {/* 반복구간 */}
         
       </KeyboardAwareScrollView>
-      <View style={InitialStlye.bottomBox}>
-          <Text style={({padding: 20})}>icon</Text>
-          <Text style={({padding: 20})}>icon</Text>
-          <Text style={({padding: 20})}>icon</Text>
-          <Text style={({padding: 20})}>icon</Text>
-          <Text style={({padding: 20})}>icon</Text>
-        </View>
-    </KeyboardAwareScrollView>
+      <BottomBox />
+    </View>
   );
 };
 
