@@ -4,7 +4,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight, TextInput} from 'react-native';
 import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
-import BottomBox from './BottomBox';
+import BottomBox from './BottomBox/BottomBox';
 
 const BoardModify = () => {
   const [title, setTitle] = useState<string>('');

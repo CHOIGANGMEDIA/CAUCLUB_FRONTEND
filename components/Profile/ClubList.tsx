@@ -25,14 +25,7 @@ const ClubList = () => {
         style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
       />
       <KeyboardAwareScrollView>
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
+        <Profile clubId={0} />
       </KeyboardAwareScrollView>
       <BottomBox />
     </>

@@ -6,7 +6,7 @@ import ProfileStyle from '../Style/ProfileStyle';
 import {Club} from './Club';
 
 type ProfileProps = {
-  memberId: string;
+  memberId?: string;
   clubId: number;
 };
 
@@ -18,7 +18,7 @@ const Profile = ({memberId, clubId}: ProfileProps) => {
       .get(`/${memberId}/${clubId}`)
       .then(response => {
         setClub(response.data);
-        console.log(club?.picture);
+        console.log(club?.keyword);
       })
       .catch(error => console.log(error));
   }, []);
