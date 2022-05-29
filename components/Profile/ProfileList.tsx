@@ -10,21 +10,27 @@ import {customAxios} from '../../src/axiosModule/customAxios';
 
 const ProfileList = () => {
   const [id, setId] = useState<string>('');
-  const [clubs, setClubs] = useState<number[]>();
+  const [clubIds, setClubIds] = useState<number[]>();
 
   useEffect(() => {
     AsyncStorage.getItem('loggedId', (err, result) => {
       if (result) setId(result);
     }).then(() => console.log(id));
     customAxios
-      .get(`/${id}/club`)
+      .get(`/${id}/joinedClub`)
       .then(response => {
-        console.log(response.data);
+        console.log('res:', response.data);
+        setClubIds(response.data);
+        console.log('state:', clubIds);
       })
       .catch(error => {
         console.log(error);
       });
   }, []);
+
+  const clubList = clubIds?.map(clubId => {
+    return <Profile key={clubId} memberId={id} clubId={clubId} />;
+  });
 
   return (
     <>
@@ -39,20 +45,7 @@ const ProfileList = () => {
       <View
         style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
       />
-      <ScrollView>
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-      </ScrollView>
+      <ScrollView>{clubList}</ScrollView>
     </>
   );
 };

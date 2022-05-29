@@ -1,25 +1,45 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import {View, Text, TouchableHighlight} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableHighlight, Image} from 'react-native';
+import {customAxios} from '../../src/axiosModule/customAxios';
 import ProfileStyle from '../Style/ProfileStyle';
+import {Club} from './Club';
 
-const Profile = () => {
+type ProfileProps = {
+  memberId: string;
+  clubId: number;
+};
+
+const Profile = ({memberId, clubId}: ProfileProps) => {
+  const [club, setClub] = useState<Club>();
+
+  useEffect(() => {
+    customAxios
+      .get(`/${memberId}/${clubId}`)
+      .then(response => {
+        setClub(response.data);
+        console.log(club?.picture);
+      })
+      .catch(error => console.log(error));
+  }, []);
+
   return (
     <TouchableHighlight
       style={{borderWidth: 1, borderColor: 'black', margin: 5}}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View style={ProfileStyle.profile}>
-          <></>
-          {/* 프로필 사진 */}
-        </View>
+        {club !== undefined ? (
+          <Image source={{uri: club.picture}} style={ProfileStyle.profile} />
+        ) : (
+          <View style={ProfileStyle.profile}></View>
+        )}
         <View
           style={{
             flexDirection: 'row',
             width: '75%',
             justifyContent: 'space-between',
           }}>
-          <Text style={ProfileStyle.clubName}>동아리명</Text>
-          <Text style={ProfileStyle.classifyClub}>동아리분류</Text>
+          <Text style={ProfileStyle.clubName}>{club?.name}</Text>
+          <Text style={ProfileStyle.classifyClub}>{club?.type}</Text>
         </View>
       </View>
     </TouchableHighlight>
