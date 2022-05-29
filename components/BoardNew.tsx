@@ -6,7 +6,7 @@ import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
 import {customAxios} from '../src/axiosModule/customAxios';
 
-import BottomBox from './BottomBox';
+import BottomBox from './BottomBox/BottomBox';
 const BoardNew = () => {
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
