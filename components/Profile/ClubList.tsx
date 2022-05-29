@@ -7,7 +7,7 @@ import ProfileStyle from '../Style/ProfileStyle';
 import Profile from './Profile';
 import BottomBox from '../BottomBox';
 
-const ProfileList = () => {
+const ClubList = () => {
   return (
     <>
       <View style={InitialStlye.titleBox}>
@@ -35,4 +35,4 @@ const ProfileList = () => {
   );
 };
 
-export default ProfileList;
+export default ClubList;

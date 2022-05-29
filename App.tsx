@@ -29,7 +29,7 @@ const App = () => {
       {/* <SearchPW /> */}
       {/* <MyPage /> */}
       {/* <ChatList /> */}
-      <ChatMessage />
+      {/* <ChatMessage /> */}
       {/* <BoardList /> */}
       {/* <BoardNew /> */}
       {/* <BoardModify /> */}
@@ -40,7 +40,7 @@ const App = () => {
       {/* <Profile /> */}
       {/* <RecommendProfile /> */}
       {/* <ProfilePageMtrue /> */}
-      {/* <ProfilePageP /> */}
+      <ProfilePageP />
       {/* <ProfilePageMFalse /> */}
       {/* <ProfilePageOthers /> */}
     </>
