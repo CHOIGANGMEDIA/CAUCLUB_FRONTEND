@@ -28,7 +28,7 @@ const ProfileList = () => {
       });
   }, []);
 
-  const clubList = clubIds?.map(clubId => {
+  const profileClubList = clubIds?.map(clubId => {
     return <Profile key={clubId} memberId={id} clubId={clubId} />;
   });
 
@@ -45,7 +45,7 @@ const ProfileList = () => {
       <View
         style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
       />
-      <ScrollView>{clubList}</ScrollView>
+      <ScrollView>{profileClubList}</ScrollView>
     </>
   );
 };

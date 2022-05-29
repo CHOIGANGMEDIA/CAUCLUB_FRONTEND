@@ -12,13 +12,10 @@ let imagePath = require('../images/푸앙_기본형.png');
 const RecommendClubList = () => {
   return (
     <>
-      <View style={InitialStlye.titleBox}>
-        <Text style={InitialStlye.title}>CAUCLUB</Text>
-      </View>
       <View style={ProfileStyle.imageContainer}>
-          <Image style={ProfileStyle.image} source={imagePath} />
-          <Text  style={ProfileStyle.puang}> 동아리를 추천해볼까앙!!</Text>
-        </View>
+        <Image style={ProfileStyle.image} source={imagePath} />
+        <Text style={ProfileStyle.puang}> 동아리를 추천해볼까앙!!</Text>
+      </View>
       <KeyboardAwareScrollView>
         <RecommendProfile />
         <RecommendProfile />
@@ -26,7 +23,6 @@ const RecommendClubList = () => {
         <RecommendProfile />
         <RecommendProfile />
       </KeyboardAwareScrollView>
-      <BottomBox />
     </>
   );
 };
