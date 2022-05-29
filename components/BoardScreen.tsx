@@ -4,8 +4,11 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight} from 'react-native';
 import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
+
 import {PostProps} from './BoardList';
 import {useRoute} from '@react-navigation/native';
+
+import BottomBox from './BottomBox';
 
 const BoardScreen = () => {
   const route = useRoute<any>();
@@ -17,7 +20,7 @@ const BoardScreen = () => {
           <Text style={InitialStlye.title}>CAUCLUB</Text>
         </View>
         <View style={BoardStyle.topBox}>
-          <Text style={BoardStyle.boardTitle}>게시판</Text>
+          <Text style={InitialStlye.boardTitle}>게시판</Text>
         </View>
         <View
           style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
@@ -34,18 +37,11 @@ const BoardScreen = () => {
                 </Text>
               </TouchableHighlight>
             </View>
-
             <Text style={BoardStyle.screenContent}>{contents}</Text>
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <View style={InitialStlye.bottomBox}>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-      </View>
+      <BottomBox />
     </>
   );
 };

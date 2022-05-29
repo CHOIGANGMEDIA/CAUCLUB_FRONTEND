@@ -17,6 +17,8 @@ type PostProps = {
 };
 export type {PostProps};
 
+import BottomBox from './BottomBox';
+
 const BoardList = () => {
   const [posts, setPosts] = useState<PostProps[]>();
 
@@ -66,7 +68,7 @@ const BoardList = () => {
         <Text style={InitialStlye.title}>CAUCLUB</Text>
       </View>
       <View style={BoardStyle.topBox}>
-        <Text style={BoardStyle.boardTitle}>게시판</Text>
+        <Text style={InitialStlye.boardTitle}>게시판</Text>
         <TouchableHighlight style={BoardStyle.newContent}>
           <Text style={{color: 'white', fontSize: 12, fontWeight: '900'}}>
             글쓰기
@@ -78,13 +80,7 @@ const BoardList = () => {
       />
 
       <KeyboardAwareScrollView>{postList}</KeyboardAwareScrollView>
-      <View style={InitialStlye.bottomBox}>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-        <Text style={{padding: 20}}>icon</Text>
-      </View>
+      <BottomBox />
     </>
   );
 };

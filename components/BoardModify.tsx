@@ -4,6 +4,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight, TextInput} from 'react-native';
 import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
+import BottomBox from './BottomBox';
 
 const BoardModify = () => {
   const [title, setTitle] = useState<string>('');
@@ -18,7 +19,7 @@ const BoardModify = () => {
         <Text style={InitialStlye.title}>CAUCLUB</Text>
       </View>
       <View style={BoardStyle.topBox}>
-        <Text style={BoardStyle.boardTitle}>게시판</Text>
+        <Text style={InitialStlye.boardTitle}>게시판</Text>
         <TouchableHighlight style={BoardStyle.newContent}>
           <Text style={{color: 'white', fontSize: 12, fontWeight: '900'}}>
             취소
@@ -54,14 +55,8 @@ const BoardModify = () => {
             </TouchableHighlight>
           </View>
         </View>
-        <View style={InitialStlye.bottomBox}>
-          <Text style={{padding: 20}}>icon</Text>
-          <Text style={{padding: 20}}>icon</Text>
-          <Text style={{padding: 20}}>icon</Text>
-          <Text style={{padding: 20}}>icon</Text>
-          <Text style={{padding: 20}}>icon</Text>
-        </View>
       </KeyboardAwareScrollView>
+      <BottomBox />
     </>
   );
 };
