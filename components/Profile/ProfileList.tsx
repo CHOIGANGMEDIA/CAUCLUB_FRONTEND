@@ -1,36 +1,51 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, Text, TouchableHighlight} from 'react-native';
+import {View, Text, TouchableHighlight, ScrollView} from 'react-native';
 import InitialStlye from '../Style/InitialStyle';
 import ProfileStyle from '../Style/ProfileStyle';
 import Profile from './Profile';
-import BottomBox from '../BottomBox';
+import AsyncStorage from '@react-native-community/async-storage';
+import {customAxios} from '../../src/axiosModule/customAxios';
 
 const ProfileList = () => {
+  const [id, setId] = useState<string>('');
+  const [clubIds, setClubIds] = useState<number[]>();
+
+  useEffect(() => {
+    AsyncStorage.getItem('loggedId', (err, result) => {
+      if (result) setId(result);
+    }).then(() => console.log(id));
+    customAxios
+      .get(`/${id}/joinedClub`)
+      .then(response => {
+        console.log('res:', response.data);
+        setClubIds(response.data);
+        console.log('state:', clubIds);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
+  const clubList = clubIds?.map(clubId => {
+    return <Profile key={clubId} memberId={id} clubId={clubId} />;
+  });
+
   return (
     <>
-      <View style={InitialStlye.titleBox}>
-        <Text style={InitialStlye.title}>CAUCLUB</Text>
-      </View>
       <View style={ProfileStyle.topBox}>
         <Text style={InitialStlye.boardTitle}>내 동아리</Text>
         <TouchableHighlight style={ProfileStyle.newClubView}>
-            <Text style={({color: 'white', fontSize: 12, fontWeight: '900'})}>다른 동아리 보기</Text>
+          <Text style={{color: 'white', fontSize: 12, fontWeight: '900'}}>
+            다른 동아리 보기
+          </Text>
         </TouchableHighlight>
       </View>
-      <View style={{width:'100%',borderBottomWidth:0.5,borderColor:'#444'}} />
-      <KeyboardAwareScrollView>
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-        <Profile />
-      </KeyboardAwareScrollView>
-      <BottomBox />
+      <View
+        style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
+      />
+      <ScrollView>{clubList}</ScrollView>
     </>
   );
 };
