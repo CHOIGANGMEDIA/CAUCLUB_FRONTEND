@@ -16,10 +16,14 @@ const ClubList = () => {
       <View style={ProfileStyle.topBox}>
         <Text style={InitialStlye.boardTitle}>우리 학과 동아리</Text>
         <TouchableHighlight style={ProfileStyle.recommendClubView}>
-            <Text style={({color: 'white', fontSize: 12, fontWeight: '900'})}>동아리 추천 받기</Text>
+          <Text style={{color: 'white', fontSize: 12, fontWeight: '900'}}>
+            동아리 추천 받기
+          </Text>
         </TouchableHighlight>
       </View>
-      <View style={{width:'100%',borderBottomWidth:0.5,borderColor:'#444'}} />
+      <View
+        style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
+      />
       <KeyboardAwareScrollView>
         <Profile />
         <Profile />

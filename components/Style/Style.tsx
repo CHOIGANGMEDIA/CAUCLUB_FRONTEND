@@ -66,6 +66,12 @@ const Style = StyleSheet.create({
     margin: 10,
     right: 20,
   },
+  warnSubStyle: {
+    color: 'red',
+    fontSize: 13,
+    fontWeight: 'normal',
+    left: 20,
+  },
 });
 
 export default Style;

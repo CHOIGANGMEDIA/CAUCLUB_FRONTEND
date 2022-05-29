@@ -1,49 +1,34 @@
+/* eslint-disable prettier/prettier */
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import BoardList from './components/BoardList';
+import BoardModify from './components/BoardModify';
+import BoardNew from './components/BoardNew';
+import BoardScreen from './components/BoardScreen';
+import BottomBox from './components/BottomBox';
 import LoginScreen from './components/LoginScreen';
+import MyPage from './components/MyPage';
+import BoardNavigator from './components/navigation/BoardNavigator';
+import RecommendClubList from './components/Profile/RecommendClubList';
 import RegisterScreen from './components/RegisterScreen';
 import SearchID from './components/SearchID';
 import SearchPW from './components/SearchPW';
-import MyPage from './components/MyPage';
-import ChatList from './components/ChatList';
-import ChatMessage from './components/ChatMessage';
-import BoardList from './components/BoardList';
-import BoardNew from './components/BoardNew';
-import BoardModify from './components/BoardModify';
-import BoardScreen from './components/BoardScreen';
-import ProfileList from './components/Profile/ProfileList';
-import ClubList from './components/Profile/ClubList';
-import RecommendClubList from './components/Profile/RecommendClubList';
-import Profile from './components/Profile/Profile';
-import RecommendProfile from './components/Profile/RecommendProfile';
-import ProfilePageMtrue from './components/Profile/ProfilePageMtrue';
-import ProfilePageP from './components/Profile/ProfilePageP';
-import ProfilePageMFalse from './components/Profile/ProfilePageMfalse';
-import ProfilePageOthers from './components/Profile/ProfilePageOthers';
+import TopBox from './components/TopBox';
 
 const App = () => {
   return (
-    <>
-      {/* <LoginScreen /> */}
-      {/* <RegisterScreen /> */}
-      {/* <SearchID /> */}
-      {/* <SearchPW /> */}
-      {/* <MyPage /> */}
-      {/* <ChatList /> */}
-      {/* <ChatMessage /> */}
-      {/* <BoardList /> */}
-      {/* <BoardNew /> */}
-      {/* <BoardModify /> */}
-      {/* <BoardScreen /> */}
-      {/* <ProfileList /> */}
-      {/* <ClubList /> */}
-      {/* <RecommendClubList /> */}
-      {/* <Profile /> */}
-      {/* <RecommendProfile /> */}
-      {/* <ProfilePageMtrue /> */}
-      <ProfilePageP />
-      {/* <ProfilePageMFalse /> */}
-      {/* <ProfilePageOthers /> */}
-    </>
+    // <SafeAreaProvider>
+    //   <NavigationContainer>
+    //     <BoardNavigator />
+    //   </NavigationContainer>
+    //   {/* <RegisterScreen /> */}
+    // </SafeAreaProvider>
+    <SafeAreaView style={{flex: 1}}>
+      <TopBox />
+      <RecommendClubList />
+      <BottomBox />
+    </SafeAreaView>
   );
 };
 export default App;
