@@ -17,13 +17,6 @@ const BoardStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    boardTitle:{
-        margin: 15,
-        color: 'black',
-        fontSize: 20,
-        fontWeight: '900',
-        textAlign: 'left',
-    },
     clubName:{
         marginTop: 5,
         color: '#000000',
