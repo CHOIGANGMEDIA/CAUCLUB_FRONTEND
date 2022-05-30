@@ -31,10 +31,9 @@ const ProfileStyle = StyleSheet.create({
         fontWeight: '900',
     },
     classifyClub: {
-        marginTop: 28,
-        marginRight: 100,
+        marginRight: 110,
         color: '#a4a4a4',
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: '900',
     },
     profile:{

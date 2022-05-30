@@ -130,7 +130,15 @@ const MyPage = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={[{margin: 30}]} />
+        <View style={Style.lastCenter}>
+          <TouchableOpacity>
+            <Text style={({margin: 20})}>로그아웃</Text>
+          </TouchableOpacity>
+          <Text style={({margin: 20})}>|</Text>
+          <TouchableOpacity>
+            <Text style={({margin: 20})}>회원탈퇴</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );
