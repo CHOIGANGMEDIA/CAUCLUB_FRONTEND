@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';

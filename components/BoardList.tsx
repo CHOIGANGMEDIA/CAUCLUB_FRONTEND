@@ -17,8 +17,6 @@ type PostProps = {
 };
 export type {PostProps};
 
-import BottomBox from './BottomBox';
-
 const BoardList = () => {
   const [posts, setPosts] = useState<PostProps[]>();
 
@@ -80,7 +78,6 @@ const BoardList = () => {
       />
 
       <KeyboardAwareScrollView>{postList}</KeyboardAwareScrollView>
-      <BottomBox />
     </>
   );
 };
