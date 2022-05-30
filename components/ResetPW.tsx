@@ -16,31 +16,15 @@ const ResetPW = () => {
             </View>
             <View style={({margin: 10})} />
             <Text style={Style.textStyle}>비밀번호 확인</Text>
-            <TextInput
-            style={Style.boxStyle}
-            placeholder={'기존 비밀번호를 입력해주세요'}></TextInput>
+            <TextInput style={Style.boxStyle} placeholder={'기존 비밀번호를 입력해주세요'}></TextInput>
                 <Text style={Style.textStyle}>비밀번호 재설정</Text>
-            <TextInput
-            style={Style.boxStyle}
-            placeholder={'새 비밀번호를 입력해주세요'}></TextInput>
+            <TextInput style={Style.boxStyle} placeholder={'새 비밀번호를 입력해주세요'}></TextInput>
             <Text style={Style.textStyle}>비밀번호 재설정 확인</Text>
-            <TextInput
-            style={Style.boxStyle}
-            placeholder={'새 비밀번호를 한 번 더 입력하세요'}></TextInput>
+            <TextInput style={Style.boxStyle} placeholder={'새 비밀번호를 한 번 더 입력하세요'}></TextInput>
             <View style={({margin: 10})} />
             <View style={Style.center}>
               <TouchableOpacity style={Style.buttonStyle}>
-                <Text
-                style={[
-                    {
-                    color: 'white',
-                    textAlign: 'center',
-                    fontWeight: '900',
-                    fontSize: 15,
-                    },
-                ]}>
-                수정하기
-                </Text>
+                <Text style={({color: 'white', textAlign: 'center', fontWeight: '900', fontSize: 15})}>수정하기</Text>
               </TouchableOpacity>
             </View>
         </View>
@@ -48,5 +32,6 @@ const ResetPW = () => {
 };
 
 export default ResetPW;
+
 
 
