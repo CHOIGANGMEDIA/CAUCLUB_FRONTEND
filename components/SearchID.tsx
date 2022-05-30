@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import React, {useCallback, useState} from 'react';
 import {
@@ -76,6 +77,8 @@ const SearchID = () => {
     [email],
   );
 
+  const navigation = useNavigation<any>();
+
   return (
     <SafeAreaView style={Style.container}>
       <Text style={Style.welcomeTitle}>WELCOME</Text>
@@ -140,11 +143,21 @@ const SearchID = () => {
         </TouchableOpacity>
       </View>
       <View style={Style.bottomCenter}>
-        <Text>로그인</Text>
+        <Text
+          onPress={() => navigation.reset({routes: [{name: 'LoginScreen'}]})}>
+          로그인
+        </Text>
         <Text>|</Text>
-        <Text>회원가입</Text>
+        <Text onPress={() => navigation.reset({routes: [{name: 'SearchPW'}]})}>
+          비밀번호 찾기
+        </Text>
         <Text>|</Text>
-        <Text>비밀번호 찾기</Text>
+        <Text
+          onPress={() =>
+            navigation.reset({routes: [{name: 'RegisterScreen'}]})
+          }>
+          회원가입
+        </Text>
       </View>
     </SafeAreaView>
   );

@@ -4,12 +4,16 @@ import {Text, Image, TouchableOpacity, TextInput, View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Style from './Style/Style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
 
 let imagePath = require('./images/푸앙_기본형.png');
 
 const LoginScreen = () => {
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>();
+
+  const navigation = useNavigation<any>();
+
   const login = () => {
     const data = JSON.stringify({
       id: id,
@@ -24,10 +28,12 @@ const LoginScreen = () => {
     };
     customAxios
       .post('/member/login', data, config)
-      .then((response: any) => {
+      .then(async (response: any) => {
         console.log(JSON.stringify(response.data));
-        if (response) {
-          AsyncStorage.setItem('loggedId', id);
+        if (response.data) {
+          await AsyncStorage.setItem('loggedId', id).then(() => {
+            navigation.reset({routes: [{name: 'Board'}]}); // TODO 메인페이지로 가게
+          });
         }
       })
       .catch((error: any) => {
@@ -89,11 +95,22 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={Style.bottomCenter}>
-          <Text>아이디 찾기</Text>
+          <Text
+            onPress={() => navigation.reset({routes: [{name: 'SearchID'}]})}>
+            아이디 찾기
+          </Text>
           <Text>|</Text>
-          <Text>비밀번호 찾기</Text>
+          <Text
+            onPress={() => navigation.reset({routes: [{name: 'SearchPW'}]})}>
+            비밀번호 찾기
+          </Text>
           <Text>|</Text>
-          <Text>회원가입</Text>
+          <Text
+            onPress={() =>
+              navigation.reset({routes: [{name: 'RegisterScreen'}]})
+            }>
+            회원가입
+          </Text>
         </View>
       </View>
     </KeyboardAwareScrollView>

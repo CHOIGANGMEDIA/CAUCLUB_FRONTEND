@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {
   SafeAreaView,
@@ -72,6 +73,8 @@ const SearchPW = () => {
     } else Alert.alert('인증번호를 입력해 주세요');
   };
 
+  const navigation = useNavigation<any>();
+
   return (
     <SafeAreaView style={Style.container}>
       <Text style={Style.welcomeTitle}>WELCOME</Text>
@@ -134,11 +137,21 @@ const SearchPW = () => {
         </TouchableOpacity>
       </View>
       <View style={Style.bottomCenter}>
-        <Text>로그인</Text>
+        <Text
+          onPress={() => navigation.reset({routes: [{name: 'LoginScreen'}]})}>
+          로그인
+        </Text>
         <Text>|</Text>
-        <Text>회원가입</Text>
+        <Text
+          onPress={() =>
+            navigation.reset({routes: [{name: 'RegisterScreen'}]})
+          }>
+          회원가입
+        </Text>
         <Text>|</Text>
-        <Text>아이디 찾기</Text>
+        <Text onPress={() => navigation.reset({routes: [{name: 'SearchID'}]})}>
+          아이디 찾기
+        </Text>
       </View>
     </SafeAreaView>
   );

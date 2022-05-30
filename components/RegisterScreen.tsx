@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
@@ -64,6 +65,8 @@ const RegisterScreen = () => {
     college: false,
   });
 
+  const navigation = useNavigation<any>();
+
   const newMember = () => {
     const data = JSON.stringify({
       department: selectedCampus + ' ' + selectedCollege,
@@ -82,8 +85,9 @@ const RegisterScreen = () => {
 
     customAxios
       .post(`/member/newMember`, data, config)
-      .then(response => {
+      .then(async response => {
         if (response.data) Alert.alert('회원가입이 정상적으로 완료되었습니다');
+        navigation.reset({routes: [{name: 'LoginScreen'}]});
       })
       .catch(error => {
         Alert.alert(`Error : ${error}\n관리자에게 문의하세요`);
