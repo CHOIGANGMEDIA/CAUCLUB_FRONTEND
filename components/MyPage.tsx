@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import Style from './Style/Style';
 import {
   View,
@@ -23,22 +23,25 @@ const MyPage = () => {
   const [validEmail, setValidEmail] = useState<Boolean>(true);
   const [emailMsg, setEmailMsg] = useState<string>();
 
-  useEffect(() => {
-    AsyncStorage.getItem('loggedId', (err, result) => {
-      if (result) setId(result);
-    });
-    console.log(id);
-    if (id) {
-      customAxios
-        .get(`/member/${id}`)
-        .then(result => {
-          setName(result.data.name.trim());
-          setEmail(result.data.email);
+  const loadData = async () => {
+    const loggedId = await AsyncStorage.getItem('loggedId');
+    console.log(loggedId);
+    if (loggedId) {
+      setId(loggedId);
+      await customAxios
+        .get(`/member/${loggedId}`)
+        .then(response => {
+          setName(response.data.name.trim());
+          setEmail(response.data.email);
         })
         .catch(error => {
           console.log(error);
         });
     }
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   const emailChanged = useCallback(
