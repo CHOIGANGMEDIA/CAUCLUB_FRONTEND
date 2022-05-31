@@ -32,6 +32,3 @@ const ResetPW = () => {
 };
 
 export default ResetPW;
-
-
-

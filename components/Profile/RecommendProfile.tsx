@@ -15,7 +15,10 @@ const RecommendProfile = () => {
               </View>
               <View style={({flexDirection: 'row', width: '75%', justifyContent: 'space-between'})}>
                 <Text style={ProfileStyle.clubName}>동아리명</Text>
-                <Text style={ProfileStyle.classifyClub}>동아리분류</Text>
+                <View style={({marginTop: 20})}>
+                  <Text style={ProfileStyle.classifyClub}>동아리분류</Text>
+                  <Text style={ProfileStyle.classifyClub}>소속캠퍼스</Text>
+                </View>
               </View>
             </View>
             <View style={ProfileStyle.keywordList}>
