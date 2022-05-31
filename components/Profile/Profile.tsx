@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableHighlight, Image} from 'react-native';
 import {customAxios} from '../../src/axiosModule/customAxios';
 import ProfileStyle from '../Style/ProfileStyle';
-import {Club} from './Club';
+import type {Club} from './Club';
 
 type ProfileProps = {
   memberId?: string;
@@ -15,10 +15,10 @@ const Profile = ({memberId, clubId}: ProfileProps) => {
 
   useEffect(() => {
     customAxios
-      .get(`/${memberId}/${clubId}`)
+      .get(`/club/${clubId}`)
       .then(response => {
         setClub(response.data);
-        console.log(club?.keyword);
+        console.log(response.data);
       })
       .catch(error => console.log(error));
   }, []);
