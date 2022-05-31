@@ -1,16 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, Text, Image, TouchableHighlight} from 'react-native';
-import InitialStlye from '../Style/InitialStyle';
+import {View, Text, Image, TouchableHighlight, TextInput} from 'react-native';
 import ProfilePageStyle from '../Style/ProfilePageStyle';
 import Keyword from './Keyword';
 import Archieve from './Archieve';
-import BottomBox from '../BottomBox';
 
 let imagePath = require('../images/푸앙_윙크.png');
 
-const ProfilePageP = () => {
+const GenerateProfile = () => {
   return (
     <>
       <KeyboardAwareScrollView>
@@ -22,8 +20,8 @@ const ProfilePageP = () => {
             <View style={{height: 35, flexDirection: 'row'}}>
               <View style={{width: '40%'}}>
                 <TouchableHighlight style={ProfilePageStyle.modifyProfile}>
-                  <Text style={{color: 'white', fontWeight: '900', margin: 5}}>
-                    프로필 수정
+                  <Text style={{color: 'white', fontSize: 12, fontWeight: '900', margin: 5}}>
+                    동아리 만들기
                   </Text>
                 </TouchableHighlight>
               </View>
@@ -47,31 +45,6 @@ const ProfilePageP = () => {
             marginBottom: 5,
           }}
         />
-        <View style={({flex: 1, height: 30, flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'})}>
-          <View style={({height: 40, width: 150})}>
-            <TouchableHighlight style={ProfilePageStyle.generateButton}>
-              <Text style={{color: 'white', fontWeight: '900', margin: 5}}>
-                아카이브 글쓰기
-              </Text>
-            </TouchableHighlight>
-          </View>
-          <View style={({height: 40, width: 150})}>
-            <TouchableHighlight style={ProfilePageStyle.generateButton}>
-              <Text style={{color: 'white', fontWeight: '900', margin: 5}}>
-                게시판 글쓰기
-              </Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            borderBottomWidth: 0.5,
-            borderColor: '#444',
-            marginTop: 5,
-            marginBottom: 5,
-          }}
-        />
         <View style={{flex: 1, height: 230, flexDirection: 'row'}}>
           <View
             style={{
@@ -81,7 +54,10 @@ const ProfilePageP = () => {
             }}>
             <View style={{width: '100%', height: 170, alignItems: 'center'}}>
               <View style={ProfilePageStyle.profile}>
-                <></>
+                {/* <Image style={{width: 150, height: 150, borderRadius: 100}} source={imagePath} /> */}
+                <TouchableHighlight>
+                  <Text>프로필 사진 추가</Text>
+                </TouchableHighlight>
               </View>
             </View>
             <View
@@ -96,36 +72,27 @@ const ProfilePageP = () => {
           </View>
           <View style={{flex: 1, width: '50%', flexDirection: 'column'}}>
             <View style={{height: '25%'}}>
-              <View style={{height: '50%'}}>
+              <View style={{height: '70%'}}>
                 <Text style={{color: 'black'}}>동아리명</Text>
-                <Text style={ProfilePageStyle.information}>동아리명</Text>
+                <TextInput style={({fontSize: 15})} placeholder={'동아리명 입력'} />
               </View>
             </View>
             <View style={{height: '25%'}}>
-              <View style={{height: '50%'}}>
-                <Text style={{color: 'black'}}>소속 캠퍼스</Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 15,
-                    fontWeight: '900',
-                    margin: 3,
-                    marginTop: 5,
-                  }}>
-                  서울캠퍼스 소프트웨어학부
-                </Text>
+              <View style={{height: '70%'}}>
+                <Text style={{color: 'black', marginTop: 5}}>소속 캠퍼스</Text>
+                <TextInput style={({fontSize: 15})} placeholder={'소속 캠퍼스 입력'} />
               </View>
             </View>
             <View style={{height: '25%'}}>
-              <View style={{height: '50%'}}>
-                <Text style={{color: 'black'}}>동아리 분류</Text>
-                <Text style={ProfilePageStyle.information}>학술동아리</Text>
+              <View style={{height: '70%'}}>
+                <Text style={{color: 'black', marginTop: 5}}>동아리 분류</Text>
+                <TextInput style={({fontSize: 15})} placeholder={'동아리 분류 입력'} />
               </View>
             </View>
             <View style={{height: '25%'}}>
-              <View style={{height: '50%'}}>
-                <Text style={{color: 'black'}}>동아리장 이름</Text>
-                <Text style={ProfilePageStyle.information}>이예빈</Text>
+              <View style={{height: '70%'}}>
+                <Text style={{color: 'black', marginTop: 5}}>동아리장 이름</Text>
+                <TextInput style={({fontSize: 15})} placeholder={'동아리장 이름 입력'} />
               </View>
             </View>
           </View>
@@ -152,10 +119,7 @@ const ProfilePageP = () => {
             </Text>
           </View>
           <View style={ProfilePageStyle.introduction}>
-            <Text style={{color: 'black'}}>
-              동아리 소개글 쓰는 공간입니다 ~ 칸이나 줄바꿈은 제대로 만들어놨고,
-              스크롤뷰 안되니까 백 쪽에서 글자수 제한 줄거에용
-            </Text>
+            <TextInput style={{color: 'black'}} multiline={true} placeholder={'동아리에 대해 소개해주세요!'} />
           </View>
         </View>
         <View style={ProfilePageStyle.keywordList}>
@@ -192,11 +156,6 @@ const ProfilePageP = () => {
             </Text>
           </View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Archieve />
-            <Archieve />
-            <Archieve />
-            <Archieve />
-            <Archieve />
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -204,4 +163,4 @@ const ProfilePageP = () => {
   );
 };
 
-export default ProfilePageP;
+export default GenerateProfile;
