@@ -7,24 +7,30 @@ import ProfileStyle from '../Style/ProfileStyle';
 import Profile from './Profile';
 import AsyncStorage from '@react-native-community/async-storage';
 import {customAxios} from '../../src/axiosModule/customAxios';
+import {NavigationHeader} from '../navigation/NavigationHeader';
+import {SafeAreaView} from '../navigation/SafeAreaView';
 
 const ProfileList = () => {
   const [id, setId] = useState<string>('');
   const [clubIds, setClubIds] = useState<number[]>();
 
   useEffect(() => {
-    AsyncStorage.getItem('loggedId', (err, result) => {
-      if (result) setId(result);
-    }).then(() => console.log(id));
-    customAxios
-      .get(`/${id}/joinedClub`)
-      .then(response => {
-        console.log('res:', response.data);
-        setClubIds(response.data);
-        console.log('state:', clubIds);
+    AsyncStorage.getItem('loggedId', (err, result) => {})
+      .then(result => {
+        console.log(result);
+        if (result) setId(result);
       })
-      .catch(error => {
-        console.log(error);
+      .then(() => {
+        customAxios
+          .get(`/${id}/joinedClub`)
+          .then(response => {
+            console.log('res:', response.data);
+            setClubIds(response.data);
+            console.log('state:', clubIds);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       });
   }, []);
 
@@ -33,7 +39,8 @@ const ProfileList = () => {
   });
 
   return (
-    <>
+    <SafeAreaView>
+      <NavigationHeader />
       <View style={ProfileStyle.topBox}>
         <Text style={InitialStlye.boardTitle}>내 동아리</Text>
         <TouchableHighlight style={ProfileStyle.newClubView}>
@@ -46,7 +53,7 @@ const ProfileList = () => {
         style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
       />
       <ScrollView>{profileClubList}</ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

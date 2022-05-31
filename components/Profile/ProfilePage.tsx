@@ -6,11 +6,11 @@ import InitialStlye from '../Style/InitialStyle';
 import ProfilePageStyle from '../Style/ProfilePageStyle';
 import Keyword from './Keyword';
 import Archieve from './Archieve';
-import BottomBox from '../BottomBox';
 
 let imagePath = require('../images/푸앙_윙크.png');
 
 const ProfilePageMFalse = () => {
+  // TODO useRoute
   const actionButton = (id: number) => {
     const pressed = () =>
       useCallback(() => {
@@ -185,7 +185,6 @@ const ProfilePageMFalse = () => {
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <BottomBox />
     </>
   );
 };

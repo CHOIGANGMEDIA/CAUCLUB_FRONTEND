@@ -1,6 +1,13 @@
 import {customAxios} from '../src/axiosModule/customAxios';
 import React, {useState} from 'react';
-import {Text, Image, TouchableOpacity, TextInput, View} from 'react-native';
+import {
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  View,
+  Alert,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Style from './Style/Style';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -31,9 +38,11 @@ const LoginScreen = () => {
       .then(async (response: any) => {
         console.log(JSON.stringify(response.data));
         if (response.data) {
-          await AsyncStorage.setItem('loggedId', id).then(() => {
-            navigation.reset({routes: [{name: 'Board'}]}); // TODO 메인페이지로 가게
+          AsyncStorage.setItem('loggedId', id).then(() => {
+            navigation.reset({routes: [{name: 'TabbedScreen'}]});
           });
+        } else {
+          Alert.alert('로그인 실패', '아이디와 비밀번호를 확인해 주세요');
         }
       })
       .catch((error: any) => {

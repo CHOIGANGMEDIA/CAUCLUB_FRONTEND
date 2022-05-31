@@ -60,7 +60,7 @@ const SearchPW = () => {
             .post(`/member/validIdCertification?certification=${cert}`)
             .then(request => {
               request.data
-                ? Alert.alert(`회원님의 아이디는 ${request.data} 입니다`)
+                ? navigation.reset({routes: [{name: 'ResetPW'}]}) // TODO 비밀번호 재설정 하려는 id 넘겨주기
                 : Alert.alert('인증번호가 일치하지 않습니다.');
             })
             .catch(error => {

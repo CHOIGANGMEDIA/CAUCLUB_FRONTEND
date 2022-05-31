@@ -1,27 +1,37 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {useCallback} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight} from 'react-native';
 import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
 
 import {PostProps} from './BoardList';
-import {useRoute} from '@react-navigation/native';
-
-import BottomBox from './BottomBox';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {NavigationHeader} from './navigation/NavigationHeader';
+import {MaterialCommunityIcon as Icon} from './navigation/MaterialCommunityIcon';
+import {SafeAreaView} from './navigation/SafeAreaView';
 
 const BoardScreen = () => {
   const route = useRoute<any>();
+  const navigation = useNavigation<any>();
+  const goBack = useCallback(
+    () => navigation.canGoBack() && navigation.goBack(),
+    [],
+  );
   const {postId, clubName, title, contents} = route.params;
   return (
-    <>
+    <SafeAreaView>
+      <NavigationHeader
+        Left={() => (
+          <Icon
+            name="chevron-left"
+            size={30}
+            onPress={goBack}
+            style={{backgroundColor: 'transparent'}}
+          />
+        )}
+      />
       <KeyboardAwareScrollView>
-        <View style={InitialStlye.titleBox}>
-          <Text style={InitialStlye.title}>CAUCLUB</Text>
-        </View>
-        <View style={BoardStyle.topBox}>
-          <Text style={InitialStlye.boardTitle}>게시판</Text>
-        </View>
         <View
           style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
         />
@@ -41,8 +51,7 @@ const BoardScreen = () => {
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <BottomBox />
-    </>
+    </SafeAreaView>
   );
 };
 

@@ -2,9 +2,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import LoginScreen from '../LoginScreen';
 import RegisterScreen from '../RegisterScreen';
-import BoardNavigator from './BoardNavigator';
 import SearchID from '../SearchID';
 import SearchPW from '../SearchPW';
+import ResetPW from '../ResetPW';
+import TabNavigator from './TabNavigator';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,8 @@ const MainNavigator = () => {
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="SearchID" component={SearchID} />
       <Stack.Screen name="SearchPW" component={SearchPW} />
-      <Stack.Screen name="Board" component={BoardNavigator} />
+      <Stack.Screen name="ResetPW" component={ResetPW} />
+      <Stack.Screen name="TabbedScreen" component={TabNavigator} />
     </Stack.Navigator>
   );
 };

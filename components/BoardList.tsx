@@ -7,6 +7,9 @@ import BoardStyle from './Style/BoardStyle';
 import {customAxios} from '../src/axiosModule/customAxios';
 import {useNavigation} from '@react-navigation/native';
 import BoardListEntity from './BoardListEntity';
+import TopBox from './TopBox';
+import {NavigationHeader} from './navigation/NavigationHeader';
+import {SafeAreaView} from './navigation/SafeAreaView';
 
 type PostProps = {
   postId: number;
@@ -43,6 +46,8 @@ const BoardList = () => {
       .catch(error => {
         Alert.alert(`${error}`);
       });
+
+    return setPosts([]);
   }, []);
 
   const postList = posts?.map(({postId, clubName, title, contents}) => {
@@ -61,24 +66,17 @@ const BoardList = () => {
   });
 
   return (
-    <>
-      <View style={InitialStlye.titleBox}>
-        <Text style={InitialStlye.title}>CAUCLUB</Text>
-      </View>
+    <SafeAreaView>
+      <NavigationHeader />
       <View style={BoardStyle.topBox}>
         <Text style={InitialStlye.boardTitle}>게시판</Text>
-        <TouchableHighlight style={BoardStyle.newContent}>
-          <Text style={{color: 'white', fontSize: 12, fontWeight: '900'}}>
-            글쓰기
-          </Text>
-        </TouchableHighlight>
       </View>
       <View
         style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
       />
 
       <KeyboardAwareScrollView>{postList}</KeyboardAwareScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
