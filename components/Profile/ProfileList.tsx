@@ -15,24 +15,24 @@ const ProfileList = () => {
   const [clubIds, setClubIds] = useState<number[]>();
 
   useEffect(() => {
-    AsyncStorage.getItem('loggedId', (err, result) => {})
-      .then(result => {
-        console.log(result);
-        if (result) setId(result);
-      })
-      .then(() => {
-        customAxios
-          .get(`/${id}/joinedClub`)
-          .then(response => {
-            console.log('res:', response.data);
-            setClubIds(response.data);
-            console.log('state:', clubIds);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      });
+    AsyncStorage.getItem('loggedId', (err, result) => {}).then(result => {
+      console.log(result);
+      if (result) setId(result);
+    });
   }, []);
+
+  useEffect(() => {
+    customAxios
+      .get(`/${id}/joinedClub`)
+      .then(response => {
+        setClubIds(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    return setClubIds([]);
+  }, [id]);
 
   const profileClubList = clubIds?.map(clubId => {
     return <Profile key={clubId} memberId={id} clubId={clubId} />;
