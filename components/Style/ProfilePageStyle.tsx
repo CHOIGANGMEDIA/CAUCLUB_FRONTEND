@@ -15,6 +15,12 @@ const ProfilePageStyle = StyleSheet.create({
         marginLeft: 30,
         alignItems: 'center',
     },
+    generateButton: {
+        borderRadius: 10,
+        backgroundColor: '#143365',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     registerTrue:{
         borderRadius: 10,
         borderWidth: 2,
@@ -44,12 +50,13 @@ const ProfilePageStyle = StyleSheet.create({
         borderRadius: 100,
         marginTop: 10,
         backgroundColor: '#A4A4A4',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     information:{
         color: 'black',
         fontSize: 20,
         fontWeight: '900',
-        margin: 3,
     },
     introduction:{
         height: 100,
