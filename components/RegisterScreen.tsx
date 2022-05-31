@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import {customAxios} from '../src/axiosModule/customAxios';
+import Keyword from './Profile/Keyword';
 import Style from './Style/Style';
 
 let imagePath = require('./images/푸앙_응원.png');
@@ -283,6 +284,25 @@ const RegisterScreen = () => {
         {/* <TextInput style={styles.boxStyle} placeholder={'동아리 선택하는 곳'} /> */}
         {/* <SelectBox/> */}
 
+        <View style={({margin: 10})} />
+        <Text style={styles.textStyle}>키워드 선택</Text>
+        <View style={styles.keywordIntroduction}>
+          <Text style={({color: 'black', fontSize: 14})}>키워드를 선택해주세요!</Text>
+          <Text style={({color: 'black', fontSize: 14})}>취향에 알맞는 동아리를 추천해드려요 :)</Text>
+        </View>
+        <View style={styles.keywordList}>
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+          <Keyword />
+        </View>
+
         <View style={styles.center}>
           {/* 예빈 버튼 스타일 부탁해용 */}
           <TouchableOpacity
@@ -291,7 +311,7 @@ const RegisterScreen = () => {
               handleSubmit();
               console.log('pressed');
             }}>
-            <Text> 회원가입 </Text>
+            <Text style={({color: 'white', textAlign: 'center'})}> 회원가입 </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -352,6 +372,20 @@ const styles = StyleSheet.create({
     left: 20,
     // alignItems: 'center',
     flexDirection: 'column',
+  },
+  keywordList:{
+    height: 100,
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+  keywordIntroduction: {
+    marginTop: 15,
+    marginLeft: 30,
+    marginRight: 30,
   },
 });
 

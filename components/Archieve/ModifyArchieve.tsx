@@ -5,6 +5,7 @@ import { Text, TouchableHighlight, View, TextInput, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AttachPhoto from './AttachPhoto';
+import CheckBox from "@react-native-community/checkbox";
 
 const ModifyArchieve = () => {
     return(
@@ -20,6 +21,10 @@ const ModifyArchieve = () => {
             </TouchableHighlight>
           </View>
           <TextInput style={ArchieveStyle.titleStyle} placeholder={'제목 불러와야해요'}></TextInput>
+          <View style={({flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginLeft: 30})}>
+            <CheckBox></CheckBox>
+            <Text>다른 동아리와의 교류 활동입니다.</Text>
+          </View>
           <KeyboardAwareScrollView style={ArchieveStyle.contentStyle}>
             <TextInput multiline={true} placeholder={'내용 불러와야해요'}></TextInput>
           </KeyboardAwareScrollView>
