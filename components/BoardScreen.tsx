@@ -14,10 +14,10 @@ import {SafeAreaView} from './navigation/SafeAreaView';
 const BoardScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-  const goBack = useCallback(
-    () => navigation.canGoBack() && navigation.goBack(),
-    [],
-  );
+  const goBack = useCallback(() => {
+    navigation.canGoBack() && navigation.goBack();
+    console.log('back pressed');
+  }, []);
   const {postId, clubName, title, contents} = route.params;
   return (
     <SafeAreaView>

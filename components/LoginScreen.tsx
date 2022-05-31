@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Style from './Style/Style';
@@ -50,8 +51,8 @@ const LoginScreen = () => {
       });
   };
   return (
-    <KeyboardAwareScrollView style={Style.container}>
-      <View style={Style.container}>
+    <SafeAreaView style={Style.container}>
+      <KeyboardAwareScrollView style={Style.container}>
         <Text style={Style.welcomeTitle}>WELCOME</Text>
         <Text style={Style.appTitle}>CAUCLUB</Text>
         <View style={Style.imageContainer}>
@@ -121,8 +122,8 @@ const LoginScreen = () => {
             회원가입
           </Text>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 

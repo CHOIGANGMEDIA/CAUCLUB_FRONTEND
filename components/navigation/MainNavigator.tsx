@@ -6,6 +6,7 @@ import SearchID from '../SearchID';
 import SearchPW from '../SearchPW';
 import ResetPW from '../ResetPW';
 import TabNavigator from './TabNavigator';
+import {StatusBar} from 'react-native';
 
 const Stack = createStackNavigator();
 

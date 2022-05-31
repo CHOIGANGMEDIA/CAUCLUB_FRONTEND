@@ -1,6 +1,13 @@
 import React from 'react';
 import type {FC, ReactNode} from 'react';
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {
+  StatusBar,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import InitialStlye from '../Style/InitialStyle';
 
 export type NavigationHeaderProps = {
@@ -20,11 +27,9 @@ export const NavigationHeader: FC<NavigationHeaderProps> = ({
 }) => {
   return (
     <View style={[styles.view, viewStyle]}>
-      {Left && Left()}
-      <View style={{flex: 1}}>
-        <Text style={InitialStlye.title}>CAUCLUB</Text>
-      </View>
-      {Right && Right()}
+      <View style={{flex: 1}}>{Left && Left()}</View>
+      <Text style={[InitialStlye.title]}>CAUCLUB</Text>
+      <View style={{flex: 1}}>{Right && Right()}</View>
     </View>
   );
 };
