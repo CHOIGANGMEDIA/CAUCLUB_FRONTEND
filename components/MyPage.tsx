@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Style from './Style/Style';
 import {
   View,
@@ -9,12 +9,17 @@ import {
   TouchableOpacity,
   Alert,
   SafeAreaView,
+  StyleSheet,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-community/async-storage';
 import {customAxios} from '../src/axiosModule/customAxios';
+import {useNavigation} from '@react-navigation/native';
+import {MaterialCommunityIcon as Icon} from './navigation/MaterialCommunityIcon';
 
 let imagePath = require('./images/푸앙_의복야구점퍼.png');
+
+// TODO css
 
 const MyPage = () => {
   const [id, setId] = useState<string>('');
@@ -77,11 +82,26 @@ const MyPage = () => {
     } else Alert.alert('실패', '이름과 이메일을 확인해 주세요');
   };
 
+  const navigation = useNavigation<any>();
+
+  const goBack = useCallback(() => {
+    navigation.canGoBack() && navigation.goBack();
+    console.log('back pressed');
+  }, []);
+
   return (
     <SafeAreaView style={Style.container}>
       <KeyboardAwareScrollView style={Style.container}>
         <View style={[{marginTop: 10}]}>
-          <Text style={Style.appTitle}>My Page</Text>
+          <View style={styles.top}>
+            <Icon
+              name="chevron-left"
+              size={40}
+              onPress={goBack}
+              style={{backgroundColor: 'transparent'}}
+            />
+            <Text style={[Style.appTitle, {padding: 0}]}>My Page</Text>
+          </View>
           <View style={Style.imageContainer}>
             <Image style={Style.image} source={imagePath} />
             <Text
@@ -136,23 +156,28 @@ const MyPage = () => {
             </TouchableOpacity>
           </View>
         </View>
-<<<<<<< HEAD
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
-=======
         <View style={Style.lastCenter}>
           <TouchableOpacity>
-            <Text style={({margin: 20})}>로그아웃</Text>
+            <Text style={{margin: 20}}>로그아웃</Text>
           </TouchableOpacity>
-          <Text style={({margin: 20})}>|</Text>
+          <Text style={{margin: 20}}>|</Text>
           <TouchableOpacity>
-            <Text style={({margin: 20})}>회원탈퇴</Text>
+            <Text style={{margin: 20}}>회원탈퇴</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
->>>>>>> CHOIGANGMEDIA-main
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  top: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#6BBEE2',
+  },
+});
 
 export default MyPage;
