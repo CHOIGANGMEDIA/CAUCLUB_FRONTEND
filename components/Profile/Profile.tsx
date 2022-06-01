@@ -33,7 +33,9 @@ const Profile = ({memberId, clubId}: ProfileProps) => {
   return (
     <TouchableHighlight
       style={{borderWidth: 1, borderColor: 'black', margin: 5}}
-      onPress={() => navigation.navigate('ProfilePage', {clubId: clubId})}>
+      onPress={() =>
+        navigation.navigate('ProfilePage', {clubId: clubId, loggedId: memberId})
+      }>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         {club !== undefined ? (
           <Image

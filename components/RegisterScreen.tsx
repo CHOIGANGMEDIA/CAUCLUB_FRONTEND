@@ -45,6 +45,7 @@ type Validity = {
   email: boolean;
   campus: boolean;
   college: boolean;
+  keyword: boolean;
 };
 
 const RegisterScreen = () => {
@@ -57,6 +58,7 @@ const RegisterScreen = () => {
   const [idMsg, setIdMsg] = useState<string>();
   const [repassMsg, setRepassMsg] = useState<string>();
   const [emailMsg, setEmailMsg] = useState<string>();
+  const [keyword, setKeyword] = useState<string[]>([]);
   const [isValid, setValid] = useState<Validity>({
     id: false,
     password: false,
@@ -64,6 +66,7 @@ const RegisterScreen = () => {
     email: false,
     campus: false,
     college: false,
+    keyword: true,
   });
 
   const navigation = useNavigation<any>();
@@ -75,6 +78,7 @@ const RegisterScreen = () => {
       name: name,
       password: password,
       email: email,
+      keywordList: keyword,
     });
 
     const config = {
@@ -284,11 +288,15 @@ const RegisterScreen = () => {
         {/* <TextInput style={styles.boxStyle} placeholder={'동아리 선택하는 곳'} /> */}
         {/* <SelectBox/> */}
 
-        <View style={({margin: 10})} />
+        <View style={{margin: 10}} />
         <Text style={styles.textStyle}>키워드 선택</Text>
         <View style={styles.keywordIntroduction}>
-          <Text style={({color: 'black', fontSize: 14})}>키워드를 선택해주세요!</Text>
-          <Text style={({color: 'black', fontSize: 14})}>취향에 알맞는 동아리를 추천해드려요 :)</Text>
+          <Text style={{color: 'black', fontSize: 14}}>
+            키워드를 선택해주세요!
+          </Text>
+          <Text style={{color: 'black', fontSize: 14}}>
+            취향에 알맞는 동아리를 추천해드려요 :)
+          </Text>
         </View>
         <View style={styles.keywordList}>
           <Keyword />
@@ -311,7 +319,10 @@ const RegisterScreen = () => {
               handleSubmit();
               console.log('pressed');
             }}>
-            <Text style={({color: 'white', textAlign: 'center'})}> 회원가입 </Text>
+            <Text style={{color: 'white', textAlign: 'center'}}>
+              {' '}
+              회원가입{' '}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -373,7 +384,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     flexDirection: 'column',
   },
-  keywordList:{
+  keywordList: {
     height: 100,
     marginTop: 10,
     marginLeft: 20,

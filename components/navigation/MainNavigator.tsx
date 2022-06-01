@@ -6,8 +6,9 @@ import SearchID from '../SearchID';
 import SearchPW from '../SearchPW';
 import ResetPW from '../ResetPW';
 import TabNavigator from './TabNavigator';
-import {StatusBar} from 'react-native';
+import ProfilePage from '../Profile/ProfilePage';
 import MyPage from '../MyPage';
+import ModifyProfile from '../Profile/ModifyProfile';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,8 @@ const MainNavigator = () => {
       <Stack.Screen name="ResetPW" component={ResetPW} />
       <Stack.Screen name="TabbedScreen" component={TabNavigator} />
       <Stack.Screen name="MyPage" component={MyPage} />
+      <Stack.Screen name="ProfilePage" component={ProfilePage} />
+      <Stack.Screen name="ModifyProfile" component={ModifyProfile} />
     </Stack.Navigator>
   );
 };

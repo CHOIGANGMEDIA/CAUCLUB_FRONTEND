@@ -1,25 +1,31 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, TouchableHighlight, Image, ScrollView} from 'react-native';
 import RankingStyle from '../Style/RankingStyle';
 import type {Club} from '../Profile/Club';
 import {customAxios} from '../../src/axiosModule/customAxios';
+import {useNavigation} from '@react-navigation/native';
 
 let imagePath = require('../images/푸앙_응원.png');
 
 type RankProfileProps = {
   rank: number;
   clubId: number;
+  loggedId: string;
 };
 
 export type {RankProfileProps};
 
-// TODO API link
 // TODO 터치시 동아리상세로
 
-const RankProfile = ({rank, clubId}: RankProfileProps) => {
+const RankProfile = ({rank, clubId, loggedId}: RankProfileProps) => {
   const [club, setClub] = useState<Club>();
-
+  const navigation = useNavigation<any>();
+  const gotoProfilePage = useCallback(
+    () =>
+      navigation.navigate('ProfilePage', {clubId: clubId, loggedId: loggedId}),
+    [],
+  );
   useEffect(() => {
     customAxios
       .get(`/club/${clubId}`)
@@ -27,11 +33,11 @@ const RankProfile = ({rank, clubId}: RankProfileProps) => {
         setClub(response.data);
       })
       .catch(error => console.log(error));
-    return setClub(undefined);
+    return () => setClub(undefined);
   }, []);
 
   return (
-    <TouchableHighlight style={RankingStyle.profile}>
+    <TouchableHighlight style={RankingStyle.profile} onPress={gotoProfilePage}>
       <View style={{flexDirection: 'row'}}>
         <View style={RankingStyle.rankNumber}>
           <Text style={RankingStyle.rankFont}>{rank}등</Text>

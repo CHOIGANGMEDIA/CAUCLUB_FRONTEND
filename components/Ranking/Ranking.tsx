@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableHighlight, Image, ScrollView} from 'react-native';
 import {customAxios} from '../../src/axiosModule/customAxios';
@@ -18,9 +19,11 @@ let imagePath = require('../images/푸앙_응원.png');
 // 3 : 기타
 
 const Ranking = () => {
+  const route = useRoute<any>();
   const [selectedType, setSelectedtype] = useState<number>(0);
   const isFocused = useIsFocused();
   const [clubList, setClubList] = useState<number[]>([]);
+  const [loggedId, setLoggedId] = useState<string>('');
 
   // initial Loading
   useEffect(() => {
@@ -31,9 +34,17 @@ const Ranking = () => {
     }
     return setClubList([]);
   }, [isFocused, selectedType]);
+  AsyncStorage.getItem('loggedId', (result: any, err) => setLoggedId(result));
 
   const rankProfiles = clubList?.map((clubId, idx) => {
-    return <RankProfile key={clubId} rank={idx + 1} clubId={clubId} />;
+    return (
+      <RankProfile
+        key={clubId}
+        rank={idx + 1}
+        clubId={clubId}
+        loggedId={loggedId}
+      />
+    );
   });
 
   return (

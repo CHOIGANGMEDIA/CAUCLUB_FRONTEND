@@ -1,16 +1,30 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, Image, TouchableHighlight, TextInput} from 'react-native';
 import ProfilePageStyle from '../Style/ProfilePageStyle';
 import Keyword from './Keyword';
 import Archieve from './Archieve';
+import {useRoute} from '@react-navigation/native';
+import {Club} from './Club';
+import {SafeAreaView} from '../navigation/SafeAreaView';
+import {NavigationHeader} from '../navigation/NavigationHeader';
 
 let imagePath = require('../images/푸앙_윙크.png');
 
 const ModifyProfile = () => {
+  const route = useRoute<any>();
+  const {clubId, loggedId} = route.params;
+  const [memberId, setMemberId] = useState<string>();
+  const [club, setClub] = useState<Club>();
+
+  const keywords = club?.keyword.map((keyword, idx) => {
+    return <Keyword key={idx} keyword={keyword} />;
+  });
+
   return (
-    <>
+    <SafeAreaView>
+      <NavigationHeader Left={true} />
       <KeyboardAwareScrollView>
         <View style={{flex: 1, height: 100, flexDirection: 'row'}}>
           <View style={{width: '80%', flexDirection: 'column'}}>
@@ -20,7 +34,13 @@ const ModifyProfile = () => {
             <View style={{height: 35, flexDirection: 'row'}}>
               <View style={{width: '40%'}}>
                 <TouchableHighlight style={ProfilePageStyle.modifyProfile}>
-                  <Text style={{color: 'white', fontSize: 15, fontWeight: '900', margin: 5}}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '900',
+                      margin: 5,
+                    }}>
                     수정 완료
                   </Text>
                 </TouchableHighlight>
@@ -54,7 +74,6 @@ const ModifyProfile = () => {
             }}>
             <View style={{width: '100%', height: 170, alignItems: 'center'}}>
               <View style={ProfilePageStyle.profile}>
-                
                 <TouchableHighlight>
                   <>
                     <Text>프로필 사진 변경</Text>
@@ -77,25 +96,39 @@ const ModifyProfile = () => {
             <View style={{height: '25%'}}>
               <View style={{height: '70%'}}>
                 <Text style={{color: 'black'}}>동아리명</Text>
-                <TextInput style={({fontSize: 15})} placeholder={'동아리명 입력'} />
+                <TextInput
+                  style={{fontSize: 15}}
+                  placeholder={'동아리명 입력'}
+                />
               </View>
             </View>
             <View style={{height: '25%'}}>
               <View style={{height: '70%'}}>
                 <Text style={{color: 'black', marginTop: 5}}>소속 캠퍼스</Text>
-                <TextInput style={({fontSize: 15})} placeholder={'소속 캠퍼스 입력'} />
+                <TextInput
+                  style={{fontSize: 15}}
+                  placeholder={'소속 캠퍼스 입력'}
+                />
               </View>
             </View>
             <View style={{height: '25%'}}>
               <View style={{height: '70%'}}>
                 <Text style={{color: 'black', marginTop: 5}}>동아리 분류</Text>
-                <TextInput style={({fontSize: 15})} placeholder={'동아리 분류 입력'} />
+                <TextInput
+                  style={{fontSize: 15}}
+                  placeholder={'동아리 분류 입력'}
+                />
               </View>
             </View>
             <View style={{height: '25%'}}>
               <View style={{height: '70%'}}>
-                <Text style={{color: 'black', marginTop: 5}}>동아리장 이름</Text>
-                <TextInput style={({fontSize: 15})} placeholder={'동아리장 이름 입력'} />
+                <Text style={{color: 'black', marginTop: 5}}>
+                  동아리장 이름
+                </Text>
+                <TextInput
+                  style={{fontSize: 15}}
+                  placeholder={'동아리장 이름 입력'}
+                />
               </View>
             </View>
           </View>
@@ -122,21 +155,14 @@ const ModifyProfile = () => {
             </Text>
           </View>
           <View style={ProfilePageStyle.introduction}>
-            <TextInput style={{color: 'black'}} multiline={true} placeholder={'동아리에 대해 소개해주세요!'} />
+            <TextInput
+              style={{color: 'black'}}
+              multiline={true}
+              placeholder={'동아리에 대해 소개해주세요!'}
+            />
           </View>
         </View>
-        <View style={ProfilePageStyle.keywordList}>
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-        </View>
+        <View style={ProfilePageStyle.keywordList}>{keywords}</View>
         <View
           style={{
             width: '100%',
@@ -159,11 +185,11 @@ const ModifyProfile = () => {
             </Text>
           </View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-              <Archieve />
+            <Archieve />
           </View>
         </View>
       </KeyboardAwareScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
