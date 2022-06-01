@@ -8,6 +8,17 @@ const ProfilePageStyle = StyleSheet.create({
         fontWeight: '900',
         alignItems: 'center',
         margin: 15,
+        width: 150,
+    },
+    chatButton:{
+        marginTop: 20,
+        marginLeft: 10,
+        width: 80,
+        height: 30,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#6BBEE2',
     },
     modifyProfile:{
         borderRadius: 10,
