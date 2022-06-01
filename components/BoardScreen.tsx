@@ -2,13 +2,11 @@
 import React, {useCallback} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, TouchableHighlight} from 'react-native';
-import InitialStlye from './Style/InitialStyle';
 import BoardStyle from './Style/BoardStyle';
 
 import {PostProps} from './BoardList';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NavigationHeader} from './navigation/NavigationHeader';
-import {MaterialCommunityIcon as Icon} from './navigation/MaterialCommunityIcon';
 import {SafeAreaView} from './navigation/SafeAreaView';
 
 const BoardScreen = () => {
