@@ -21,16 +21,7 @@ const BoardScreen = () => {
   const {postId, clubName, title, contents} = route.params;
   return (
     <SafeAreaView>
-      <NavigationHeader
-        Left={() => (
-          <Icon
-            name="chevron-left"
-            size={30}
-            onPress={goBack}
-            style={{backgroundColor: 'transparent'}}
-          />
-        )}
-      />
+      <NavigationHeader Left={true} />
       <KeyboardAwareScrollView>
         <View
           style={{width: '100%', borderBottomWidth: 0.5, borderColor: '#444'}}
