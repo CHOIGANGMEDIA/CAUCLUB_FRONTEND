@@ -20,12 +20,15 @@ export type {RankProfileProps};
 const RankProfile = ({rank, clubId}: RankProfileProps) => {
   const [club, setClub] = useState<Club>();
 
-  customAxios
-    .get(`/club/${clubId}`)
-    .then(response => {
-      setClub(response.data);
-    })
-    .catch(error => console.log(error));
+  useEffect(() => {
+    customAxios
+      .get(`/club/${clubId}`)
+      .then(response => {
+        setClub(response.data);
+      })
+      .catch(error => console.log(error));
+    return setClub(undefined);
+  }, []);
 
   return (
     <TouchableHighlight style={RankingStyle.profile}>
@@ -33,7 +36,11 @@ const RankProfile = ({rank, clubId}: RankProfileProps) => {
         <View style={RankingStyle.rankNumber}>
           <Text style={RankingStyle.rankFont}>{rank}등</Text>
         </View>
-        <Image style={RankingStyle.profileImage} source={imagePath} />
+
+        <Image
+          style={RankingStyle.profileImage}
+          source={club?.picture ? {uri: club.picture} : imagePath}
+        />
         <View style={RankingStyle.clubName}>
           <ScrollView horizontal={true}>
             <Text style={RankingStyle.clubNameFont}>{club?.name}</Text>
