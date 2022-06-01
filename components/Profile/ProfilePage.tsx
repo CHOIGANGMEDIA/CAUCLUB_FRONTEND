@@ -1,16 +1,49 @@
 /* eslint-disable prettier/prettier */
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, Image, TouchableHighlight} from 'react-native';
 import InitialStlye from '../Style/InitialStyle';
 import ProfilePageStyle from '../Style/ProfilePageStyle';
 import Keyword from './Keyword';
 import Archieve from './Archieve';
+import {SafeAreaView} from '../navigation/SafeAreaView';
+import {NavigationHeader} from '../navigation/NavigationHeader';
+import {useRoute} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {Club} from './Club';
+import {customAxios} from '../../src/axiosModule/customAxios';
 
 let imagePath = require('../images/푸앙_윙크.png');
 
-const ProfilePageMFalse = () => {
+const ProfilePage = () => {
   // TODO useRoute
+  const route = useRoute<any>();
+  const {clubId} = route.params;
+  const [memberId, setMemberId] = useState<string>();
+  const [club, setClub] = useState<Club>();
+  const [leaderName, setLeaderName] = useState<string>();
+
+  AsyncStorage.getItem('loggedId', (err, result) => {
+    setMemberId(result);
+  });
+  useEffect(() => {
+    customAxios
+      .get(`/club/${clubId}`)
+      .then(response => setClub(response.data))
+      .catch(error => console.log(error));
+
+    return setClub(undefined);
+  }, [memberId]);
+
+  useEffect(() => {
+    customAxios
+      .get(`/member/${club?.leaderId}`)
+      .then(response => setLeaderName(response.data.name.trim()))
+      .catch(error => console.log(error));
+
+    return setLeaderName(undefined);
+  }, [club]);
+
   const actionButton = (id: number) => {
     const pressed = () =>
       useCallback(() => {
@@ -24,11 +57,10 @@ const ProfilePageMFalse = () => {
       </TouchableHighlight>
     );
   };
+
   return (
-    <>
-      <View style={InitialStlye.titleBox}>
-        <Text style={InitialStlye.title}>CAUCLUB</Text>
-      </View>
+    <SafeAreaView>
+      <NavigationHeader Left={true} />
       <KeyboardAwareScrollView>
         <View style={{flex: 1, height: 100, flexDirection: 'row'}}>
           <View style={{width: '80%', flexDirection: 'column'}}>
@@ -38,14 +70,15 @@ const ProfilePageMFalse = () => {
             <View style={{height: 35, flexDirection: 'row'}}>
               <View style={{width: '40%'}}>{/* TODO actionButton() */}</View>
               <View style={{width: '60%', alignItems: 'flex-end'}}>
-                <Text style={ProfilePageStyle.puang}>
-                  우리 동아리를 소개합니다앙~!
-                </Text>
+                <Text style={ProfilePageStyle.puang}>{club?.introduction}</Text>
               </View>
             </View>
           </View>
           <View style={{width: '20%'}}>
-            <Image style={{width: 72, height: 100}} source={imagePath} />
+            <Image
+              style={{width: 72, height: 100}}
+              source={club?.picture ? {uri: club.picture} : imagePath}
+            />
           </View>
         </View>
         <View
@@ -83,7 +116,7 @@ const ProfilePageMFalse = () => {
             <View style={{height: '25%'}}>
               <View style={{height: '50%'}}>
                 <Text style={{color: 'black'}}>동아리명</Text>
-                <Text style={ProfilePageStyle.information}>동아리명</Text>
+                <Text style={ProfilePageStyle.information}>{club?.name}</Text>
               </View>
             </View>
             <View style={{height: '25%'}}>
@@ -97,20 +130,20 @@ const ProfilePageMFalse = () => {
                     margin: 3,
                     marginTop: 5,
                   }}>
-                  서울캠퍼스 소프트웨어학부
+                  {club?.department}
                 </Text>
               </View>
             </View>
             <View style={{height: '25%'}}>
               <View style={{height: '50%'}}>
                 <Text style={{color: 'black'}}>동아리 분류</Text>
-                <Text style={ProfilePageStyle.information}>학술동아리</Text>
+                <Text style={ProfilePageStyle.information}>{club?.type}</Text>
               </View>
             </View>
             <View style={{height: '25%'}}>
               <View style={{height: '50%'}}>
                 <Text style={{color: 'black'}}>동아리장 이름</Text>
-                <Text style={ProfilePageStyle.information}>이예빈</Text>
+                <Text style={ProfilePageStyle.information}>{leaderName}</Text>
               </View>
             </View>
           </View>
@@ -137,23 +170,11 @@ const ProfilePageMFalse = () => {
             </Text>
           </View>
           <View style={ProfilePageStyle.introduction}>
-            <Text style={{color: 'black'}}>
-              동아리 소개글 쓰는 공간입니다 ~ 칸이나 줄바꿈은 제대로 만들어놨고,
-              스크롤뷰 안되니까 백 쪽에서 글자수 제한 줄거에용
-            </Text>
+            <Text style={{color: 'black'}}>{club?.introduction}</Text>
           </View>
         </View>
         <View style={ProfilePageStyle.keywordList}>
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
+          {/* TODO <Keyword /> iteration*/}
         </View>
         <View
           style={{
@@ -177,16 +198,12 @@ const ProfilePageMFalse = () => {
             </Text>
           </View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Archieve />
-            <Archieve />
-            <Archieve />
-            <Archieve />
-            <Archieve />
+            {/* TODO <Archieve /> iteration*/}
           </View>
         </View>
       </KeyboardAwareScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
-export default ProfilePageMFalse;
+export default ProfilePage;
