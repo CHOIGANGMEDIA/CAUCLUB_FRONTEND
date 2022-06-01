@@ -7,6 +7,7 @@ import SearchPW from '../SearchPW';
 import ResetPW from '../ResetPW';
 import TabNavigator from './TabNavigator';
 import {StatusBar} from 'react-native';
+import MyPage from '../MyPage';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ const MainNavigator = () => {
       <Stack.Screen name="SearchPW" component={SearchPW} />
       <Stack.Screen name="ResetPW" component={ResetPW} />
       <Stack.Screen name="TabbedScreen" component={TabNavigator} />
+      <Stack.Screen name="MyPage" component={MyPage} />
     </Stack.Navigator>
   );
 };
