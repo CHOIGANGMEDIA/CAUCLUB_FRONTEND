@@ -1,7 +1,12 @@
 /* eslint-disable prettier/prettier */
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import { Alert } from "react-native";
 import {
   View,
   Text,
@@ -31,6 +36,8 @@ const Ranking = () => {
   const [clubList, setClubList] = useState<number[]>([]);
   const [loggedId, setLoggedId] = useState<string>("");
 
+  const navigation = useNavigation<any>();
+
   // initial Loading
   useEffect(() => {
     if (isFocused) {
@@ -40,7 +47,15 @@ const Ranking = () => {
     }
     return setClubList([]);
   }, [isFocused, selectedType]);
-  AsyncStorage.getItem("loggedId", (result: any, err) => setLoggedId(result));
+
+  AsyncStorage.getItem("loggedId").then((result) => {
+    if (result !== null) {
+      setLoggedId(result);
+    } else {
+      Alert.alert("다시 로그인 해 주세요");
+      navigation.reset({ routes: [{ name: "LoginScreen" }] });
+    }
+  });
 
   const rankProfiles = clubList?.map((clubId, idx) => {
     return (

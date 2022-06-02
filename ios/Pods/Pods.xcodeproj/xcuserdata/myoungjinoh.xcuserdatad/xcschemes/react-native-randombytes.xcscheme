@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D0567605E56BE8C8CFA0223630F324D9"
-               BuildableName = "libReact-Core-60309c9c.a"
-               BlueprintName = "React-Core-60309c9c"
+               BlueprintIdentifier = "5FFD5B0A9F194A28928B41601CEEEF72"
+               BuildableName = "libreact-native-randombytes.a"
+               BlueprintName = "react-native-randombytes"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

@@ -9,33 +9,38 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { customAxios } from "../../src/axiosModule/customAxios";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import { SafeAreaView } from "../navigation/SafeAreaView";
+import { useIsFocused } from "@react-navigation/native";
 
 const ProfileList = () => {
-  const [id, setId] = useState<string>("");
+  const [id, setId] = useState<string>();
   const [clubIds, setClubIds] = useState<number[]>();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    AsyncStorage.getItem("loggedId", (err, result) => {}).then((result) => {
-      console.log(result);
-      if (result) setId(result);
-    });
+    AsyncStorage.getItem("loggedId")
+      .then((result) => {
+        if (result) setId(result);
+      })
+      .then(() => {});
   }, []);
 
   useEffect(() => {
-    customAxios
-      .get(`/${id}/joinedClub`)
-      .then((response: any) => {
-        setClubIds(response.data);
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+    if (id) {
+      customAxios
+        .get(`/${id}/joinedClub`)
+        .then((response) => {
+          setClubIds(response.data);
+          console.log("joined", response.data);
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
+    return () => setClubIds([]);
+  }, [isFocused, id]);
 
-    return setClubIds([]);
-  }, [id]);
-
-  const profileClubList = clubIds?.map((clubId) => {
-    return <Profile key={clubId} memberId={id} clubId={clubId} />;
+  const profileClubList = clubIds?.map((clubId, i) => {
+    return <Profile key={i} memberId={id} clubId={clubId} />;
   });
 
   return (

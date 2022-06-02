@@ -14,8 +14,8 @@ import {
 } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import { customAxios } from "../src/axiosModule/customAxios";
-import Keyword from "./Profile/Keyword";
 import Style from "./Style/Style";
+import crypto from "crypto";
 
 let imagePath = require("./images/푸앙_응원.png");
 
@@ -50,7 +50,7 @@ type Validity = {
 
 const RegisterScreen = () => {
   const [id, setId] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [selectedCampus, selectCampus] = useState<string>();
@@ -71,32 +71,40 @@ const RegisterScreen = () => {
 
   const navigation = useNavigation<any>();
 
+  // TODO 암호화 / salt 제대로 들어가는지 확인
   const newMember = () => {
-    const data = JSON.stringify({
-      department: selectedCampus + " " + selectedCollege,
-      id: id,
-      name: name,
-      password: password,
-      email: email,
-      keywordList: keyword,
-    });
+    crypto.randomBytes(64, (err, buf) => {
+      crypto.pbkdf2(password, buf, 10000, 64, "sha512", (err, key) => {
+        const data = JSON.stringify({
+          department: selectedCampus + " " + selectedCollege,
+          id: id,
+          name: name,
+          password: key.toString("base64"),
+          salt: buf.toString("base64"),
+          email: email,
+          keywordList: keyword,
+        });
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: data,
+        };
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    customAxios
-      .post(`/member/newMember`, data, config)
-      .then(async (response) => {
-        if (response.data) Alert.alert("회원가입이 정상적으로 완료되었습니다");
-        navigation.reset({ routes: [{ name: "LoginScreen" }] });
-      })
-      .catch((error) => {
-        Alert.alert(`Error : ${error}\n관리자에게 문의하세요`);
+        console.log(data);
+        customAxios
+          .post(`/member/newMember`, data, config)
+          .then((response) => {
+            if (response.data) {
+              Alert.alert("회원가입이 정상적으로 완료되었습니다");
+              navigation.reset({ routes: [{ name: "LoginScreen" }] });
+            }
+          })
+          .catch((error) => {
+            Alert.alert(`Error : ${error}\n관리자에게 문의하세요`);
+          });
       });
+    });
   };
 
   const handleSubmit = () => {
@@ -298,18 +306,7 @@ const RegisterScreen = () => {
             취향에 알맞는 동아리를 추천해드려요 :)
           </Text>
         </View>
-        <View style={styles.keywordList}>
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-          <Keyword />
-        </View>
+        <View style={styles.keywordList}>{/* TODO keyword iteration */}</View>
 
         <View style={styles.center}>
           {/* 예빈 버튼 스타일 부탁해용 */}

@@ -8,24 +8,24 @@ import Keyword from "./Keyword";
 import Archieve from "./Archieve";
 import { SafeAreaView } from "../navigation/SafeAreaView";
 import { NavigationHeader } from "../navigation/NavigationHeader";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { Club } from "./Club";
 import { customAxios } from "../../src/axiosModule/customAxios";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
 const ProfilePage = () => {
-  // TODO useRoute
   const route = useRoute<any>();
   const { clubId, loggedId } = route.params;
   const [club, setClub] = useState<Club>();
   const [leaderName, setLeaderName] = useState<string>();
-  const [myRole, setMyRole] = useState<number>(3);
+  const [myRole, setMyRole] = useState<number>();
   const [actionText, setActionText] = useState<string>();
-
-  // TODO
-  // 0: 가입 불가, 1: 가입 가능, 2: 이미 가입함, 3: 회장임
-  // const checkRole = () => {};
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     customAxios
@@ -33,7 +33,7 @@ const ProfilePage = () => {
       .then((response) => setClub(response.data))
       .catch((error) => console.log(error));
     return setClub(undefined);
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     if (club) {
@@ -41,6 +41,14 @@ const ProfilePage = () => {
         .get(`/member/${club?.leaderId}`)
         .then((response) => {
           setLeaderName(response.data.name.trim());
+        })
+        .catch((error) => console.log(error));
+      console.log(`/${loggedId}/${clubId}/enterValid`);
+      customAxios
+        .get(`/${loggedId}/${clubId}/enterValid`)
+        .then((response) => {
+          setMyRole(response.data);
+          console.log(response.data);
         })
         .catch((error) => console.log(error));
     }
@@ -78,8 +86,9 @@ const ProfilePage = () => {
     navigation.navigate("ModifyProfile", {
       clubId: clubId,
       loggedId: loggedId,
+      club: club,
     });
-  }, []);
+  }, [club]);
 
   useEffect(() => {
     switch (myRole) {

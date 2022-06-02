@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { customAxios } from "../src/axiosModule/customAxios";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcon as Icon } from "./navigation/MaterialCommunityIcon";
+import crypto from "crypto";
 
 let imagePath = require("./images/푸앙_의복야구점퍼.png");
 
@@ -27,6 +28,9 @@ const MyPage = () => {
   const [email, setEmail] = useState<string>("");
   const [validEmail, setValidEmail] = useState<Boolean>(true);
   const [emailMsg, setEmailMsg] = useState<string>();
+  const [password, setPassword] = useState<string>("");
+  const [repassMsg, setRepassMsg] = useState<string>();
+  const [valid, setValid] = useState<boolean>();
 
   const loadData = async () => {
     const loggedId = await AsyncStorage.getItem("loggedId");
@@ -68,13 +72,58 @@ const MyPage = () => {
     [email]
   );
 
+  // TODO pw, salt 제대로 가나 확인
   const modifyPressed = () => {
-    if (validEmail) {
+    if (password !== "") {
+      if (!valid) Alert.alert("비밀번호가 일치하지 않습니다");
+      else {
+        crypto.randomBytes(64, (err, buf) => {
+          crypto.pbkdf2(password, buf, 10000, 64, "sha512", (err, key) => {
+            const data = JSON.stringify({
+              password: key.toString("base64"),
+              salt: buf.toString("base64"),
+              memberId: id,
+            });
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              data: data,
+            };
+            customAxios
+              .post(`/member/resetPassword`, data, config)
+              .then((response) => {
+                if (response.data) {
+                  if (validEmail) {
+                    customAxios
+                      .post(`/member/${id}?name=${name}&email=${email}`)
+                      .then((result) => {
+                        if (result.data == true)
+                          Alert.alert(
+                            "수정 성공",
+                            "회원 정보가 수정되었습니다"
+                          );
+                        navigation.goBack();
+                      })
+                      .catch((error) => {
+                        Alert.alert("오류 발생", error);
+                      });
+                  } else Alert.alert("실패", "이름과 이메일을 확인해 주세요");
+                }
+              })
+              .catch((error) => {
+                Alert.alert(`Error : ${error}\n관리자에게 문의하세요`);
+              });
+          });
+        });
+      }
+    } else if (validEmail) {
       customAxios
         .post(`/member/${id}?name=${name}&email=${email}`)
         .then((result) => {
           if (result.data == true)
             Alert.alert("수정 성공", "회원 정보가 수정되었습니다");
+          navigation.goBack();
         })
         .catch((error) => {
           Alert.alert("오류 발생", error);
@@ -88,6 +137,22 @@ const MyPage = () => {
     navigation.canGoBack() && navigation.goBack();
     console.log("back pressed");
   }, []);
+
+  const repasswordChanged = useCallback(
+    (repassword: string) => {
+      if (repassword === undefined || repassword === "") {
+        setRepassMsg(undefined);
+        setValid(false);
+      } else if (repassword !== password) {
+        setRepassMsg("비밀번호가 일치하지 않습니다");
+        setValid(false);
+      } else {
+        setRepassMsg("비밀번호가 일치합니다");
+        setValid(true);
+      }
+    },
+    [password]
+  );
 
   return (
     <SafeAreaView style={Style.container}>
@@ -124,11 +189,20 @@ const MyPage = () => {
           <TextInput
             style={Style.boxStyle}
             placeholder={"비밀번호를 유지하시려면 비워두세요"}
+            onChangeText={(text: string) => {
+              setPassword(text);
+            }}
           ></TextInput>
           <Text style={Style.textStyle}>비밀번호 재설정 확인</Text>
+          {repassMsg ? (
+            <Text style={Style.warnSubStyle}>{repassMsg}</Text>
+          ) : null}
           <TextInput
             style={Style.boxStyle}
             placeholder={"비밀번호를 한 번 더 입력하세요"}
+            onChangeText={(text: string) => {
+              repasswordChanged(text);
+            }}
           ></TextInput>
           <Text style={Style.textStyle}>이름</Text>
           <TextInput

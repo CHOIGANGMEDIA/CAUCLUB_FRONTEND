@@ -105,11 +105,12 @@ const GenerateArchieve = () => {
       contents: contents,
       pictureUrls: imageUrlList,
       title: title,
-      isMutual: isMutual,
+      isMutual: Number(isMutual),
     });
+    console.log(data);
     const config = { headers: { "Content-Type": "application/json" } };
     customAxios
-      .post(`/${loggedId}/${clubId}/newArchive?${data}`, config)
+      .post(`/${loggedId}/${clubId}/newArchive`, data, config)
       .then((response) => {
         if (response.data) {
           Alert.alert("글이 등록되었습니다");
