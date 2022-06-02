@@ -14,25 +14,21 @@ const ChatMessage = () => {
       <Text style={ChatStyle.chatName}>동아리명</Text>
       <KeyboardAwareScrollView style={ChatStyle.chatScrollView}>
         <View style={{ alignItems: "flex-start" }}>
-          <Text style={ChatStyle.receiveMessage}>받은 메시지</Text>
+          <Text style={ChatStyle.receiveMessage}>안녕하세요? 디자인 학과 동아리 쌈디 맞나요?</Text>
         </View>
         <View style={{ alignItems: "flex-end" }}>
-          <Text style={ChatStyle.sendMessage}>보낸 메시지</Text>
+          <Text style={ChatStyle.sendMessage}>네! 쌈디 회장 사이먼입니다.</Text>
         </View>
         {/* 여기서부터 */}
         {/* 반복구간 */}
-        <View style={{ alignItems: "flex-start" }}>
-          <Text style={ChatStyle.receiveMessage}>받은 메시지</Text>
-        </View>
         <View style={{ alignItems: "flex-end" }}>
-          <Text style={ChatStyle.sendMessage}>보낸 메시지</Text>
+          <Text style={ChatStyle.sendMessage}>무슨 일이시죠?</Text>
         </View>
         <View style={{ alignItems: "flex-start" }}>
-          <Text style={ChatStyle.receiveMessage}>받은 메시지</Text>
+          <Text style={ChatStyle.receiveMessage}>연합 활동을 하고 싶어서요!</Text>
         </View>
-        <View style={{ alignItems: "flex-end" }}>
-          <Text style={ChatStyle.sendMessage}>보낸 메시지</Text>
-        </View>
+        <View style={{ alignItems: "flex-start" }}>
+          <Text style={ChatStyle.receiveMessage}>어떤 활동일까요?</Text>
         {/* 여기까지 */}
         {/* 반복구간 */}
       </KeyboardAwareScrollView>
