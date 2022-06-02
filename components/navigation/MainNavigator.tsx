@@ -13,6 +13,7 @@ import GenerateArchieve from "../Archieve/GenerateArchieve";
 import ArchieveList from "../Archieve/ArchieveList";
 import ClubList from "../Profile/ClubList";
 import RecommendClubList from "../Profile/RecommendClubList";
+import ChatMessage from "../ChatMessage";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ const MainNavigator = () => {
       <Stack.Screen name="GenerateArchieve" component={GenerateArchieve} />
       <Stack.Screen name="OtherClubs" component={ClubList} />
       <Stack.Screen name="RecommendClubList" component={RecommendClubList} />
+      <Stack.Screen name="ChatMessage" component={ChatMessage} />
     </Stack.Navigator>
   );
 };
