@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 
 const BoardNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="BoardList" component={BoardList} />
       <Stack.Screen name="BoardScreen" component={BoardScreen} />
       <Stack.Screen name="BoardModify" component={BoardModify} />
