@@ -9,6 +9,7 @@ import TabNavigator from './TabNavigator';
 import ProfilePage from '../Profile/ProfilePage';
 import MyPage from '../MyPage';
 import ModifyProfile from '../Profile/ModifyProfile';
+import GenerateArchieve from '../Archieve/GenerateArchieve';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const MainNavigator = () => {
       <Stack.Screen name="MyPage" component={MyPage} />
       <Stack.Screen name="ProfilePage" component={ProfilePage} />
       <Stack.Screen name="ModifyProfile" component={ModifyProfile} />
+      <Stack.Screen name="GenerateArchieve" component={GenerateArchieve} />
     </Stack.Navigator>
   );
 };

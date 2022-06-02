@@ -1,0 +1,6 @@
+module Pods_ttmp {
+  umbrella header "Pods-ttmp-umbrella.h"
+
+  export *
+  module * { export * }
+}

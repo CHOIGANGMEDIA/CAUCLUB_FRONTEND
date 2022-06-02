@@ -1,16 +1,22 @@
 /* eslint-disable prettier/prettier */
-import AsyncStorage from '@react-native-community/async-storage';
-import {useIsFocused, useRoute} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableHighlight, Image, ScrollView} from 'react-native';
-import {customAxios} from '../../src/axiosModule/customAxios';
-import {NavigationHeader} from '../navigation/NavigationHeader';
-import {SafeAreaView} from '../navigation/SafeAreaView';
-import InitialStlye from '../Style/InitialStyle';
-import RankingStyle from '../Style/RankingStyle';
-import RankProfile from './RankProfile';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  Image,
+  ScrollView,
+} from "react-native";
+import { customAxios } from "../../src/axiosModule/customAxios";
+import { NavigationHeader } from "../navigation/NavigationHeader";
+import { SafeAreaView } from "../navigation/SafeAreaView";
+import InitialStlye from "../Style/InitialStyle";
+import RankingStyle from "../Style/RankingStyle";
+import RankProfile from "./RankProfile";
 
-let imagePath = require('../images/푸앙_응원.png');
+let imagePath = require("../images/푸앙_응원.png");
 
 // 동아리 type
 // 0 : 전체
@@ -23,18 +29,18 @@ const Ranking = () => {
   const [selectedType, setSelectedtype] = useState<number>(0);
   const isFocused = useIsFocused();
   const [clubList, setClubList] = useState<number[]>([]);
-  const [loggedId, setLoggedId] = useState<string>('');
+  const [loggedId, setLoggedId] = useState<string>("");
 
   // initial Loading
   useEffect(() => {
     if (isFocused) {
-      customAxios.get(`/rank/${selectedType}`).then(async response => {
+      customAxios.get(`/rank/${selectedType}`).then(async (response) => {
         setClubList(response.data);
       });
     }
     return setClubList([]);
   }, [isFocused, selectedType]);
-  AsyncStorage.getItem('loggedId', (result: any, err) => setLoggedId(result));
+  AsyncStorage.getItem("loggedId", (result: any, err) => setLoggedId(result));
 
   const rankProfiles = clubList?.map((clubId, idx) => {
     return (
@@ -48,33 +54,35 @@ const Ranking = () => {
   });
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <NavigationHeader />
       <View
         style={{
           height: 60,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <Text style={InitialStlye.boardTitle}>랭킹</Text>
         <View
           style={{
             width: 300,
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 15, marginRight: 5}}>
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 15, marginRight: 5 }}>
             우리 동아리는 몇 등인지 볼까앙
           </Text>
           <Image
-            style={{width: 60, height: 60, marginRight: 10}}
+            style={{ width: 60, height: 60, marginRight: 10 }}
             source={imagePath}
           />
         </View>
       </View>
-      <View style={{height: '87%', width: '90%', margin: '5%'}}>
-        <View style={{height: 40, width: '100%', flexDirection: 'row'}}>
+      <View style={{ height: "87%", width: "90%", margin: "5%" }}>
+        <View style={{ height: 40, width: "100%", flexDirection: "row" }}>
           {/* TODO 각 랭킹 불러오기 useEffect 사용하면 될듯 */}
           <TouchableHighlight
             style={
@@ -82,7 +90,8 @@ const Ranking = () => {
                 ? RankingStyle.tappedButton
                 : RankingStyle.untappedButton
             }
-            onPress={() => setSelectedtype(0)}>
+            onPress={() => setSelectedtype(0)}
+          >
             <Text style={RankingStyle.fontStyle}>전체</Text>
           </TouchableHighlight>
           <TouchableHighlight
@@ -91,7 +100,8 @@ const Ranking = () => {
                 ? RankingStyle.tappedButton
                 : RankingStyle.untappedButton
             }
-            onPress={() => setSelectedtype(1)}>
+            onPress={() => setSelectedtype(1)}
+          >
             <Text style={RankingStyle.fontStyle}>학술</Text>
           </TouchableHighlight>
           <TouchableHighlight
@@ -100,7 +110,8 @@ const Ranking = () => {
                 ? RankingStyle.tappedButton
                 : RankingStyle.untappedButton
             }
-            onPress={() => setSelectedtype(2)}>
+            onPress={() => setSelectedtype(2)}
+          >
             <Text style={RankingStyle.fontStyle}>예체능</Text>
           </TouchableHighlight>
           <TouchableHighlight
@@ -109,18 +120,20 @@ const Ranking = () => {
                 ? RankingStyle.tappedButton
                 : RankingStyle.untappedButton
             }
-            onPress={() => setSelectedtype(3)}>
+            onPress={() => setSelectedtype(3)}
+          >
             <Text style={RankingStyle.fontStyle}>기타</Text>
           </TouchableHighlight>
         </View>
         <ScrollView
           style={{
-            height: '92%',
-            width: '100%',
+            height: "92%",
+            width: "100%",
             borderLeftWidth: 1,
             borderRightWidth: 1,
-            borderColor: '#143365',
-          }}>
+            borderColor: "#143365",
+          }}
+        >
           {/* TODO ranking iteration*/}
           {rankProfiles}
         </ScrollView>

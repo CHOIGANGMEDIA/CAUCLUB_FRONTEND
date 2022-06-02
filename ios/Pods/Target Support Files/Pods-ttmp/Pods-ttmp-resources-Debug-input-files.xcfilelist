@@ -1,0 +1,5 @@
+${PODS_ROOT}/Target Support Files/Pods-ttmp/Pods-ttmp-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/React-Core-60309c9c/AccessibilityResources.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle
