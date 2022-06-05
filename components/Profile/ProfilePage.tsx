@@ -134,7 +134,15 @@ const ProfilePage = () => {
           </TouchableHighlight>
         </View>
         <View style={{ height: 40, width: 150 }}>
-          <TouchableHighlight style={ProfilePageStyle.generateButton}>
+          <TouchableHighlight
+            style={ProfilePageStyle.generateButton}
+            onPress={() => {
+              navigation.navigate("GenerateBoard", {
+                clubId: clubId,
+                loggedId: loggedId,
+              });
+            }}
+          >
             <Text style={{ color: "white", fontWeight: "900", margin: 5 }}>
               게시판 글쓰기
             </Text>
@@ -145,7 +153,7 @@ const ProfilePage = () => {
   };
 
   const keywords = club?.keyword.map((keyword, idx) => {
-    return <Keyword key={idx} keyword={keyword} />;
+    return <Keyword key={idx} keyword={keyword} onPress={() => {}} />;
   });
 
   return (
@@ -154,8 +162,13 @@ const ProfilePage = () => {
       <KeyboardAwareScrollView>
         <View style={{ flex: 1, height: 100, flexDirection: "row" }}>
           <View style={{ width: "80%", flexDirection: "column" }}>
-            <View style={{ height: 65 }}>
+            <View style={{ height: 65, flexDirection: "row" }}>
               <Text style={ProfilePageStyle.profileList}>동아리 프로필</Text>
+              <TouchableHighlight style={ProfilePageStyle.chatButton}>
+                <Text style={{ color: "white", fontWeight: "900" }}>
+                  채팅 보내기
+                </Text>
+              </TouchableHighlight>
             </View>
             <View style={{ height: 35, flexDirection: "row" }}>
               <View style={{ width: "40%" }}>
