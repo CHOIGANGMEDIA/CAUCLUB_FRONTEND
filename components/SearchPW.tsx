@@ -102,6 +102,7 @@ const SearchPW = () => {
       <TextInput
         style={Style.boxStyle}
         placeholder={"이메일 입력"}
+        autoCapitalize="none"
         onChangeText={(email) => emailChanged(email)}
       ></TextInput>
       <View style={Style.center}>

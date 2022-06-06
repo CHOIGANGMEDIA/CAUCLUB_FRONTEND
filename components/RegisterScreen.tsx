@@ -263,6 +263,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.boxStyle}
           placeholder={"아이디 입력"}
+          autoCapitalize="none"
           onChangeText={(id: string) => {
             idChanged(id);
           }}
@@ -272,6 +273,7 @@ const RegisterScreen = () => {
           style={styles.boxStyle}
           placeholder={"비밀번호 입력"}
           secureTextEntry={true}
+          textContentType="password"
           onChangeText={(text: string) => {
             setPassword(text);
           }}
@@ -282,6 +284,7 @@ const RegisterScreen = () => {
           style={styles.boxStyle}
           placeholder={"비밀번호 재확인 입력"}
           secureTextEntry={true}
+          textContentType="password"
           onChangeText={(text: string) => {
             repasswordChanged(text);
           }}
@@ -290,6 +293,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.boxStyle}
           placeholder={"이름 입력"}
+          autoCapitalize="none"
           onChangeText={(text: string) => {
             nameChanged(text);
           }}
@@ -299,6 +303,7 @@ const RegisterScreen = () => {
         {emailMsg ? <Text style={Style.warnSubStyle}>{emailMsg}</Text> : null}
         <TextInput
           style={styles.boxStyle}
+          autoCapitalize="none"
           onChangeText={(email: string) => {
             emailChanged(email);
           }}

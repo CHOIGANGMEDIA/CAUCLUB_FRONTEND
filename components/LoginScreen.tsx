@@ -23,6 +23,10 @@ const LoginScreen = () => {
   const navigation = useNavigation<any>();
 
   const login = () => {
+    if (id === "" || password === "" || password === undefined) {
+      Alert.alert("아이디와 비밀번호를 입력 해 주세요");
+      return;
+    }
     const data = JSON.stringify({
       id: id,
       password: password,
@@ -120,11 +124,7 @@ const LoginScreen = () => {
             비밀번호 찾기
           </Text>
           <Text>|</Text>
-          <Text
-            onPress={() =>
-              navigation.reset({ routes: [{ name: "RegisterScreen" }] })
-            }
-          >
+          <Text onPress={() => navigation.navigate("RegisterScreen")}>
             회원가입
           </Text>
         </View>

@@ -17,8 +17,6 @@ let imagePath = require("../images/푸앙_윙크.png");
   /* 전체 height: 81% 혹은 572, 전체 width: 360*/
 }
 
-// TODO api link
-
 type ArchivePageProps = {
   archiveId: number;
   role: number;
@@ -36,7 +34,6 @@ type ArchivePost = {
 
 export type { ArchivePageProps };
 
-// TODO navigated: useRoute
 const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
   const navigation = useNavigation<any>();
   const [post, setPost] = useState<ArchivePost>();
@@ -67,6 +64,7 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
       .then((response) => {
         if (response.data) {
           Alert.alert("아카이브 글이 삭제되었습니다");
+          setPost(undefined);
           navigation.reset({ routes: [{ name: "Archive" }] });
           //navigation.navigate("Archive", {});
         }

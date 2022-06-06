@@ -40,6 +40,7 @@ const ResetPW = () => {
     [password]
   );
 
+  // TODO 비밀번호 변경 서버 작동 확인
   const submit = () => {
     if (!valid) Alert.alert("비밀번호가 일치하지 않습니다");
     else {
@@ -93,6 +94,7 @@ const ResetPW = () => {
       <TextInput
         style={Style.boxStyle}
         placeholder={"새 비밀번호를 입력해주세요"}
+        secureTextEntry={true}
         onChangeText={(text: string) => {
           setPassword(text);
         }}
@@ -102,6 +104,7 @@ const ResetPW = () => {
       <TextInput
         style={Style.boxStyle}
         placeholder={"새 비밀번호를 한 번 더 입력하세요"}
+        secureTextEntry={true}
         onChangeText={(text: string) => {
           repasswordChanged(text);
         }}

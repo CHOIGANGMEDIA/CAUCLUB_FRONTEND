@@ -31,7 +31,14 @@ const ModifyProfile = () => {
   const navigation = useNavigation<any>();
 
   const keywords = club?.keyword.map((keyword, idx) => {
-    return <Keyword key={idx} keyword={keyword} />;
+    return (
+      <Keyword
+        key={idx}
+        keyword={keyword}
+        touchable={false}
+        onPress={() => {}}
+      />
+    );
   });
 
   const submit = useCallback(() => {
@@ -54,8 +61,26 @@ const ModifyProfile = () => {
       <KeyboardAwareScrollView>
         <View style={{ flex: 1, height: 100, flexDirection: "row" }}>
           <View style={{ width: "80%", flexDirection: "column" }}>
-            <View style={{ height: 65 }}>
+            <View style={{ height: 65, flexDirection: "row" }}>
               <Text style={ProfilePageStyle.profileList}>동아리 프로필</Text>
+              <TouchableHighlight
+                style={ProfilePageStyle.chatButton}
+                onPress={() => {
+                  customAxios
+                    .delete(`${loggedId}/${clubId}`)
+                    .then((response) => {
+                      if (response.data) {
+                        Alert.alert("동아리가 성공적으로 삭제되었습니다. ");
+                        navigation.reset({ routes: [{ name: "Profile" }] });
+                      }
+                    })
+                    .catch((error) => console.log("club deletion", error));
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "900" }}>
+                  동아리 삭제
+                </Text>
+              </TouchableHighlight>
             </View>
             <View style={{ height: 35, flexDirection: "row" }}>
               <View style={{ width: "40%" }}>

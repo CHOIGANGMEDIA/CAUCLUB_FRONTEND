@@ -8,7 +8,6 @@ import { customAxios } from "../../src/axiosModule/customAxios";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import { SafeAreaView } from "../navigation/SafeAreaView";
 import ArchievePage from "./ArchievePage";
-import type { ArchivePageProps } from "./ArchievePage";
 import { Alert } from "react-native";
 
 const ArchieveList = () => {

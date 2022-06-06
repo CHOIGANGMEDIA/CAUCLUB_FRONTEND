@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { View, Text, Image, TouchableHighlight, Alert } from "react-native";
 import InitialStlye from "../Style/InitialStyle";
@@ -54,7 +59,10 @@ const ProfilePage = () => {
         .catch((error) => console.log(error));
     }
 
-    return setLeaderName(undefined);
+    return () => {
+      setLeaderName(undefined);
+      setMyRole(undefined);
+    };
   }, [club]);
 
   const enterClub = useCallback(() => {
@@ -91,7 +99,7 @@ const ProfilePage = () => {
     });
   }, [club]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     switch (myRole) {
       case 0:
         setActionText("가입 불가");
@@ -212,14 +220,16 @@ const ProfilePage = () => {
           <View style={{ width: "80%", flexDirection: "column" }}>
             <View style={{ height: 65, flexDirection: "row" }}>
               <Text style={ProfilePageStyle.profileList}>동아리 프로필</Text>
-              <TouchableHighlight
-                style={ProfilePageStyle.chatButton}
-                onPress={startChat}
-              >
-                <Text style={{ color: "white", fontWeight: "900" }}>
-                  채팅 보내기
-                </Text>
-              </TouchableHighlight>
+              {myRole !== 3 ? (
+                <TouchableHighlight
+                  style={ProfilePageStyle.chatButton}
+                  onPress={startChat}
+                >
+                  <Text style={{ color: "white", fontWeight: "900" }}>
+                    채팅 보내기
+                  </Text>
+                </TouchableHighlight>
+              ) : null}
             </View>
             <View style={{ height: 35, flexDirection: "row" }}>
               <View style={{ width: "40%" }}>

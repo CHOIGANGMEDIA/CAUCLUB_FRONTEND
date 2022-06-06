@@ -231,6 +231,8 @@ const MyPage = () => {
           <TextInput
             style={Style.boxStyle}
             placeholder={"비밀번호를 유지하시려면 비워두세요"}
+            secureTextEntry={true}
+            textContentType="password"
             onChangeText={(text: string) => {
               setPassword(text);
             }}
@@ -242,6 +244,8 @@ const MyPage = () => {
           <TextInput
             style={Style.boxStyle}
             placeholder={"비밀번호를 한 번 더 입력하세요"}
+            secureTextEntry={true}
+            textContentType="password"
             onChangeText={(text: string) => {
               repasswordChanged(text);
             }}
@@ -292,12 +296,43 @@ const MyPage = () => {
           </View>
         </View>
         <View style={Style.lastCenter}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              customAxios
+                .put("member/logout")
+                .then((response) => {
+                  if (response.data) {
+                    Alert.alert("성공적으로 로그아웃되었습니다.");
+                    AsyncStorage.setItem("loggedId", "").then(() => {
+                      navigation.reset({ routes: [{ name: "LoginScreen" }] });
+                    });
+                  }
+                })
+                .catch((error) => console.log("logout: ", error));
+            }}
+          >
             <Text style={{ margin: 20 }}>로그아웃</Text>
           </TouchableOpacity>
           <Text style={{ margin: 20 }}>|</Text>
           <TouchableOpacity>
-            <Text style={{ margin: 20 }}>회원탈퇴</Text>
+            <Text
+              style={{ margin: 20 }}
+              onPress={() => {
+                customAxios
+                  .delete("member/withdraw")
+                  .then((response) => {
+                    if (response.data) {
+                      Alert.alert("성공적으로 탈퇴되었습니다.");
+                      AsyncStorage.setItem("loggedId", "").then(() => {
+                        navigation.reset({ routes: [{ name: "LoginScreen" }] });
+                      });
+                    }
+                  })
+                  .catch((error) => console.log("resign: ", error));
+              }}
+            >
+              회원탈퇴
+            </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
