@@ -11,6 +11,7 @@ import ProfileNavigator from "./ProfileNavigator";
 
 import RankNavigator from "./RankNavigator";
 import ChatNavigator from "./ChatNavigator";
+import ArchiveNavigator from "./ArchiveNavigator";
 
 type TabBarIconProps = { focused: boolean; color: string; size: number };
 
@@ -70,7 +71,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Archive"
-        component={ArchieveList}
+        component={ArchiveNavigator}
         options={{
           tabBarLabel: "아카이브",
         }}
@@ -82,7 +83,6 @@ const TabNavigator = () => {
           tabBarLabel: "게시판",
         }}
       />
-      {/* TODO profile Navigator */}
       <Tab.Screen
         name="Chat"
         component={ChatNavigator}

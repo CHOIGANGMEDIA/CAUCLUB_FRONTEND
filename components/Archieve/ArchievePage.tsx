@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import ArchieveStyle from "../Style/ArchieveStyle";
 import { View, Text, TouchableHighlight, Image, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialCommunityIcon as Icon } from "../navigation/MaterialCommunityIcon";
 import ArchivePost from "./ArchieveList";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { customAxios } from "../../src/axiosModule/customAxios";
 import { useCallback } from "react";
@@ -30,22 +30,32 @@ type ArchivePost = {
   time: string;
   like: number;
   clubName: string;
+  isMutual: boolean;
+  userLiked: boolean;
 };
 
-export type { ArchivePageProps };
+export type { ArchivePost, ArchivePageProps };
 
 const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
   const navigation = useNavigation<any>();
   const [post, setPost] = useState<ArchivePost>();
+  const [imageList, setImageList] = useState<string[]>([]);
+  const isFocused = useIsFocused();
+  useLayoutEffect(() => {
+    customAxios
+      .get(`/archive/${archiveId}`)
+      .then((response) => {
+        setPost(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, [isFocused]);
 
-  customAxios
-    .get(`/archive/${archiveId}`)
-    .then((response) => {
-      setPost(response.data);
-    })
-    .catch((error) => console.log(error));
+  useEffect(() => {
+    console.log(post);
+    if (post?.pictures) setImageList(post.pictures);
+  }, [post]);
 
-  const imageList = post?.pictures.map((url, i) => {
+  const imageListComps = imageList.map((url, i) => {
     return (
       <Image
         key={i}
@@ -56,8 +66,9 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
   });
 
   const modifyPressed = useCallback(() => {
-    console.log("m");
+    navigation.navigate("ArchiveModify", { archiveId: archiveId, post: post });
   }, []);
+
   const deletePressed = useCallback(() => {
     customAxios
       .delete(`/archive/${archiveId}`)
@@ -71,6 +82,21 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
       })
       .catch((error) => console.log("삭제 오류", error));
   }, []);
+
+  const liked = useCallback(() => {
+    customAxios
+      .post(`/archive/${archiveId}/like`)
+      .then((response) => {
+        setPost((p: any) => {
+          return {
+            ...p,
+            userLiked: response.data,
+            like: p.like + (response.data ? 1 : -1),
+          };
+        });
+      })
+      .catch((error) => console.log("like :", error));
+  }, [post]);
 
   return (
     <KeyboardAwareScrollView style={{ flex: 0 }}>
@@ -137,7 +163,7 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
         </View>
       </View>
       <ScrollView horizontal={true} style={ArchieveStyle.archieveImage}>
-        {imageList}
+        {imageListComps}
       </ScrollView>
       <View
         style={{
@@ -148,7 +174,15 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
         }}
       >
         {/* TODO Icon 클릭 전환 heart:heart-outline*/}
-        <Icon name="heart-outline" size={40} style={ArchieveStyle.heart} />
+        <Icon
+          name={post?.userLiked ? "heart" : "heart-outline"}
+          size={40}
+          style={[
+            ArchieveStyle.heart,
+            post?.userLiked ? { color: "#FD1D1D" } : {},
+          ]}
+          onPress={liked}
+        />
         <Text style={ArchieveStyle.likes}>좋아요 {post?.like}개</Text>
       </View>
       <View style={{ flex: 0 }}>

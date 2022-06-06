@@ -98,7 +98,6 @@ const GenerateArchieve = () => {
     );
   };
 
-  // TODO body로 다시
   const upload = () => {
     const data = JSON.stringify({
       contents: contents,
