@@ -9,12 +9,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { customAxios } from "../../src/axiosModule/customAxios";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import { SafeAreaView } from "../navigation/SafeAreaView";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 const ProfileList = () => {
   const [id, setId] = useState<string>();
   const [clubIds, setClubIds] = useState<number[]>();
   const isFocused = useIsFocused();
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     AsyncStorage.getItem("loggedId")
@@ -48,7 +49,25 @@ const ProfileList = () => {
       <NavigationHeader />
       <View style={ProfileStyle.topBox}>
         <Text style={InitialStlye.boardTitle}>내 동아리</Text>
-        <TouchableHighlight style={ProfileStyle.newClubView}>
+        <View style={{ marginLeft: 30 }}>
+          <TouchableHighlight
+            style={ProfileStyle.newClub}
+            onPress={() =>
+              navigation.navigate("GenerateClub", { loggedId: id })
+            }
+          >
+            <Text style={{ color: "white", fontSize: 12, fontWeight: "900" }}>
+              동아리 생성
+            </Text>
+          </TouchableHighlight>
+        </View>
+
+        <TouchableHighlight
+          style={ProfileStyle.newClubView}
+          onPress={() => {
+            navigation.navigate("OtherClubs");
+          }}
+        >
           <Text style={{ color: "white", fontSize: 12, fontWeight: "900" }}>
             다른 동아리 보기
           </Text>

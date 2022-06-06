@@ -48,7 +48,6 @@ const GenerateArchieve = () => {
         type: "multipart/form-data",
         name: image.filename,
       };
-      getUrl(image.filename);
       data.append("file", file);
       console.log(image);
       const config = { headers: { "content-type": "multipart/form-data" } };

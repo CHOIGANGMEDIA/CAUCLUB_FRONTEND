@@ -15,6 +15,7 @@ import {
 } from "@react-navigation/native";
 import { Club } from "./Club";
 import { customAxios } from "../../src/axiosModule/customAxios";
+import instance from "../../data/FirebaseStorage";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
@@ -156,6 +157,53 @@ const ProfilePage = () => {
     return <Keyword key={idx} keyword={keyword} onPress={() => {}} />;
   });
 
+  //채팅 시작
+  const startChat = () => {
+    // 존재하는 채팅방이 있는지 확인
+    if (club && loggedId && loggedId != "") {
+      // 있으면
+      instance.ref
+        .child("userRooms")
+        .child(loggedId)
+        .child(club.leaderId)
+        .once("value", (snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.key, snapshot.child("roomId").val());
+          } else {
+            // room 생성
+            const newRoom: any = instance.ref.child("rooms").push();
+            instance.ref
+              .child("userRooms")
+              .child(loggedId)
+              .child(club.leaderId)
+              .set({
+                opName: club.name,
+                picture: club.picture,
+                roomId: newRoom.key,
+                recent: "",
+              });
+            instance.ref
+              .child("userRooms")
+              .child(club.leaderId)
+              .child(loggedId)
+              .set({
+                opName: loggedId,
+                picture: club.picture,
+                roomId: newRoom.key,
+                recent: "",
+              });
+          }
+          navigation.navigate("ChatMessage", {
+            myId: loggedId,
+            opId: snapshot.key,
+            opName: club.name,
+            roomId: snapshot.child("roomId").val(),
+          });
+        });
+      // 없으면 새로 만들기
+    }
+  };
+
   return (
     <SafeAreaView>
       <NavigationHeader Left={true} />
@@ -164,7 +212,10 @@ const ProfilePage = () => {
           <View style={{ width: "80%", flexDirection: "column" }}>
             <View style={{ height: 65, flexDirection: "row" }}>
               <Text style={ProfilePageStyle.profileList}>동아리 프로필</Text>
-              <TouchableHighlight style={ProfilePageStyle.chatButton}>
+              <TouchableHighlight
+                style={ProfilePageStyle.chatButton}
+                onPress={startChat}
+              >
                 <Text style={{ color: "white", fontWeight: "900" }}>
                   채팅 보내기
                 </Text>

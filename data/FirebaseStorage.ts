@@ -6,12 +6,8 @@ class FirebaseStorage {
     this.init();
   }
 
-  get uid() {
-    return (firebase.auth().currentUser || {}).uid;
-  }
-
   get ref() {
-    return firebase.database().ref("messages");
+    return firebase.database().ref("chatService");
   }
 
   get timestamp() {

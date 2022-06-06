@@ -14,6 +14,8 @@ import ArchieveList from "../Archieve/ArchieveList";
 import ClubList from "../Profile/ClubList";
 import RecommendClubList from "../Profile/RecommendClubList";
 import ChatMessage from "../ChatMessage";
+import GenerateProfile from "../Profile/GenerateProfile";
+import BoardNew from "../BoardNew";
 
 const Stack = createStackNavigator();
 
@@ -29,13 +31,8 @@ const MainNavigator = () => {
       <Stack.Screen name="SearchID" component={SearchID} />
       <Stack.Screen name="SearchPW" component={SearchPW} />
       <Stack.Screen name="ResetPW" component={ResetPW} />
-      <Stack.Screen name="TabbedScreen" component={TabNavigator} />
       <Stack.Screen name="MyPage" component={MyPage} />
-      <Stack.Screen name="ProfilePage" component={ProfilePage} />
-      <Stack.Screen name="ModifyProfile" component={ModifyProfile} />
-      <Stack.Screen name="GenerateArchieve" component={GenerateArchieve} />
-      <Stack.Screen name="OtherClubs" component={ClubList} />
-      <Stack.Screen name="RecommendClubList" component={RecommendClubList} />
+      <Stack.Screen name="TabbedScreen" component={TabNavigator} />
       <Stack.Screen name="ChatMessage" component={ChatMessage} />
     </Stack.Navigator>
   );

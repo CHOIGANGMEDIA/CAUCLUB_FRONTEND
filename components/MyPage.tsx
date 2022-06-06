@@ -17,6 +17,7 @@ import { customAxios } from "../src/axiosModule/customAxios";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcon as Icon } from "./navigation/MaterialCommunityIcon";
 import crypto from "crypto";
+import Keyword from "./Profile/Keyword";
 
 let imagePath = require("./images/푸앙_의복야구점퍼.png");
 
@@ -31,6 +32,34 @@ const MyPage = () => {
   const [password, setPassword] = useState<string>("");
   const [repassMsg, setRepassMsg] = useState<string>();
   const [valid, setValid] = useState<boolean>();
+  const [keyword, setKeyword] = useState<string[]>([]);
+  const [everyKeywords, setEveryKeywords] = useState<string[]>([
+    "운동",
+    "농구",
+    "축구",
+    "야구",
+    "배구",
+    "탁구",
+    "테니스",
+    "골프",
+    "배드민턴",
+    "자전거",
+    "오토바이",
+    "미식축구",
+    "당구",
+    "포켓볼",
+    "클라이밍",
+    "직관",
+    "등산",
+    "유도",
+    "태권도",
+    "검도",
+    "복싱",
+    "킥복싱",
+    "알고리즘",
+    "스터디",
+    "코딩",
+  ]);
 
   const loadData = async () => {
     const loggedId = await AsyncStorage.getItem("loggedId");
@@ -52,6 +81,19 @@ const MyPage = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  const keywordComps = everyKeywords.map((kw, i) => {
+    return (
+      <Keyword
+        key={i}
+        keyword={kw}
+        onPress={() => {
+          setKeyword((k) => [...k, kw]);
+          console.log(keyword);
+        }}
+      />
+    );
+  });
 
   const emailChanged = useCallback(
     (email: string) => {
@@ -119,7 +161,7 @@ const MyPage = () => {
       }
     } else if (validEmail) {
       customAxios
-        .post(`/member/${id}?name=${name}&email=${email}`)
+        .post(`/member/${id}?name=${name}&email=${email}&keyword=${keyword}`)
         .then((result) => {
           if (result.data == true)
             Alert.alert("수정 성공", "회원 정보가 수정되었습니다");
@@ -165,7 +207,7 @@ const MyPage = () => {
               onPress={goBack}
               style={{ backgroundColor: "transparent" }}
             />
-            <Text style={[Style.appTitle, { padding: 0 }]}>My Page</Text>
+            <Text style={[Style.appTitle, { marginRight: 90 }]}>My Page</Text>
           </View>
           <View style={Style.imageContainer}>
             <Image style={Style.image} source={imagePath} />
@@ -181,7 +223,7 @@ const MyPage = () => {
               ]}
             >
               {" "}
-              뭐라할까{" "}
+              개인정보 수정!{" "}
             </Text>
           </View>
           <View style={[{ margin: 10 }]} />
@@ -217,6 +259,19 @@ const MyPage = () => {
             onChangeText={(text) => emailChanged(text)}
             value={email}
           ></TextInput>
+
+          <View
+            style={{
+              marginTop: 10,
+              marginLeft: 20,
+              marginRight: 20,
+              flexDirection: "row",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+            }}
+          >
+            {keywordComps}
+          </View>
 
           <View style={[{ margin: 10 }]} />
           <View style={Style.center}>

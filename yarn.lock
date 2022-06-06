@@ -2267,6 +2267,13 @@
   "resolved" "https://registry.npmjs.org/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz"
   "version" "1.0.0"
 
+"@types/firebase@^3.2.1":
+  "integrity" "sha512-G8XgHMu2jHlElfc2xVNaYP50F0qrqeTCjgeG1v5b4SRwWG4XKC4fCuEdVZuZaMRmVygcnbRZBAo9O7RsDvmkGQ=="
+  "resolved" "https://registry.npmjs.org/@types/firebase/-/firebase-3.2.1.tgz"
+  "version" "3.2.1"
+  dependencies:
+    "firebase" "*"
+
 "@types/graceful-fs@^4.1.2":
   "integrity" "sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw=="
   "resolved" "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.5.tgz"
@@ -4524,7 +4531,7 @@
   "resolved" "https://registry.npmjs.org/findit/-/findit-2.0.0.tgz"
   "version" "2.0.0"
 
-"firebase@^9.8.2":
+"firebase@*", "firebase@^9.8.2":
   "integrity" "sha512-cVPpiR18vsLuGWAAVkVhNO6mYsEgYBqawvMI2zxKo2FCtneyBgMwOyWKI8VyCmL5ze5p5QJTPjkoatM6rZkd0Q=="
   "resolved" "https://registry.npmjs.org/firebase/-/firebase-9.8.2.tgz"
   "version" "9.8.2"

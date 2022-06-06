@@ -16,6 +16,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import { customAxios } from "../src/axiosModule/customAxios";
 import Style from "./Style/Style";
 import crypto from "crypto";
+import Keyword from "./Profile/Keyword";
 
 let imagePath = require("./images/푸앙_응원.png");
 
@@ -198,6 +199,47 @@ const RegisterScreen = () => {
     [college]
   );
 
+  const [everyKeywords, setEveryKeywords] = useState<string[]>([
+    "운동",
+    "농구",
+    "축구",
+    "야구",
+    "배구",
+    "탁구",
+    "테니스",
+    "골프",
+    "배드민턴",
+    "자전거",
+    "오토바이",
+    "미식축구",
+    "당구",
+    "포켓볼",
+    "클라이밍",
+    "직관",
+    "등산",
+    "유도",
+    "태권도",
+    "검도",
+    "복싱",
+    "킥복싱",
+    "알고리즘",
+    "스터디",
+    "코딩",
+  ]);
+
+  const keywordComps = everyKeywords.map((kw, i) => {
+    return (
+      <Keyword
+        key={i}
+        keyword={kw}
+        onPress={() => {
+          setKeyword((k) => [...k, kw]);
+          console.log(keyword);
+        }}
+      />
+    );
+  });
+
   return (
     <View style={Style.container}>
       <ScrollView>
@@ -306,7 +348,7 @@ const RegisterScreen = () => {
             취향에 알맞는 동아리를 추천해드려요 :)
           </Text>
         </View>
-        <View style={styles.keywordList}>{/* TODO keyword iteration */}</View>
+        <View style={styles.keywordList}>{keywordComps}</View>
 
         <View style={styles.center}>
           {/* 예빈 버튼 스타일 부탁해용 */}
@@ -383,7 +425,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   keywordList: {
-    height: 100,
     marginTop: 10,
     marginLeft: 20,
     marginRight: 20,

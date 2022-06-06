@@ -23,6 +23,7 @@ const Profile = ({ memberId, clubId }: ProfileProps) => {
     customAxios
       .get(`/club/${clubId}`)
       .then((response) => {
+        setClub(undefined);
         setClub(response.data);
         console.log("clubdetail", response.data);
       })
