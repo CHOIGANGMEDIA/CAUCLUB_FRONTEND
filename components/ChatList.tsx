@@ -22,7 +22,7 @@ type ChatProfile = {
   roomId: string;
   recent: string;
 };
-// TODO 스냅샷 위에 맞게 어레이갖다가 뿌리기
+
 const ChatList = () => {
   const [id, setId] = useState<string>("");
   const [charRooms, setChatRooms] = useState<ChatProfile[]>([]);
@@ -66,7 +66,6 @@ const ChatList = () => {
     return returnArr;
   };
 
-  // TODO
   const chatList = charRooms.map((chatP) => {
     return (
       <React.Fragment key={chatP.opId}>

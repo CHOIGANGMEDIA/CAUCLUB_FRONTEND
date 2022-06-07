@@ -98,7 +98,6 @@ const Ranking = () => {
       </View>
       <View style={{ height: "87%", width: "90%", margin: "5%" }}>
         <View style={{ height: 40, width: "100%", flexDirection: "row" }}>
-          {/* TODO 각 랭킹 불러오기 useEffect 사용하면 될듯 */}
           <TouchableHighlight
             style={
               selectedType == 0
@@ -149,7 +148,6 @@ const Ranking = () => {
             borderColor: "#143365",
           }}
         >
-          {/* TODO ranking iteration*/}
           {rankProfiles}
         </ScrollView>
       </View>

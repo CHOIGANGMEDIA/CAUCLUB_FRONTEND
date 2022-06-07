@@ -21,8 +21,6 @@ import Keyword from "./Profile/Keyword";
 
 let imagePath = require("./images/푸앙_의복야구점퍼.png");
 
-// TODO css
-
 const MyPage = () => {
   const [id, setId] = useState<string>("");
   const [name, setName] = useState<string>("");

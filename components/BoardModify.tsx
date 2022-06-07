@@ -18,7 +18,6 @@ const BoardModify = () => {
 
   const navigaion = useNavigation<any>();
 
-  // TODO 제목, 글 내용 불러오기
   useEffect(() => {
     customAxios
       .get(`/post/${postId}`)

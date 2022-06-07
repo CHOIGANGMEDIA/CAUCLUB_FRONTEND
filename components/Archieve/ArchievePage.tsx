@@ -98,6 +98,13 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
       .catch((error) => console.log("like :", error));
   }, [post]);
 
+  const report = useCallback(() => {
+    Alert.alert("신고", "해당 글을 신고하시겠습니까?", [
+      { text: "확인", onPress: () => {} },
+      { text: "취소" },
+    ]);
+  }, []);
+
   return (
     <KeyboardAwareScrollView style={{ flex: 0 }}>
       <View style={{ height: 60, flexDirection: "row" }}>
@@ -173,7 +180,6 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
           alignItems: "center",
         }}
       >
-        {/* TODO Icon 클릭 전환 heart:heart-outline*/}
         <Icon
           name={post?.userLiked ? "heart" : "heart-outline"}
           size={40}

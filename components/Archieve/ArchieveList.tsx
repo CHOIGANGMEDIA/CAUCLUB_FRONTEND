@@ -11,7 +11,6 @@ import ArchievePage from "./ArchievePage";
 import { Alert } from "react-native";
 
 const ArchieveList = () => {
-  // TODO api link routes
   const [arcList, setArcList] =
     useState<{ archiveId: number; clubId: number }[]>();
   const [loggedId, setLoggedId] = useState<string>("");
@@ -64,8 +63,6 @@ const ArchieveList = () => {
       .then(() => console.log(arcPostList));
     return setArcPostList([]);
   }, [arcList]);
-
-  // TODO Navigate
 
   return (
     <SafeAreaView>

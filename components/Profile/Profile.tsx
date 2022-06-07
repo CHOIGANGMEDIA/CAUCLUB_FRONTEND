@@ -13,7 +13,6 @@ type ProfileProps = {
   clubId: number;
 };
 
-// TODO css - 동아리 타입 이상해여
 const Profile = ({ memberId, clubId }: ProfileProps) => {
   const [club, setClub] = useState<Club>();
 
