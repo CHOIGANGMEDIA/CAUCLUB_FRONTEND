@@ -22,7 +22,7 @@ const ResetPW = () => {
   const { email } = route.params;
   const [password, setPassword] = useState<string>("");
   const [repassMsg, setRepassMsg] = useState<string>();
-  const [valid, setValid] = useState<boolean>();
+  const [valid, setValid] = useState<boolean>(true);
 
   const repasswordChanged = useCallback(
     (repassword: string) => {

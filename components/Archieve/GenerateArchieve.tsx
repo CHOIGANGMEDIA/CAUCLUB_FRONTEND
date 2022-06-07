@@ -101,7 +101,7 @@ const GenerateArchieve = () => {
   const upload = () => {
     const data = JSON.stringify({
       contents: contents,
-      pictureUrls: imageUrlList,
+      pictures: imageUrlList,
       title: title,
       isMutual: Number(isMutual),
     });

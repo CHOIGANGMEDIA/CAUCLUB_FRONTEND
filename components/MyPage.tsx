@@ -58,25 +58,25 @@ const MyPage = () => {
     "스터디",
     "코딩",
   ]);
-
-  const loadData = async () => {
-    const loggedId = await AsyncStorage.getItem("loggedId");
-    console.log(loggedId);
-    if (loggedId) {
-      setId(loggedId);
-      await customAxios
-        .get(`/member/${loggedId}`)
-        .then((response) => {
-          setName(response.data.name.trim());
-          setEmail(response.data.email);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
+    const loadData = async () => {
+      const loggedId = await AsyncStorage.getItem("loggedId");
+      console.log(loggedId);
+      if (loggedId) {
+        setId(loggedId);
+        await customAxios
+          .get(`/member/${loggedId}`)
+          .then((response) => {
+            setName(response.data.name.trim());
+            setEmail(response.data.email);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
     loadData();
   }, []);
 
@@ -112,8 +112,8 @@ const MyPage = () => {
     [email]
   );
 
-  // TODO pw, salt 제대로 가나 확인
   const modifyPressed = () => {
+    console.log("a");
     if (password !== "") {
       if (!valid) Alert.alert("비밀번호가 일치하지 않습니다");
       else {
@@ -133,17 +133,25 @@ const MyPage = () => {
             customAxios
               .post(`/member/resetPassword`, data, config)
               .then((response) => {
+                console.log("b");
                 if (response.data) {
                   if (validEmail) {
+                    console.log("c");
                     customAxios
-                      .post(`/member/${id}?name=${name}&email=${email}`)
-                      .then((result) => {
-                        if (result.data == true)
+                      .post(
+                        `/member/${id}?name=${name}&email=${email}&keyword=${keyword}`
+                      )
+                      .then((res) => {
+                        console.log("d");
+                        if (res.data) {
                           Alert.alert(
                             "수정 성공",
                             "회원 정보가 수정되었습니다"
                           );
-                        navigation.goBack();
+                          navigation.reset({
+                            routes: [{ name: "LoginScreen" }],
+                          });
+                        }
                       })
                       .catch((error) => {
                         Alert.alert("오류 발생", error);
@@ -161,21 +169,19 @@ const MyPage = () => {
       customAxios
         .post(`/member/${id}?name=${name}&email=${email}&keyword=${keyword}`)
         .then((result) => {
-          if (result.data == true)
+          if (result.data) {
             Alert.alert("수정 성공", "회원 정보가 수정되었습니다");
-          navigation.goBack();
+            navigation.goBack();
+          }
         })
         .catch((error) => {
           Alert.alert("오류 발생", error);
         });
-    } else Alert.alert("실패", "이름과 이메일을 확인해 주세요");
+    } else Alert.alert("실패", "비밀번호를 확인해주세요");
   };
-
-  const navigation = useNavigation<any>();
 
   const goBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack();
-    console.log("back pressed");
   }, []);
 
   const repasswordChanged = useCallback(

@@ -57,7 +57,7 @@ const SearchPW = () => {
     if (cert) {
       sended
         ? customAxios
-            .post(`/member/validIdCertification?certification=${cert}`)
+            .post(`/member/validPasswordCertification?certification=${cert}`)
             .then((request) => {
               request.data
                 ? navigation.reset({
