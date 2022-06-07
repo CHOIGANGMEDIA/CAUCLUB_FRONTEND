@@ -2,17 +2,18 @@
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, Text, Image, TouchableHighlight} from 'react-native';
-import InitialStlye from '../Style/InitialStyle';
+import {NavigationHeader} from '../navigation/NavigationHeader';
 import ProfilePageStyle from '../Style/ProfilePageStyle';
 import Keyword from './Keyword';
 import Archieve from './Archieve';
-import BottomBox from '../BottomBox';
+import { SafeAreaView } from '../navigation/SafeAreaView';
 
 let imagePath = require('../images/푸앙_윙크.png');
 
 const ProfilePageP = () => {
   return (
-    <>
+    <SafeAreaView>
+      <NavigationHeader />
       <KeyboardAwareScrollView>
         <View style={{flex: 1, height: 100, flexDirection: 'row'}}>
           <View style={{width: '80%', flexDirection: 'column'}}>
@@ -47,15 +48,22 @@ const ProfilePageP = () => {
             marginBottom: 5,
           }}
         />
-        <View style={({flex: 1, height: 30, flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center'})}>
-          <View style={({height: 40, width: 150})}>
+        <View
+          style={{
+            flex: 1,
+            height: 30,
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignContent: 'center',
+          }}>
+          <View style={{height: 40, width: 150}}>
             <TouchableHighlight style={ProfilePageStyle.generateButton}>
               <Text style={{color: 'white', fontWeight: '900', margin: 5}}>
                 아카이브 글쓰기
               </Text>
             </TouchableHighlight>
           </View>
-          <View style={({height: 40, width: 150})}>
+          <View style={{height: 40, width: 150}}>
             <TouchableHighlight style={ProfilePageStyle.generateButton}>
               <Text style={{color: 'white', fontWeight: '900', margin: 5}}>
                 게시판 글쓰기
@@ -200,7 +208,7 @@ const ProfilePageP = () => {
           </View>
         </View>
       </KeyboardAwareScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

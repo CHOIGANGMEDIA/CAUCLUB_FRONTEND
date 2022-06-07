@@ -1,3 +1,1 @@
-import BottomBox from './BottomBox';
-
-export default BottomBox;
+export * from './BottomBox';

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import axios from 'axios';
-import React, {useCallback, useState} from 'react';
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import React, { useCallback, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -9,10 +10,10 @@ import {
   View,
   Image,
   Alert,
-} from 'react-native';
-import {customAxios} from '../src/axiosModule/customAxios';
-import Style from './Style/Style';
-let imagePath = require('./images/푸앙_어푸앙.png');
+} from "react-native";
+import { customAxios } from "../src/axiosModule/customAxios";
+import Style from "./Style/Style";
+let imagePath = require("./images/푸앙_어푸앙.png");
 
 //axios
 
@@ -26,17 +27,17 @@ const SearchID = () => {
     email
       ? customAxios
           .post(`/member/validIdEmail?email=${email}`)
-          .then(request => {
+          .then((request) => {
             if (request.data) {
-              Alert.alert('해당 이메일로 인증번호를 발송했습니다');
+              Alert.alert("해당 이메일로 인증번호를 발송했습니다");
               setSended(true);
-            } else Alert.alert('해당 이메일이 존재하지 않습니다');
+            } else Alert.alert("해당 이메일이 존재하지 않습니다");
           })
-          .catch(error => {
-            Alert.alert('서버 오류', '관리자에게 문의하세요');
+          .catch((error) => {
+            Alert.alert("서버 오류", "관리자에게 문의하세요");
             //console.log(error);
           })
-      : Alert.alert('email을 확인해 주세요');
+      : Alert.alert("email을 확인해 주세요");
   };
 
   const certificate = () => {
@@ -44,37 +45,39 @@ const SearchID = () => {
       sended
         ? customAxios
             .post(`/member/validIdCertification?certification=${cert}`)
-            .then(request => {
+            .then((request) => {
               request.data
                 ? Alert.alert(`회원님의 아이디는 ${request.data} 입니다`)
-                : Alert.alert('인증번호가 일치하지 않습니다.');
+                : Alert.alert("인증번호가 일치하지 않습니다.");
             })
-            .catch(error => {
-              Alert.alert('서버 오류', '관리자에게 문의하세요');
+            .catch((error) => {
+              Alert.alert("서버 오류", "관리자에게 문의하세요");
               //console.log(error);
             })
         : Alert.alert(
-            '인증번호 보내기를 통해 인증번호를 받으신 후 인증해 주세요',
+            "인증번호 보내기를 통해 인증번호를 받으신 후 인증해 주세요"
           );
-    } else Alert.alert('인증번호를 입력해 주세요');
+    } else Alert.alert("인증번호를 입력해 주세요");
   };
 
   const emailChanged = useCallback(
     (email: string) => {
       const emailRegex =
         /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-      if (email === undefined || email === '') {
+      if (email === undefined || email === "") {
         setEmailMsg(undefined);
       } else if (emailRegex.test(email)) {
         setEmailMsg(undefined);
         setEmail(email);
       } else {
-        setEmailMsg('올바른 형식의 이메일을 입력해주세요 ex) example@exam.com');
+        setEmailMsg("올바른 형식의 이메일을 입력해주세요 ex) example@exam.com");
         setEmail(undefined);
       }
     },
-    [email],
+    [email]
   );
+
+  const navigation = useNavigation<any>();
 
   return (
     <SafeAreaView style={Style.container}>
@@ -85,13 +88,14 @@ const SearchID = () => {
         <Text
           style={[
             {
-              color: 'black',
+              color: "black",
               fontSize: 15,
-              fontWeight: '900',
+              fontWeight: "900",
               right: 10,
-              fontStyle: 'italic',
+              fontStyle: "italic",
             },
-          ]}>
+          ]}
+        >
           다음부터는 아이디 까먹지 말랑!!
         </Text>
       </View>
@@ -99,52 +103,73 @@ const SearchID = () => {
       {emailMsg ? <Text style={Style.warnSubStyle}>{emailMsg}</Text> : null}
       <TextInput
         style={Style.boxStyle}
-        placeholder={'이메일 입력'}
-        onChangeText={email => {
+        placeholder={"이메일 입력"}
+        autoCapitalize="none"
+        onChangeText={(email) => {
           emailChanged(email);
-        }}></TextInput>
+        }}
+      ></TextInput>
       <View style={Style.center}>
         <TouchableOpacity style={Style.buttonStyle} onPress={sendCertificate}>
           <Text
             style={[
               {
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: '900',
+                color: "white",
+                textAlign: "center",
+                fontWeight: "900",
                 fontSize: 15,
               },
-            ]}>
+            ]}
+          >
             인증번호 보내기
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={[{margin: 10}]} />
+      <View style={[{ margin: 10 }]} />
       <Text style={Style.textStyle}>인증번호</Text>
       <TextInput
         style={Style.boxStyle}
-        placeholder={'인증번호 입력'}
-        onChangeText={text => setCert(text)}></TextInput>
+        placeholder={"인증번호 입력"}
+        onChangeText={(text) => setCert(text)}
+      ></TextInput>
       <View style={Style.center}>
         <TouchableOpacity style={Style.buttonStyle} onPress={certificate}>
           <Text
             style={[
               {
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: '900',
+                color: "white",
+                textAlign: "center",
+                fontWeight: "900",
                 fontSize: 15,
               },
-            ]}>
+            ]}
+          >
             인증하기
           </Text>
         </TouchableOpacity>
       </View>
       <View style={Style.bottomCenter}>
-        <Text>로그인</Text>
+        <Text
+          onPress={() =>
+            navigation.reset({ routes: [{ name: "LoginScreen" }] })
+          }
+        >
+          로그인
+        </Text>
         <Text>|</Text>
-        <Text>회원가입</Text>
+        <Text
+          onPress={() => navigation.reset({ routes: [{ name: "SearchPW" }] })}
+        >
+          비밀번호 찾기
+        </Text>
         <Text>|</Text>
-        <Text>비밀번호 찾기</Text>
+        <Text
+          onPress={() =>
+            navigation.reset({ routes: [{ name: "RegisterScreen" }] })
+          }
+        >
+          회원가입
+        </Text>
       </View>
     </SafeAreaView>
   );
