@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   GestureResponderEvent,
   StyleProp,
@@ -7,6 +8,7 @@ import {
   TouchableHighlight,
   ViewStyle,
 } from "react-native";
+import { useEvent } from "react-native-reanimated";
 import ProfileStyle from "../Style/ProfileStyle";
 
 type KeywordProps = {
@@ -25,10 +27,26 @@ const Keyword = ({
   sel = false,
 }: KeywordProps) => {
   const [selected, setSelected] = useState<boolean>(sel);
+  const [init, setInit] = useState<boolean>(true);
+  useEffect(() => {
+    setSelected((s) => {
+      return sel;
+    });
+  }, []);
   return (
     <TouchableHighlight
       style={[
-        selected
+        init
+          ? sel
+            ? {
+                margin: 5,
+                borderWidth: 1,
+                borderColor: "gray",
+                borderRadius: 10,
+                backgroundColor: "#143365",
+              }
+            : ProfileStyle.keywordButton
+          : selected
           ? {
               margin: 5,
               borderWidth: 1,
@@ -41,6 +59,7 @@ const Keyword = ({
       ]}
       onPress={() => {
         if (touchable) {
+          if (init) setInit(false);
           setSelected((s) => {
             return !s;
           });
@@ -50,7 +69,17 @@ const Keyword = ({
     >
       <Text
         style={
-          selected
+          init
+            ? sel
+              ? {
+                  color: "white",
+                  fontSize: 12,
+                  fontWeight: "900",
+                  marginLeft: 3,
+                  marginRight: 3,
+                }
+              : ProfileStyle.keyword
+            : selected
             ? {
                 color: "white",
                 fontSize: 12,

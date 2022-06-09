@@ -88,6 +88,7 @@ const ProfilePage = () => {
   }, [loggedId, isFocused, club]);
 
   const enterClub = useCallback(() => {
+    console.log(`${loggedId}/${clubId}/enterClub`);
     customAxios
       .post(`${loggedId}/${clubId}/enterClub`)
       .then((response) => {
@@ -97,7 +98,7 @@ const ProfilePage = () => {
         } else Alert.alert("가입 실패 관리자에게 문의하세요");
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [loggedId, clubId]);
 
   const resignCLub = useCallback(() => {
     customAxios
@@ -186,7 +187,7 @@ const ProfilePage = () => {
   const keywords = club?.keyword.map((keyword, idx) => {
     return (
       <Keyword
-        key={idx}
+        key={keyword}
         keyword={keyword}
         onPress={() => {}}
         touchable={false}

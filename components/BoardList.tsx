@@ -30,6 +30,7 @@ const BoardList = () => {
       // console.log(postId, clubName, title, contents);
       navigation.navigate("BoardScreen", {
         postId: postId,
+        clubId: clubId,
         clubName: clubName,
         title: title,
         contents: contents,

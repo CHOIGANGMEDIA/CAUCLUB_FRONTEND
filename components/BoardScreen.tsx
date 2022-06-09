@@ -35,6 +35,7 @@ const BoardScreen = () => {
         }
       });
     };
+    fetchData();
   }, []);
 
   return (
@@ -56,7 +57,10 @@ const BoardScreen = () => {
             >
               <Text style={BoardStyle.screenClub}>작성자: </Text>
               {/* 동아리명(ChAOS) 클릭하면 해당 동아리 프로필로 가게끔 하려고 버튼으로 만들었어요 */}
-              <TouchableHighlight style={BoardStyle.screenClub}>
+              <TouchableHighlight
+                style={BoardStyle.screenClub}
+                onPress={() => navigation.navigate("ProfilePage", { clubId })}
+              >
                 <Text style={{ color: "black", fontWeight: "900" }}>
                   {clubName}
                 </Text>

@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import Style from "./Style/Style";
 import {
   View,
@@ -14,7 +19,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { customAxios } from "../src/axiosModule/customAxios";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcon as Icon } from "./navigation/MaterialCommunityIcon";
 import crypto from "crypto";
 import Keyword from "./Profile/Keyword";
@@ -31,6 +36,7 @@ const MyPage = () => {
   const [repassMsg, setRepassMsg] = useState<string>();
   const [valid, setValid] = useState<boolean>();
   const [keyword, setKeyword] = useState<string[]>([]);
+  const [keywordComps, setKeywordComps] = useState<JSX.Element[]>([]);
   const [everyKeywords, setEveryKeywords] = useState<string[]>([
     "운동",
     "농구",
@@ -59,8 +65,9 @@ const MyPage = () => {
     "코딩",
   ]);
   const navigation = useNavigation<any>();
+  const isFocused = useIsFocused();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const loadData = async () => {
       const loggedId = await AsyncStorage.getItem("loggedId");
       console.log(loggedId);
@@ -71,6 +78,7 @@ const MyPage = () => {
           .then((response) => {
             setName(response.data.name.trim());
             setEmail(response.data.email);
+            setKeyword([]);
             setKeyword(response.data.keyword);
           })
           .catch((error) => {
@@ -79,26 +87,33 @@ const MyPage = () => {
       }
     };
     loadData();
-  }, []);
+  }, [isFocused]);
 
-  const keywordComps = everyKeywords.map((kw, i) => {
-    return (
-      <Keyword
-        key={i}
-        keyword={kw}
-        sel={keyword.includes(kw)}
-        onPress={() => {
-          setKeyword((k) => {
-            if (k.includes(kw)) {
-              return [...k, kw];
-            }
-            return k.splice(k.indexOf(kw), 1);
-          });
-          console.log(keyword);
-        }}
-      />
-    );
-  });
+  useLayoutEffect(() => {
+    setKeywordComps((kc) => {
+      return everyKeywords.map((kw, i) => {
+        console.log(keyword.includes(kw));
+        return (
+          <Keyword
+            key={i}
+            keyword={kw}
+            sel={keyword.includes(kw)}
+            onPress={() => {
+              setKeyword((k) => {
+                if (!k.includes(kw)) {
+                  return [...k, kw];
+                }
+                const ret = k;
+                ret.splice(ret.indexOf(kw), 1);
+                return ret;
+              });
+              console.log(keyword);
+            }}
+          />
+        );
+      });
+    });
+  }, [id, keyword]);
 
   const emailChanged = useCallback(
     (email: string) => {

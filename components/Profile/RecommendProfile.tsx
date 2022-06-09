@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableHighlight, Image } from "react-native";
 import { customAxios } from "../../src/axiosModule/customAxios";
@@ -15,6 +16,7 @@ const imagePath = require("../images/푸앙_응원.png");
 
 const RecommendProfile = ({ clubId }: RecommendProfileProps) => {
   const [club, setClub] = useState<Club>();
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     customAxios
@@ -34,6 +36,7 @@ const RecommendProfile = ({ clubId }: RecommendProfileProps) => {
   return (
     <TouchableHighlight
       style={{ borderWidth: 1, borderColor: "black", margin: 5 }}
+      onPress={() => navigation.navigate("ProfilePage", { clubId })}
     >
       <>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
