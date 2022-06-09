@@ -40,6 +40,7 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
   const navigation = useNavigation<any>();
   const [post, setPost] = useState<ArchivePost>();
   const [imageList, setImageList] = useState<string[]>([]);
+
   const isFocused = useIsFocused();
   useLayoutEffect(() => {
     customAxios
@@ -67,7 +68,7 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
 
   const modifyPressed = useCallback(() => {
     navigation.navigate("ArchiveModify", { archiveId: archiveId, post: post });
-  }, []);
+  }, [archiveId, post]);
 
   const deletePressed = useCallback(() => {
     customAxios
@@ -126,7 +127,14 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
             alignItems: "flex-start",
           }}
         >
-          <Text style={ArchieveStyle.clubName}>{post?.clubName}</Text>
+          <Text
+            style={ArchieveStyle.clubName}
+            onPress={() => {
+              navigation.navigate("ProfilePage", { clubId });
+            }}
+          >
+            {post?.clubName}
+          </Text>
         </View>
         <View
           style={{

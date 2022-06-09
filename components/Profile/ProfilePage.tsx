@@ -21,16 +21,25 @@ import {
 import { Club } from "./Club";
 import { customAxios } from "../../src/axiosModule/customAxios";
 import instance from "../../data/FirebaseStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
+type ArchPair = {
+  first: number;
+  second: string;
+};
+
 const ProfilePage = () => {
   const route = useRoute<any>();
-  const { clubId, loggedId } = route.params;
+  const { clubId } = route.params;
   const [club, setClub] = useState<Club>();
   const [leaderName, setLeaderName] = useState<string>();
   const [myRole, setMyRole] = useState<number>();
   const [actionText, setActionText] = useState<string>();
+  const [archPair, setArchPairs] = useState<ArchPair[]>([]);
+  const [loggedId, setLoggedId] = useState<string>("");
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -38,6 +47,14 @@ const ProfilePage = () => {
       .get(`/club/${clubId}`)
       .then((response) => setClub(response.data))
       .catch((error) => console.log(error));
+    AsyncStorage.getItem("loggedId").then((result) => {
+      if (result !== null) {
+        setLoggedId(result);
+      } else {
+        Alert.alert("다시 로그인 해 주세요");
+        navigation.reset({ routes: [{ name: "LoginScreen" }] });
+      }
+    });
     return setClub(undefined);
   }, [isFocused]);
 
@@ -50,6 +67,7 @@ const ProfilePage = () => {
         })
         .catch((error) => console.log(error));
       console.log(`/${loggedId}/${clubId}/enterValid`);
+
       customAxios
         .get(`/${loggedId}/${clubId}/enterValid`)
         .then((response) => {
@@ -57,13 +75,17 @@ const ProfilePage = () => {
           console.log(response.data);
         })
         .catch((error) => console.log(error));
+
+      customAxios.get(`/club/${clubId}/archive`).then((response) => {
+        setArchPairs(response.data);
+      });
     }
 
     return () => {
       setLeaderName(undefined);
       setMyRole(undefined);
     };
-  }, [club]);
+  }, [loggedId, isFocused, club]);
 
   const enterClub = useCallback(() => {
     customAxios
@@ -162,7 +184,14 @@ const ProfilePage = () => {
   };
 
   const keywords = club?.keyword.map((keyword, idx) => {
-    return <Keyword key={idx} keyword={keyword} onPress={() => {}} />;
+    return (
+      <Keyword
+        key={idx}
+        keyword={keyword}
+        onPress={() => {}}
+        touchable={false}
+      />
+    );
   });
 
   //채팅 시작
@@ -211,6 +240,34 @@ const ProfilePage = () => {
       // 없으면 새로 만들기
     }
   };
+
+  const archiveComps = archPair.map((archP: ArchPair) => {
+    return (
+      <TouchableHighlight
+        onPress={() =>
+          navigation.navigate("ArchiveView", {
+            archiveId: archP.first,
+            myRole: myRole,
+            clubId: clubId,
+          })
+        }
+      >
+        <View
+          style={{
+            width: 120,
+            height: 120,
+            borderWidth: 1,
+            borderColor: "#a4a4a4",
+          }}
+        >
+          <Image
+            style={ProfilePageStyle.image}
+            source={{ uri: archP.second }}
+          ></Image>
+        </View>
+      </TouchableHighlight>
+    );
+  });
 
   return (
     <SafeAreaView>
@@ -389,7 +446,7 @@ const ProfilePage = () => {
             </Text>
           </View>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {/* TODO <Archieve /> iteration*/}
+            {archiveComps}
           </View>
         </View>
       </KeyboardAwareScrollView>

@@ -84,7 +84,7 @@ const ProfileStyle = StyleSheet.create({
   },
   keyword: {
     color: "#143365",
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: "900",
     marginLeft: 3,
     marginRight: 3,

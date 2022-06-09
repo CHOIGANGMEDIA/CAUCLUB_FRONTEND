@@ -28,6 +28,7 @@ const ModifyProfile = () => {
     club,
   }: { clubId: number; loggedId: string; club: Club } = route.params;
   const [mClub, setMClub] = useState<Club>(club);
+  const [newLeader, setNewLeader] = useState<string>("");
   const navigation = useNavigation<any>();
 
   const keywords = club?.keyword.map((keyword, idx) => {
@@ -42,18 +43,48 @@ const ModifyProfile = () => {
   });
 
   const submit = useCallback(() => {
-    customAxios
-      .patch(
-        `/${loggedId}/${clubId}?name=${mClub.name}&introduction=${mClub.introduction}&leaderId=${mClub.leaderId}&picture=${mClub.picture}&keyword=${mClub.keyword}`
-      )
-      .then((response) => {
-        if (response.data) {
-          Alert.alert("수정이 완료되었습니다.");
-          navigation.goBack();
-        }
-      })
-      .catch((error) => console.log("수정 실패", error));
-  }, [mClub]);
+    if (newLeader === "" || newLeader === mClub.leaderId) {
+      customAxios
+        .patch(
+          `/${loggedId}/${clubId}?name=${mClub.name}&introduction=${mClub.introduction}&leaderId=${mClub.leaderId}&picture=${mClub.picture}&keyword=${mClub.keyword}`
+        )
+        .then((response) => {
+          if (response.data) {
+            Alert.alert("수정이 완료되었습니다.");
+            navigation.goBack();
+          }
+        })
+        .catch((error) =>
+          console.log(
+            "수정 실패 : ",
+            `/${loggedId}/${clubId}?name=${mClub.name}&introduction=${mClub.introduction}&leaderId=${mClub.leaderId}&picture=${mClub.picture}&keyword=${mClub.keyword}`,
+            error
+          )
+        );
+    } else {
+      console.log(newLeader);
+      customAxios
+        .patch(`/${loggedId}/${clubId}/changeLeaderId?newLeaderId=${newLeader}`)
+        .then((response) => {
+          if (response.data) {
+            Alert.alert("수정 및 위임이 완료되었습니다.");
+            navigation.goBack();
+          } else {
+            Alert.alert(
+              "수정 불가",
+              "위임할 회장의 아이디는 동아리의 부원이어야합니다"
+            );
+          }
+        })
+        .catch((error) =>
+          console.log(
+            "수정 실패",
+            `/${loggedId}/${clubId}?newLeaderId=${newLeader}`,
+            error
+          )
+        );
+    }
+  }, [mClub, newLeader]);
 
   return (
     <SafeAreaView>
@@ -192,10 +223,9 @@ const ModifyProfile = () => {
                 <TextInput
                   style={{ fontSize: 15 }}
                   placeholder={"유지하려면 비워두세요"}
+                  autoCapitalize="none"
                   onChangeText={(text) => {
-                    setMClub((mc) => {
-                      return { ...mc, leaderId: text };
-                    });
+                    setNewLeader(text);
                   }}
                 />
               </View>

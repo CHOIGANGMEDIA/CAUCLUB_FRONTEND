@@ -17,6 +17,7 @@ import ChatMessage from "../ChatMessage";
 import GenerateProfile from "../Profile/GenerateProfile";
 import BoardNew from "../BoardNew";
 import ProfileList from "../Profile/ProfileList";
+import ArchiveView from "../Profile/ArchiveView";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ const ProfileNavigator = () => {
       <Stack.Screen name="GenerateClub" component={GenerateProfile} />
       <Stack.Screen name="GenerateBoard" component={BoardNew} />
       <Stack.Screen name="ProfilePage" component={ProfilePage} />
+      <Stack.Screen name="ArchiveView" component={ArchiveView} />
     </Stack.Navigator>
   );
 };

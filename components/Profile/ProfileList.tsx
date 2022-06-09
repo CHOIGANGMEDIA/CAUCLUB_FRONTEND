@@ -30,6 +30,7 @@ const ProfileList = () => {
       customAxios
         .get(`/${id}/joinedClub`)
         .then((response) => {
+          setClubIds([]);
           setClubIds(response.data);
           console.log("joined", response.data);
         })
@@ -37,7 +38,7 @@ const ProfileList = () => {
           console.log(error);
         });
     }
-    return () => setClubIds([]);
+    return setClubIds([]);
   }, [isFocused, id]);
 
   const profileClubList = clubIds?.map((clubId, i) => {

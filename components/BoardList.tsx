@@ -5,7 +5,7 @@ import { View, Text, TouchableHighlight, Alert } from "react-native";
 import InitialStlye from "./Style/InitialStyle";
 import BoardStyle from "./Style/BoardStyle";
 import { customAxios } from "../src/axiosModule/customAxios";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import BoardListEntity from "./BoardListEntity";
 import TopBox from "./TopBox";
 import { NavigationHeader } from "./navigation/NavigationHeader";
@@ -23,7 +23,7 @@ export type { PostProps };
 
 const BoardList = () => {
   const [posts, setPosts] = useState<PostProps[]>();
-
+  const isFocused = useIsFocused();
   const navigation = useNavigation<any>();
   const openScreen = useCallback(
     ({ postId, clubName, clubId, title, contents }: PostProps) => {
@@ -49,7 +49,7 @@ const BoardList = () => {
       });
 
     return setPosts([]);
-  }, []);
+  }, [isFocused]);
 
   const postList = posts?.map(
     ({ postId, clubName, clubId, title, contents }) => {

@@ -22,21 +22,20 @@ let imagePath = require("./images/푸앙_응원.png");
 
 const campus = ["서울캠퍼스", "안성캠퍼스"];
 const college = [
-  "인문대학",
-  "공과대학",
-  "생명공학대학",
-  "의과대학",
-  "사회과학대학",
-  "소프트웨어대학",
-  "자연과학대학",
-  "창의ICT공과대학",
-  "체육대학",
-  "예술공학대학",
-  "예술대학",
-  "적십자간호대학",
-  "약학대학",
-  "경영경제대학",
-  "사범대학",
+  [
+    "인문대학",
+    "공과대학",
+    "의과대학",
+    "사회과학대학",
+    "소프트웨어대학",
+    "자연과학대학",
+    "창의ICT공과대학",
+    "적십자간호대학",
+    "약학대학",
+    "경영경제대학",
+    "사범대학",
+  ],
+  ["생명공학대학", "체육대학", "예술공학대학", "예술대학"],
 ];
 
 type Validity = {
@@ -326,7 +325,7 @@ const RegisterScreen = () => {
             }}
           />
           <SelectDropdown
-            data={college}
+            data={college[Number(selectedCampus === "안성캠퍼스")]}
             defaultButtonText={"대학을 선택하세요"}
             onSelect={(selectedItem) => {
               collegeSelected(selectedItem);

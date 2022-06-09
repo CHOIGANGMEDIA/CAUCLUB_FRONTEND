@@ -99,6 +99,10 @@ const GenerateArchieve = () => {
   };
 
   const upload = () => {
+    if (imageUrlList.length < 1) {
+      Alert.alert("사진을 등록해 주세요");
+      return;
+    }
     const data = JSON.stringify({
       contents: contents,
       pictures: imageUrlList,

@@ -45,6 +45,7 @@ const GenerateProfile = () => {
     score: 0,
     type: 0,
   });
+  const [clubSelected, setClubSelected] = useState<boolean>(false);
   const [everyKeywords, setEveryKeywords] = useState<string[]>([
     "운동",
     "농구",
@@ -150,16 +151,24 @@ const GenerateProfile = () => {
 
   const submit = () => {
     console.log(club);
-    customAxios
-      .post(
-        `/${loggedId}/newClub?name=${club.name}&department=${club.department}&introduction=${club.introduction}&keyword=${club.keyword}&picture=${club.picture}&type=${club.type}`
-      )
-      .then((response) => {
-        if (response.data) {
-          Alert.alert("동아리가 생성되었습니다.");
-          navigation.goBack();
-        }
-      });
+    if (club.name === "") {
+      Alert.alert("생성 불가", "동아리 이름을 입력해주세요");
+    } else if (club.introduction === "") {
+      Alert.alert("생성 불가", "동아리 소개를 작성해주세요");
+    } else if (clubSelected) {
+      customAxios
+        .post(
+          `/${loggedId}/newClub?name=${club.name}&department=${club.department}&introduction=${club.introduction}&keyword=${club.keyword}&picture=${club.picture}&type=${club.type}`
+        )
+        .then((response) => {
+          if (response.data) {
+            Alert.alert("동아리가 생성되었습니다.");
+            navigation.reset({ routes: [{ name: "Profile" }] });
+          }
+        });
+    } else {
+      Alert.alert("생성 불가", "동아리 분류를 선택해주세요");
+    }
   };
 
   return (
@@ -297,6 +306,7 @@ const GenerateProfile = () => {
                         return { ...cl, type: 3 };
                       }
                     });
+                    setClubSelected(true);
                   }}
                   buttonTextAfterSelection={(selectedItem) => {
                     return selectedItem;

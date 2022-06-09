@@ -71,6 +71,7 @@ const MyPage = () => {
           .then((response) => {
             setName(response.data.name.trim());
             setEmail(response.data.email);
+            setKeyword(response.data.keyword);
           })
           .catch((error) => {
             console.log(error);
@@ -85,8 +86,14 @@ const MyPage = () => {
       <Keyword
         key={i}
         keyword={kw}
+        sel={keyword.includes(kw)}
         onPress={() => {
-          setKeyword((k) => [...k, kw]);
+          setKeyword((k) => {
+            if (k.includes(kw)) {
+              return [...k, kw];
+            }
+            return k.splice(k.indexOf(kw), 1);
+          });
           console.log(keyword);
         }}
       />

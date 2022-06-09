@@ -20,6 +20,7 @@ const ChatMessage = () => {
   const { myId, opId, opName, roomId } = route.params;
   const [msgText, setMsgText] = useState<string>("");
   const [chats, setChats] = useState<Chat[]>([]);
+  const [thisRoomId, setThisRoomId] = useState<string>("");
   const isFocused = useIsFocused();
 
   const msgList = chats.map((msg, i) => {
@@ -44,7 +45,7 @@ const ChatMessage = () => {
   // load message
   useEffect(() => {
     const fetchMsg = async () => {
-      if (roomId) {
+      if (roomId !== undefined || roomId !== "") {
         instance.ref
           .child("rooms")
           .child(roomId)
@@ -52,6 +53,19 @@ const ChatMessage = () => {
           .on("value", (response) => {
             setChats([]);
             setChats(snapshotToChats(response));
+            setThisRoomId("");
+            setThisRoomId(roomId);
+            console.log(response);
+          });
+      } else {
+        instance.ref
+          .child("userRooms")
+          .child(myId)
+          .child(opId)
+          .child("roomId")
+          .on("value", (response) => {
+            setThisRoomId("");
+            setThisRoomId(response.val());
           });
       }
     };
@@ -75,20 +89,23 @@ const ChatMessage = () => {
       sentBy: myId,
       text: msgText,
     };
-    instance.ref.child("rooms").child(roomId).child("chats").push(msg);
+    instance.ref.child("rooms").child(thisRoomId).child("chats").push(msg);
+
     instance.ref
       .child("userRooms")
       .child(myId)
       .child(opId)
       .child("recent")
-      .set(msg.text);
+      .set(msg.text)
+      .catch((error) => console.log("userRooms/opId/myId", error));
 
     instance.ref
       .child("userRooms")
       .child(opId)
       .child(myId)
       .child("recent")
-      .set(msg.text);
+      .set(msg.text)
+      .catch((error) => console.log("userRooms/myId/opId", error));
 
     setMsgText("");
   };

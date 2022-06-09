@@ -14,6 +14,7 @@ type KeywordProps = {
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
   touchable?: boolean;
+  sel?: boolean;
 };
 
 const Keyword = ({
@@ -21,8 +22,9 @@ const Keyword = ({
   onPress,
   style,
   touchable = true,
+  sel = false,
 }: KeywordProps) => {
-  const [selected, setSelected] = useState<boolean>(false);
+  const [selected, setSelected] = useState<boolean>(sel);
   return (
     <TouchableHighlight
       style={[
@@ -51,7 +53,7 @@ const Keyword = ({
           selected
             ? {
                 color: "white",
-                fontSize: 18,
+                fontSize: 12,
                 fontWeight: "900",
                 marginLeft: 3,
                 marginRight: 3,

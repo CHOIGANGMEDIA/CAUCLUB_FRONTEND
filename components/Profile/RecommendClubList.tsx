@@ -27,9 +27,11 @@ const RecommendClubList = () => {
 
   useEffect(() => {
     if (id) {
+      console.log(`/${id}/club/clubRecommend`);
       customAxios
         .get(`/${id}/club/clubRecommend`)
         .then((response) => {
+          setClubIds([]);
           setClubIds(response.data);
           console.log("rec", response.data);
         })

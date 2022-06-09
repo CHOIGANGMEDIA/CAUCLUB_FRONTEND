@@ -25,7 +25,7 @@ type ChatProfile = {
 
 const ChatList = () => {
   const [id, setId] = useState<string>("");
-  const [charRooms, setChatRooms] = useState<ChatProfile[]>([]);
+  const [chatRooms, setChatRooms] = useState<ChatProfile[]>([]);
 
   const navigation = useNavigation<any>();
   useEffect(() => {
@@ -44,8 +44,9 @@ const ChatList = () => {
         .child(id)
         .once("value", (response) => {
           setChatRooms([]);
-          setChatRooms(snapshotToChatProfiles(response));
+          setChatRooms(snapshotToChatProfiles(response).reverse());
         })
+        .then(() => console.log(chatRooms))
         .catch((error) => console.log(error));
     };
     if (id !== "") fetchRooms();
@@ -66,9 +67,9 @@ const ChatList = () => {
     return returnArr;
   };
 
-  const chatList = charRooms.map((chatP) => {
+  const chatList = chatRooms.map((chatP) => {
     return (
-      <React.Fragment key={chatP.opId}>
+      <View style={ChatStyle.chatList} key={chatP.opId}>
         <Image source={{ uri: chatP.picture }} style={ChatStyle.profile} />
 
         <TouchableHighlight
@@ -87,7 +88,7 @@ const ChatList = () => {
             <Text style={ChatStyle.lastMessage}>{chatP.recent}</Text>
           </View>
         </TouchableHighlight>
-      </React.Fragment>
+      </View>
     );
   });
 
@@ -98,9 +99,7 @@ const ChatList = () => {
         <Text style={InitialStlye.boardTitle}>채팅</Text>
       </View>
       <KeyboardAwareScrollView style={{ height: 569 }}>
-        {chatList.length > 0 ? (
-          <View style={ChatStyle.chatList}>{chatList}</View>
-        ) : null}
+        {chatList}
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

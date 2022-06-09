@@ -155,7 +155,7 @@ const ModifyArchieve = () => {
         </View>
         <TextInput
           style={ArchieveStyle.titleStyle}
-          value={modPost.title}
+          value={modPost?.title}
           onChangeText={(t) => {
             setModPost((mP) => {
               return { ...mP, title: t };
