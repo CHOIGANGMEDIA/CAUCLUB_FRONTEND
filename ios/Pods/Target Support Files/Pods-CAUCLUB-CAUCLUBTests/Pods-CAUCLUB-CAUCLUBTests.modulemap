@@ -1,0 +1,6 @@
+module Pods_CAUCLUB_CAUCLUBTests {
+  umbrella header "Pods-CAUCLUB-CAUCLUBTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

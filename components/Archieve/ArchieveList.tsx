@@ -29,7 +29,7 @@ const ArchieveList = () => {
     customAxios
       .get("/archive")
       .then((response) => {
-        setArcList(response.data.reverse());
+        setArcList(response.data);
       })
       .catch((error) => console.log(error));
     return setArcList([]);

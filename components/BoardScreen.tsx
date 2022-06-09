@@ -1,7 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, { useCallback, useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { View, Text, TouchableHighlight, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  Alert,
+  Dimensions,
+} from "react-native";
 import BoardStyle from "./Style/BoardStyle";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -10,12 +16,15 @@ import { SafeAreaView } from "./navigation/SafeAreaView";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { customAxios } from "../src/axiosModule/customAxios";
 import ProfilePageStyle from "./Style/ProfilePageStyle";
+import { MaterialCommunityIcon as Icon } from "./navigation/MaterialCommunityIcon";
+import ArchieveStyle from "./Style/ArchieveStyle";
 
 const BoardScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const [myRole, setMyRole] = useState<string>("");
   const { postId, clubName, clubId, title, contents } = route.params;
+  const [loggedId, setLoggedId] = useState<string>("");
 
   useEffect(() => {
     const fetchData = () => {
@@ -25,6 +34,7 @@ const BoardScreen = () => {
             .get(`/${result}/${clubId}/enterValid`)
             .then((response) => {
               setMyRole(response.data);
+              setLoggedId(response.data);
               console.log(response.data);
             })
             .catch((error) => console.log(error));
@@ -36,6 +46,27 @@ const BoardScreen = () => {
     };
     fetchData();
   }, []);
+
+  const report = useCallback(() => {
+    Alert.alert("신고", "해당 글을 신고하시겠습니까?", [
+      { text: "취소" },
+      {
+        text: "확인",
+        onPress: () => {
+          customAxios
+            .post(`/${loggedId}/${clubId}/${postId}/postReport`)
+            .then((response) => {
+              if (response.data) {
+                Alert.alert("게시글이 정상적으로 신고되었습니다. ");
+              } else {
+                Alert.alert("게시글을 신고하셨습니다.");
+              }
+            })
+            .catch((error) => console.log("report :", error));
+        },
+      },
+    ]);
+  }, [loggedId]);
 
   return (
     <SafeAreaView>
@@ -65,6 +96,12 @@ const BoardScreen = () => {
                 </Text>
               </TouchableHighlight>
             </View>
+            <Icon
+              name={"alarm-light-outline"}
+              size={35}
+              style={{ alignSelf: "flex-end", right: 20 }}
+              onPress={report}
+            />
             <TouchableHighlight
               style={[
                 ProfilePageStyle.chatButton,
