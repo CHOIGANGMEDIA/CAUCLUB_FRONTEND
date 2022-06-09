@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   View,
@@ -11,12 +11,13 @@ import {
 } from "react-native";
 import ProfilePageStyle from "../Style/ProfilePageStyle";
 import Keyword from "./Keyword";
-import Archieve from "./Archieve";
+
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Club } from "./Club";
 import { SafeAreaView } from "../navigation/SafeAreaView";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import { customAxios } from "../../src/axiosModule/customAxios";
+import EveryKeywords from "../../data/EveryKeywords";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
@@ -30,17 +31,7 @@ const ModifyProfile = () => {
   const [mClub, setMClub] = useState<Club>(club);
   const [newLeader, setNewLeader] = useState<string>("");
   const navigation = useNavigation<any>();
-
-  const keywords = club?.keyword.map((keyword, idx) => {
-    return (
-      <Keyword
-        key={idx}
-        keyword={keyword}
-        touchable={false}
-        onPress={() => {}}
-      />
-    );
-  });
+  const [keywordComps, setKeywordComps] = useState<JSX.Element[]>([]);
 
   const submit = useCallback(() => {
     if (newLeader === "" || newLeader === mClub.leaderId) {
@@ -85,6 +76,31 @@ const ModifyProfile = () => {
         );
     }
   }, [mClub, newLeader]);
+
+  useLayoutEffect(() => {
+    setKeywordComps((kc) => {
+      return EveryKeywords.map((kw, i) => {
+        return (
+          <Keyword
+            key={i}
+            keyword={kw}
+            sel={mClub.keyword.includes(kw)}
+            onPress={() => {
+              setMClub((mC: Club) => {
+                if (!mC.keyword.includes(kw)) {
+                  return { ...mC, keyword: [...mC.keyword, kw] };
+                }
+                const ret = mC.keyword;
+                ret.splice(ret.indexOf(kw), 1);
+                return { ...mC, keyword: ret };
+              });
+              console.log(mClub.keyword);
+            }}
+          />
+        );
+      });
+    });
+  }, [mClub.keyword]);
 
   return (
     <SafeAreaView>
@@ -268,7 +284,7 @@ const ModifyProfile = () => {
             />
           </View>
         </View>
-        <View style={ProfilePageStyle.keywordList}>{keywords}</View>
+        <View style={ProfilePageStyle.keywordList}>{keywordComps}</View>
         <View
           style={{
             width: "100%",

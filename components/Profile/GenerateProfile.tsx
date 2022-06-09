@@ -18,6 +18,7 @@ import { NavigationHeader } from "../navigation/NavigationHeader";
 import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 import { customAxios } from "../../src/axiosModule/customAxios";
 import SelectDropdown from "react-native-select-dropdown";
+import EveryKeywords from "../../data/EveryKeywords";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
@@ -46,43 +47,21 @@ const GenerateProfile = () => {
     type: 0,
   });
   const [clubSelected, setClubSelected] = useState<boolean>(false);
-  const [everyKeywords, setEveryKeywords] = useState<string[]>([
-    "운동",
-    "농구",
-    "축구",
-    "야구",
-    "배구",
-    "탁구",
-    "테니스",
-    "골프",
-    "배드민턴",
-    "자전거",
-    "오토바이",
-    "미식축구",
-    "당구",
-    "포켓볼",
-    "클라이밍",
-    "직관",
-    "등산",
-    "유도",
-    "태권도",
-    "검도",
-    "복싱",
-    "킥복싱",
-    "알고리즘",
-    "스터디",
-    "코딩",
-  ]);
 
-  const keywordComps = everyKeywords.map((kw, i) => {
+  const keywordComps = EveryKeywords.map((kw, i) => {
     return (
       <Keyword
         key={i}
         keyword={kw}
         onPress={() => {
           setClub((cl) => {
-            return { ...cl, keyword: cl.keyword.concat([kw]) };
+            if (!cl.keyword.includes(kw))
+              return { ...cl, keyword: [...cl.keyword, kw] };
+            const ret = cl.keyword;
+            ret.splice(ret.indexOf(kw), 1);
+            return { ...cl, keyword: ret };
           });
+          console.log(club.keyword);
         }}
       />
     );
@@ -101,8 +80,13 @@ const GenerateProfile = () => {
   };
 
   const uploadImage = useCallback((image: ImageOrVideo) => {
+    if (image.sourceURL === undefined) image.sourceURL = image.path;
     if (image.sourceURL !== undefined) {
       const data = new FormData();
+      if (image.filename === undefined) {
+        const splited = image.path.split("/");
+        image.filename = splited[splited.length - 1];
+      }
       let file = {
         uri: image.path,
         type: "multipart/form-data",

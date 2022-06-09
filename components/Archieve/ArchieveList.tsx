@@ -15,7 +15,7 @@ const ArchieveList = () => {
     useState<{ archiveId: number; clubId: number }[]>();
   const [loggedId, setLoggedId] = useState<string>("");
   const isFocused = useIsFocused();
-  const [arcPostList, setArcPostList] = useState<Element[]>([]);
+  const [arcPostList, setArcPostList] = useState<JSX.Element[]>([]);
   const navigation = useNavigation<any>();
 
   const checkRole = async (clubId: number) => {
@@ -30,6 +30,7 @@ const ArchieveList = () => {
       .get("/archive")
       .then((response) => {
         setArcList(response.data);
+        console.log(response.data);
       })
       .catch((error) => console.log(error));
     return setArcList([]);
@@ -60,8 +61,7 @@ const ArchieveList = () => {
             return [...before, one];
           });
         });
-      })
-      .then(() => console.log(arcPostList));
+      });
     return setArcPostList([]);
   }, [arcList]);
 

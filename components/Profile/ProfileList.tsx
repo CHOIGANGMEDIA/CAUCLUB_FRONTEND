@@ -23,7 +23,7 @@ const ProfileList = () => {
         if (result) setId(result);
       })
       .then(() => {});
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     if (id) {
