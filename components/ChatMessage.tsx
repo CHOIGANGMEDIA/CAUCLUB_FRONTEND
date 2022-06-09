@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { View, Text, TouchableHighlight, TextInput } from "react-native";
 import ChatStyle from "./Style/ChatStyle";
@@ -84,11 +84,13 @@ const ChatMessage = () => {
     return returnChats;
   };
 
-  const send = () => {
+  const send = useCallback(() => {
     const msg = {
       sentBy: myId,
       text: msgText,
     };
+    console.log(msg);
+
     instance.ref.child("rooms").child(thisRoomId).child("chats").push(msg);
 
     instance.ref
@@ -108,7 +110,7 @@ const ChatMessage = () => {
       .catch((error) => console.log("userRooms/myId/opId", error));
 
     setMsgText("");
-  };
+  }, [msgText, myId]);
 
   return (
     <SafeAreaView>
