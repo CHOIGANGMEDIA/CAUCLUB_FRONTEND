@@ -40,29 +40,38 @@ const GenerateArchieve = () => {
     }
   };
 
-  const uploadImage = useCallback((image: ImageOrVideo) => {
-    if (image.sourceURL !== undefined) {
-      const data = new FormData();
-      let file = {
-        uri: image.path,
-        type: "multipart/form-data",
-        name: image.filename,
-      };
-      data.append("file", file);
-      console.log(image);
-      const config = { headers: { "content-type": "multipart/form-data" } };
-      console.log(data);
-      customAxios
-        .post(`/files?nameFile=${image.filename}`, data, config)
-        .then(async (response) => {
-          const url = await getUrl(image.filename);
-          if (url !== undefined)
-            setImageUrlList((imgUrlL) => [...imgUrlL, url]);
-          console.log(response.data);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, []);
+  const uploadImage = useCallback(
+    (image: ImageOrVideo) => {
+      console.log("in");
+      if (image.sourceURL === undefined) image.sourceURL = image.path;
+      if (image.sourceURL !== undefined) {
+        const data = new FormData();
+        if (image.filename === undefined) {
+          const splited = image.path.split("/");
+          image.filename = splited[splited.length - 1];
+        }
+        let file = {
+          uri: image.path,
+          type: "multipart/form-data",
+          name: image.filename,
+        };
+        data.append("file", file);
+        console.log(image);
+        const config = { headers: { "content-type": "multipart/form-data" } };
+        console.log(data);
+        customAxios
+          .post(`/files?nameFile=${image.filename}`, data, config)
+          .then(async (response) => {
+            const url = await getUrl(image.filename);
+            if (url !== undefined)
+              setImageUrlList((imgUrlL) => [...imgUrlL, url]);
+            console.log(response.data);
+          })
+          .catch((error) => console.log(error));
+      }
+    },
+    [imageUrlList]
+  );
 
   const attatchPhoto = (i: number) => {
     return (
@@ -78,6 +87,7 @@ const GenerateArchieve = () => {
                   cropping: true,
                 })
                   .then((image) => {
+                    console.log(image);
                     uploadImage(image);
                   })
                   .catch((error) => console.log(error));
@@ -167,7 +177,10 @@ const GenerateArchieve = () => {
             marginLeft: 30,
           }}
         >
-          <CheckBox onChange={() => setIsMutual((v) => !v)}></CheckBox>
+          <CheckBox
+            onChange={() => setIsMutual((v) => !v)}
+            value={isMutual}
+          ></CheckBox>
           <Text>다른 동아리와의 교류 활동입니다.</Text>
         </View>
         <KeyboardAwareScrollView style={ArchieveStyle.contentStyle}>

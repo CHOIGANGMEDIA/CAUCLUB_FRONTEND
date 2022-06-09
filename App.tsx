@@ -6,6 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import MainNavigator from "./components/navigation/MainNavigator";
 
 const App = () => {
+  // LogBox.ignoreAllLogs(true);
   return (
     <SafeAreaProvider>
       <NavigationContainer>

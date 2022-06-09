@@ -65,16 +65,16 @@ const ProfilePage = () => {
         .then((response) => {
           setLeaderName(response.data.name.trim());
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(`/member//${club?.leaderId}`, error));
       console.log(`/${loggedId}/${clubId}/enterValid`);
 
       customAxios
         .get(`/${loggedId}/${clubId}/enterValid`)
         .then((response) => {
           setMyRole(response.data);
-          console.log(response.data);
+          console.log("entervalid", response.data);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("entervalid", error));
 
       customAxios.get(`/club/${clubId}/archive`).then((response) => {
         setArchPairs(response.data);
@@ -110,7 +110,7 @@ const ProfilePage = () => {
         } else Alert.alert("탈퇴 실패 관리자에게 문의하세요");
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [loggedId, clubId]);
 
   const navigation = useNavigation<any>();
 
