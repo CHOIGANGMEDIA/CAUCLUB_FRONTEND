@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   ViewStyle,
 } from "react-native";
-import { useEvent } from "react-native-reanimated";
+
 import ProfileStyle from "../Style/ProfileStyle";
 
 type KeywordProps = {

@@ -5,6 +5,7 @@ import { NavigationHeader } from "../navigation/NavigationHeader";
 import { SafeAreaView } from "../navigation/SafeAreaView";
 
 type ArchiveViewProps = {
+  loggedId: string;
   archiveId: number;
   myRole: number;
   clubId: number;
@@ -12,12 +13,18 @@ type ArchiveViewProps = {
 
 const ArchiveView = () => {
   const route = useRoute<any>();
-  const { archiveId, myRole, clubId }: ArchiveViewProps = route.params;
+  const { loggedId, archiveId, myRole, clubId }: ArchiveViewProps =
+    route.params;
 
   return (
     <SafeAreaView>
       <NavigationHeader Left={true} />
-      <ArchievePage archiveId={archiveId} role={myRole} clubId={clubId} />
+      <ArchievePage
+        loggedId={loggedId}
+        archiveId={archiveId}
+        role={myRole}
+        clubId={clubId}
+      />
     </SafeAreaView>
   );
 };

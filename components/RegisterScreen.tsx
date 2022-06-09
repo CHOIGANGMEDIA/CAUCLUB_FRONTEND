@@ -17,6 +17,7 @@ import { customAxios } from "../src/axiosModule/customAxios";
 import Style from "./Style/Style";
 import crypto from "crypto";
 import Keyword from "./Profile/Keyword";
+import EveryKeywords from "../data/EveryKeywords";
 
 let imagePath = require("./images/푸앙_응원.png");
 
@@ -198,42 +199,22 @@ const RegisterScreen = () => {
     [college]
   );
 
-  const [everyKeywords, setEveryKeywords] = useState<string[]>([
-    "운동",
-    "농구",
-    "축구",
-    "야구",
-    "배구",
-    "탁구",
-    "테니스",
-    "골프",
-    "배드민턴",
-    "자전거",
-    "오토바이",
-    "미식축구",
-    "당구",
-    "포켓볼",
-    "클라이밍",
-    "직관",
-    "등산",
-    "유도",
-    "태권도",
-    "검도",
-    "복싱",
-    "킥복싱",
-    "알고리즘",
-    "스터디",
-    "코딩",
-  ]);
-
-  const keywordComps = everyKeywords.map((kw, i) => {
+  const keywordComps = EveryKeywords.map((kw, i) => {
     return (
       <Keyword
         key={i}
         keyword={kw}
+        sel={false}
+        touchable={true}
         onPress={() => {
-          setKeyword((k) => [...k, kw]);
-          console.log(keyword);
+          setKeyword((k) => {
+            if (!k.includes(kw)) {
+              return [...k, kw];
+            }
+            const ret = k;
+            ret.splice(ret.indexOf(kw), 1);
+            return ret;
+          });
         }}
       />
     );

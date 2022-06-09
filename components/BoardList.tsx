@@ -7,7 +7,7 @@ import BoardStyle from "./Style/BoardStyle";
 import { customAxios } from "../src/axiosModule/customAxios";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import BoardListEntity from "./BoardListEntity";
-import TopBox from "./TopBox";
+
 import { NavigationHeader } from "./navigation/NavigationHeader";
 import { SafeAreaView } from "./navigation/SafeAreaView";
 

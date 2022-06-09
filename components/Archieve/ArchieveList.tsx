@@ -50,6 +50,7 @@ const ArchieveList = () => {
           const one = (
             <ArchievePage
               key={i}
+              loggedId={loggedId}
               archiveId={post.archiveId}
               role={await checkRole(post.clubId)}
               clubId={post.clubId}

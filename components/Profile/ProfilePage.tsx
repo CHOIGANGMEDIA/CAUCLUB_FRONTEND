@@ -7,10 +7,10 @@ import React, {
 } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { View, Text, Image, TouchableHighlight, Alert } from "react-native";
-import InitialStlye from "../Style/InitialStyle";
+
 import ProfilePageStyle from "../Style/ProfilePageStyle";
 import Keyword from "./Keyword";
-import Archieve from "./Archieve";
+
 import { SafeAreaView } from "../navigation/SafeAreaView";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import {
@@ -245,8 +245,10 @@ const ProfilePage = () => {
   const archiveComps = archPair.map((archP: ArchPair) => {
     return (
       <TouchableHighlight
+        key={archP.first}
         onPress={() =>
           navigation.navigate("ArchiveView", {
+            loggedId: loggedId,
             archiveId: archP.first,
             myRole: myRole,
             clubId: clubId,

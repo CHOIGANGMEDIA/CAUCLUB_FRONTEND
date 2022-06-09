@@ -1,6 +1,0 @@
-module Pods_ttmp_ttmpTests {
-  umbrella header "Pods-ttmp-ttmpTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

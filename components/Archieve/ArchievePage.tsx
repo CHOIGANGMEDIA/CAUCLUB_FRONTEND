@@ -1,7 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React, { useLayoutEffect, useState } from "react";
 import ArchieveStyle from "../Style/ArchieveStyle";
-import { View, Text, TouchableHighlight, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  Image,
+  Alert,
+  Dimensions,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialCommunityIcon as Icon } from "../navigation/MaterialCommunityIcon";
@@ -18,6 +25,7 @@ let imagePath = require("../images/푸앙_윙크.png");
 }
 
 type ArchivePageProps = {
+  loggedId: string;
   archiveId: number;
   role: number;
   clubId: number;
@@ -36,7 +44,12 @@ type ArchivePost = {
 
 export type { ArchivePost, ArchivePageProps };
 
-const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
+const ArchievePage = ({
+  loggedId,
+  archiveId,
+  role,
+  clubId,
+}: ArchivePageProps) => {
   const navigation = useNavigation<any>();
   const [post, setPost] = useState<ArchivePost>();
   const [imageList, setImageList] = useState<string[]>([]);
@@ -101,8 +114,22 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
 
   const report = useCallback(() => {
     Alert.alert("신고", "해당 글을 신고하시겠습니까?", [
-      { text: "확인", onPress: () => {} },
       { text: "취소" },
+      {
+        text: "확인",
+        onPress: () => {
+          customAxios
+            .post(`/${loggedId}/${clubId}/${archiveId}/archiveReport`)
+            .then((response) => {
+              if (response.data) {
+                Alert.alert("아카이브가 정상적으로 신고되었습니다. ");
+              } else {
+                Alert.alert("이미 이 아카이브를 신고하셨습니다.");
+              }
+            })
+            .catch((error) => console.log("report :", error));
+        },
+      },
     ]);
   }, []);
 
@@ -198,6 +225,12 @@ const ArchievePage = ({ archiveId, role, clubId }: ArchivePageProps) => {
           onPress={liked}
         />
         <Text style={ArchieveStyle.likes}>좋아요 {post?.like}개</Text>
+        <Icon
+          name={"alarm-light-outline"}
+          size={35}
+          style={{ left: Dimensions.get("window").width - 165 }}
+          onPress={report}
+        />
       </View>
       <View style={{ flex: 0 }}>
         <Text style={ArchieveStyle.titleFont}>{post?.title}</Text>

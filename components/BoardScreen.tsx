@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { View, Text, TouchableHighlight, Alert } from "react-native";
 import BoardStyle from "./Style/BoardStyle";
 
-import { PostProps } from "./BoardList";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NavigationHeader } from "./navigation/NavigationHeader";
 import { SafeAreaView } from "./navigation/SafeAreaView";
