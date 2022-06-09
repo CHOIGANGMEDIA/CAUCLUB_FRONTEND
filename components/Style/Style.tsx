@@ -42,7 +42,8 @@ const Style = StyleSheet.create({
     borderRadius: 100,
     borderColor: '#143365',
     backgroundColor: '#143365',
-    width: 350,
+    width: 320,
+    justifyContent: 'center',
   },
   center: {
     flexDirection: 'row',
@@ -52,6 +53,11 @@ const Style = StyleSheet.create({
     margin: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  lastCenter: {
+    margin: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   imageContainer: {
     // flex: 1,
@@ -65,6 +71,12 @@ const Style = StyleSheet.create({
     width: 120,
     margin: 10,
     right: 20,
+  },
+  warnSubStyle: {
+    color: 'red',
+    fontSize: 13,
+    fontWeight: 'normal',
+    left: 20,
   },
 });
 

@@ -1,41 +1,125 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, Text, TouchableHighlight} from 'react-native';
-import InitialStlye from './Style/InitialStyle';
-import BoardStyle from './Style/BoardStyle';
-import BottomBox from './BottomBox';
+import React, { useCallback, useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  Alert,
+  Dimensions,
+} from "react-native";
+import BoardStyle from "./Style/BoardStyle";
 
-const BoardScreen =() => {
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { NavigationHeader } from "./navigation/NavigationHeader";
+import { SafeAreaView } from "./navigation/SafeAreaView";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { customAxios } from "../src/axiosModule/customAxios";
+import ProfilePageStyle from "./Style/ProfilePageStyle";
+import { MaterialCommunityIcon as Icon } from "./navigation/MaterialCommunityIcon";
+import ArchieveStyle from "./Style/ArchieveStyle";
+
+const BoardScreen = () => {
+  const route = useRoute<any>();
+  const navigation = useNavigation<any>();
+  const [myRole, setMyRole] = useState<string>("");
+  const { postId, clubName, clubId, title, contents } = route.params;
+  const [loggedId, setLoggedId] = useState<string>("");
+
+  useEffect(() => {
+    const fetchData = () => {
+      AsyncStorage.getItem("loggedId").then((result) => {
+        if (result !== null) {
+          customAxios
+            .get(`/${result}/${clubId}/enterValid`)
+            .then((response) => {
+              setMyRole(response.data);
+              setLoggedId(response.data);
+              console.log(response.data);
+            })
+            .catch((error) => console.log(error));
+        } else {
+          Alert.alert("다시 로그인 해 주세요");
+          navigation.reset({ routes: [{ name: "LoginScreen" }] });
+        }
+      });
+    };
+    fetchData();
+  }, []);
+
+  const report = useCallback(() => {
+    Alert.alert("신고", "해당 글을 신고하시겠습니까?", [
+      { text: "취소" },
+      {
+        text: "확인",
+        onPress: () => {
+          customAxios
+            .post(`/${loggedId}/${clubId}/${postId}/postReport`)
+            .then((response) => {
+              if (response.data) {
+                Alert.alert("게시글이 정상적으로 신고되었습니다. ");
+              } else {
+                Alert.alert("게시글을 신고하셨습니다.");
+              }
+            })
+            .catch((error) => console.log("report :", error));
+        },
+      },
+    ]);
+  }, [loggedId]);
+
   return (
-    <>
-      <View style={InitialStlye.titleBox}>
-        <Text style={InitialStlye.title}>CAUCLUB</Text>
-      </View>
-      <View style={BoardStyle.topBox}>
-        <Text style={InitialStlye.boardTitle}>게시판</Text>
-      </View>
-      <View style={{width:'100%',borderBottomWidth:0.5,borderColor:'#444'}} />
-      <View>
-        <View style={({height: 510, alignItems: 'center'})}>
-          <Text style={BoardStyle.screenTitle}>알고리즘 대회 공동 개최 동아리 모집</Text>
-          <View style={({flexDirection: 'row', width: '95%'})}>
-            <Text style={BoardStyle.screenClub}>작성자: </Text>
-            {/* 동아리명(ChAOS) 클릭하면 해당 동아리 프로필로 가게끔 하려고 버튼으로 만들었어요 */}
-            <TouchableHighlight style={BoardStyle.screenClub}>
-              <Text style={({color: 'black', fontWeight: '900'})}>
-                ChAOS
+    <SafeAreaView>
+      <NavigationHeader Left={true} />
+      <KeyboardAwareScrollView>
+        <View
+          style={{ width: "100%", borderBottomWidth: 0.5, borderColor: "#444" }}
+        />
+        <View>
+          <View style={{ height: 553, alignItems: "center" }}>
+            <Text style={BoardStyle.screenTitle}>{title}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                width: "95%",
+                justifyContent: "flex-start",
+              }}
+            >
+              <Text style={BoardStyle.screenClub}>작성자: </Text>
+              {/* 동아리명(ChAOS) 클릭하면 해당 동아리 프로필로 가게끔 하려고 버튼으로 만들었어요 */}
+              <TouchableHighlight
+                style={BoardStyle.screenClub}
+                onPress={() => navigation.navigate("ProfilePage", { clubId })}
+              >
+                <Text style={{ color: "black", fontWeight: "900" }}>
+                  {clubName}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <Icon
+              name={"alarm-light-outline"}
+              size={35}
+              style={{ alignSelf: "flex-end", right: 20 }}
+              onPress={report}
+            />
+            <TouchableHighlight
+              style={[
+                ProfilePageStyle.chatButton,
+                { alignSelf: "flex-end", right: 20 },
+              ]}
+              onPress={() => {
+                navigation.navigate("BoardModify", { postId: postId });
+              }}
+            >
+              <Text style={{ color: "white", fontWeight: "900" }}>
+                수정 / 삭제
               </Text>
             </TouchableHighlight>
+            <Text style={BoardStyle.screenContent}>{contents}</Text>
           </View>
-          <KeyboardAwareScrollView>
-            <Text style={BoardStyle.screenContent}>내용 칸 입니다. 내용 길어지면 스크롤뷰로 알아서 잘 보입니다. 확인했어요~</Text>
-          </KeyboardAwareScrollView>
         </View>
-        <BottomBox />
-      </View>
-      
-    </>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 

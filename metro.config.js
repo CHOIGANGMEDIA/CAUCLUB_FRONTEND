@@ -6,6 +6,12 @@
  */
 
 module.exports = {
+  resolver: {
+    extraNodeModules: {
+      stream: require.resolve("stream-browserify"),
+    },
+    sourceExts: ["jsx", "js", "ts", "tsx", "cjs"],
+  },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
