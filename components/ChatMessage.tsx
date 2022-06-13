@@ -118,6 +118,7 @@ const ChatMessage = () => {
       <Text style={ChatStyle.chatName}>{opName}</Text>
       <KeyboardAwareScrollView style={ChatStyle.chatScrollView}>
         {msgList}
+
       </KeyboardAwareScrollView>
       <View style={ChatStyle.chatControl}>
         <TextInput
