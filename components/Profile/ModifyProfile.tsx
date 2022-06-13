@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   View,
@@ -11,12 +11,13 @@ import {
 } from "react-native";
 import ProfilePageStyle from "../Style/ProfilePageStyle";
 import Keyword from "./Keyword";
-import Archieve from "./Archieve";
+
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Club } from "./Club";
 import { SafeAreaView } from "../navigation/SafeAreaView";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import { customAxios } from "../../src/axiosModule/customAxios";
+import EveryKeywords from "../../data/EveryKeywords";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
@@ -28,25 +29,78 @@ const ModifyProfile = () => {
     club,
   }: { clubId: number; loggedId: string; club: Club } = route.params;
   const [mClub, setMClub] = useState<Club>(club);
+  const [newLeader, setNewLeader] = useState<string>("");
   const navigation = useNavigation<any>();
-
-  const keywords = club?.keyword.map((keyword, idx) => {
-    return <Keyword key={idx} keyword={keyword} />;
-  });
+  const [keywordComps, setKeywordComps] = useState<JSX.Element[]>([]);
 
   const submit = useCallback(() => {
-    customAxios
-      .patch(
-        `/${loggedId}/${clubId}?name=${mClub.name}&introduction=${mClub.introduction}&leaderId=${mClub.leaderId}&picture=${mClub.picture}&keyword=${mClub.keyword}`
-      )
-      .then((response) => {
-        if (response.data) {
-          Alert.alert("수정이 완료되었습니다.");
-          navigation.goBack();
-        }
-      })
-      .catch((error) => console.log("수정 실패", error));
-  }, [mClub]);
+    if (newLeader === "" || newLeader === mClub.leaderId) {
+      customAxios
+        .patch(
+          `/${loggedId}/${clubId}?name=${mClub.name}&introduction=${mClub.introduction}&leaderId=${mClub.leaderId}&picture=${mClub.picture}&keyword=${mClub.keyword}`
+        )
+        .then((response) => {
+          if (response.data) {
+            Alert.alert("수정이 완료되었습니다.");
+            navigation.goBack();
+          }
+        })
+        .catch((error) =>
+          console.log(
+            "수정 실패 : ",
+            `/${loggedId}/${clubId}?name=${mClub.name}&introduction=${mClub.introduction}&leaderId=${mClub.leaderId}&picture=${mClub.picture}&keyword=${mClub.keyword}`,
+            error
+          )
+        );
+    } else {
+      console.log(newLeader);
+      customAxios
+        .patch(`/${loggedId}/${clubId}/changeLeaderId?newLeaderId=${newLeader}`)
+        .then((response) => {
+          if (response.data) {
+            Alert.alert("수정 및 위임이 완료되었습니다.");
+            navigation.goBack();
+          } else {
+            Alert.alert(
+              "수정 불가",
+              "위임할 회장의 아이디는 동아리의 부원이어야합니다"
+            );
+          }
+        })
+        .catch((error) =>
+          console.log(
+            "수정 실패",
+            `/${loggedId}/${clubId}?newLeaderId=${newLeader}`,
+            error
+          )
+        );
+    }
+  }, [mClub, newLeader]);
+
+  useLayoutEffect(() => {
+    setKeywordComps((kc) => {
+      return EveryKeywords.map((kw, i) => {
+        return (
+          <Keyword
+            key={i}
+            keyword={kw}
+            sel={mClub.keyword.includes(kw)}
+            onPress={() => {
+              setMClub((mC: Club) => {
+                if (!mC.keyword.includes(kw)) {
+                  return { ...mC, keyword: [...mC.keyword, kw] };
+                }
+                const ret = mC.keyword;
+                ret.splice(ret.indexOf(kw), 1);
+                return { ...mC, keyword: ret };
+              });
+              console.log(mClub.keyword);
+            }}
+          />
+        );
+      });
+    });
+  }, [mClub.keyword]);
 
   return (
     <SafeAreaView>
@@ -54,8 +108,26 @@ const ModifyProfile = () => {
       <KeyboardAwareScrollView>
         <View style={{ flex: 1, height: 100, flexDirection: "row" }}>
           <View style={{ width: "80%", flexDirection: "column" }}>
-            <View style={{ height: 65 }}>
+            <View style={{ height: 65, flexDirection: "row" }}>
               <Text style={ProfilePageStyle.profileList}>동아리 프로필</Text>
+              <TouchableHighlight
+                style={ProfilePageStyle.chatButton}
+                onPress={() => {
+                  customAxios
+                    .delete(`${loggedId}/${clubId}`)
+                    .then((response) => {
+                      if (response.data) {
+                        Alert.alert("동아리가 성공적으로 삭제되었습니다. ");
+                        navigation.reset({ routes: [{ name: "Profile" }] });
+                      }
+                    })
+                    .catch((error) => console.log("club deletion", error));
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "900" }}>
+                  동아리 삭제
+                </Text>
+              </TouchableHighlight>
             </View>
             <View style={{ height: 35, flexDirection: "row" }}>
               <View style={{ width: "40%" }}>
@@ -167,10 +239,9 @@ const ModifyProfile = () => {
                 <TextInput
                   style={{ fontSize: 15 }}
                   placeholder={"유지하려면 비워두세요"}
+                  autoCapitalize="none"
                   onChangeText={(text) => {
-                    setMClub((mc) => {
-                      return { ...mc, leaderId: text };
-                    });
+                    setNewLeader(text);
                   }}
                 />
               </View>
@@ -213,7 +284,7 @@ const ModifyProfile = () => {
             />
           </View>
         </View>
-        <View style={ProfilePageStyle.keywordList}>{keywords}</View>
+        <View style={ProfilePageStyle.keywordList}>{keywordComps}</View>
         <View
           style={{
             width: "100%",

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">75062907686-pht0adk1eo389l0pupil8074p29jssu0.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://cauclub1-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">75062907686</string>
+    <string name="google_api_key" translatable="false">AIzaSyBcubOEDSykHv7v_R7d5iuo7MCOKWNLouc</string>
+    <string name="google_app_id" translatable="false">1:75062907686:android:9fba2549123e4df26e27e7</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBcubOEDSykHv7v_R7d5iuo7MCOKWNLouc</string>
+    <string name="google_storage_bucket" translatable="false">cauclub1.appspot.com</string>
+    <string name="project_id" translatable="false">cauclub1</string>
+</resources>

@@ -1,5 +1,5 @@
 {
-  "name": "ttmp",
+  "name": "CAUCLUB",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
+    "@types/firebase": "^3.2.1",
     "anser": "^2.1.1",
     "axios": "^0.27.2",
     "browserify-cipher": "^1.0.1",

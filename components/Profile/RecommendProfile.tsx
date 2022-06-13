@@ -1,39 +1,71 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import {View, Text, TouchableHighlight} from 'react-native';
-import ProfileStyle from '../Style/ProfileStyle';
-import Keyword from './Keyword';
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableHighlight, Image } from "react-native";
+import { customAxios } from "../../src/axiosModule/customAxios";
+import ProfileStyle from "../Style/ProfileStyle";
+import { Club } from "./Club";
+import ClubList from "./ClubList";
+import Keyword from "./Keyword";
 
-const RecommendProfile = () => {
-    return (
-        <TouchableHighlight style={({borderWidth: 1, borderColor: 'black', margin: 5})}>
-          <>
-            <View style={({flexDirection: 'row', justifyContent: 'space-between'})}>
-              <View style={ProfileStyle.profile}>
-                    <></>
-                    {/* 프로필 사진 */}
-              </View>
-              <View style={({flexDirection: 'row', width: '75%', justifyContent: 'space-between'})}>
-                <Text style={ProfileStyle.clubName}>동아리명</Text>
-                <View style={({marginTop: 20})}>
-                  <Text style={ProfileStyle.classifyClub}>동아리분류</Text>
-                  <Text style={ProfileStyle.classifyClub}>소속캠퍼스</Text>
-                </View>
-              </View>
+type RecommendProfileProps = {
+  clubId: number;
+};
+
+const imagePath = require("../images/푸앙_응원.png");
+
+const RecommendProfile = ({ clubId }: RecommendProfileProps) => {
+  const [club, setClub] = useState<Club>();
+  const navigation = useNavigation<any>();
+
+  useEffect(() => {
+    customAxios
+      .get(`/club/${clubId}`)
+      .then((response) => {
+        setClub(response.data);
+        console.log("clubdetail", response.data);
+      })
+      .catch((error) => console.log(error));
+    return setClub(undefined);
+  }, []);
+
+  const keywords = club?.keyword.map((keyword, idx) => {
+    return <Keyword key={idx} keyword={keyword} onPress={() => {}} />;
+  });
+
+  return (
+    <TouchableHighlight
+      style={{ borderWidth: 1, borderColor: "black", margin: 5 }}
+      onPress={() => navigation.navigate("ProfilePage", { clubId })}
+    >
+      <>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          {club !== undefined ? (
+            <Image
+              source={club?.picture ? { uri: club.picture } : imagePath}
+              style={ProfileStyle.profile}
+            />
+          ) : (
+            <View style={ProfileStyle.profile}></View>
+          )}
+          <View
+            style={{
+              flexDirection: "row",
+              width: "75%",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={ProfileStyle.clubName}>{club?.name}</Text>
+            <View style={{ marginTop: 20 }}>
+              <Text style={ProfileStyle.classifyClub2}>{club?.type}</Text>
+              <Text style={ProfileStyle.classifyClub2}>{club?.department}</Text>
             </View>
-            <View style={ProfileStyle.keywordList}>
-                <Keyword />
-                <Keyword />
-                <Keyword />
-                <Keyword />
-                <Keyword />
-                <Keyword />
-                <Keyword />
-                <Keyword />
-            </View>
-          </>
-        </TouchableHighlight>
-    );
+          </View>
+        </View>
+        <View style={ProfileStyle.keywordList}>{keywords}</View>
+      </>
+    </TouchableHighlight>
+  );
 };
 
 export default RecommendProfile;

@@ -1,5 +1,5 @@
-import React, {useCallback} from 'react';
-import type {FC, ReactNode} from 'react';
+import React, { useCallback } from "react";
+import type { FC, ReactNode } from "react";
 import {
   StatusBar,
   StyleProp,
@@ -7,10 +7,10 @@ import {
   Text,
   View,
   ViewStyle,
-} from 'react-native';
-import InitialStlye from '../Style/InitialStyle';
-import {useNavigation} from '@react-navigation/native';
-import {MaterialCommunityIcon as Icon} from './MaterialCommunityIcon';
+} from "react-native";
+import InitialStlye from "../Style/InitialStyle";
+import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcon as Icon } from "./MaterialCommunityIcon";
 
 export type NavigationHeaderProps = {
   title?: string;
@@ -30,26 +30,27 @@ export const NavigationHeader: FC<NavigationHeaderProps> = ({
   const navigation = useNavigation<any>();
   const goBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack();
-    console.log('back pressed');
+    console.log("back pressed");
   }, []);
   return (
     <View style={[styles.view, viewStyle]}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         {Left ? (
           <Icon
             name="chevron-left"
             size={30}
             onPress={goBack}
-            style={{backgroundColor: 'transparent'}}
+            style={{ backgroundColor: "transparent" }}
           />
         ) : null}
       </View>
       <Text style={[InitialStlye.title]}>CAUCLUB</Text>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1, alignContent: "flex-end" }}>
         <Icon
           name="account-outline"
           size={24}
-          onPress={() => navigation.navigate('MyPage', {})}
+          onPress={() => navigation.navigate("MyPage", {})}
+          style={{ marginLeft: 40 }}
         />
       </View>
     </View>
@@ -58,11 +59,11 @@ export const NavigationHeader: FC<NavigationHeaderProps> = ({
 
 const styles = StyleSheet.create({
   view: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     height: 60,
-    backgroundColor: '#6BBEE2',
+    backgroundColor: "#6BBEE2",
   },
 });

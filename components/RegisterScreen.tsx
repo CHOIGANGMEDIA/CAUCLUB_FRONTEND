@@ -16,26 +16,27 @@ import SelectDropdown from "react-native-select-dropdown";
 import { customAxios } from "../src/axiosModule/customAxios";
 import Style from "./Style/Style";
 import crypto from "crypto";
+import Keyword from "./Profile/Keyword";
+import EveryKeywords from "../data/EveryKeywords";
 
 let imagePath = require("./images/푸앙_응원.png");
 
 const campus = ["서울캠퍼스", "안성캠퍼스"];
 const college = [
-  "인문대학",
-  "공과대학",
-  "생명공학대학",
-  "의과대학",
-  "사회과학대학",
-  "소프트웨어대학",
-  "자연과학대학",
-  "창의ICT공과대학",
-  "체육대학",
-  "예술공학대학",
-  "예술대학",
-  "적십자간호대학",
-  "약학대학",
-  "경영경제대학",
-  "사범대학",
+  [
+    "인문대학",
+    "공과대학",
+    "의과대학",
+    "사회과학대학",
+    "소프트웨어대학",
+    "자연과학대학",
+    "창의ICT공과대학",
+    "적십자간호대학",
+    "약학대학",
+    "경영경제대학",
+    "사범대학",
+  ],
+  ["생명공학대학", "체육대학", "예술공학대학", "예술대학"],
 ];
 
 type Validity = {
@@ -198,6 +199,27 @@ const RegisterScreen = () => {
     [college]
   );
 
+  const keywordComps = EveryKeywords.map((kw, i) => {
+    return (
+      <Keyword
+        key={i}
+        keyword={kw}
+        sel={false}
+        touchable={true}
+        onPress={() => {
+          setKeyword((k) => {
+            if (!k.includes(kw)) {
+              return [...k, kw];
+            }
+            const ret = k;
+            ret.splice(ret.indexOf(kw), 1);
+            return ret;
+          });
+        }}
+      />
+    );
+  });
+
   return (
     <View style={Style.container}>
       <ScrollView>
@@ -221,6 +243,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.boxStyle}
           placeholder={"아이디 입력"}
+          autoCapitalize="none"
           onChangeText={(id: string) => {
             idChanged(id);
           }}
@@ -230,6 +253,7 @@ const RegisterScreen = () => {
           style={styles.boxStyle}
           placeholder={"비밀번호 입력"}
           secureTextEntry={true}
+          textContentType="password"
           onChangeText={(text: string) => {
             setPassword(text);
           }}
@@ -240,6 +264,7 @@ const RegisterScreen = () => {
           style={styles.boxStyle}
           placeholder={"비밀번호 재확인 입력"}
           secureTextEntry={true}
+          textContentType="password"
           onChangeText={(text: string) => {
             repasswordChanged(text);
           }}
@@ -248,6 +273,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.boxStyle}
           placeholder={"이름 입력"}
+          autoCapitalize="none"
           onChangeText={(text: string) => {
             nameChanged(text);
           }}
@@ -257,6 +283,7 @@ const RegisterScreen = () => {
         {emailMsg ? <Text style={Style.warnSubStyle}>{emailMsg}</Text> : null}
         <TextInput
           style={styles.boxStyle}
+          autoCapitalize="none"
           onChangeText={(email: string) => {
             emailChanged(email);
           }}
@@ -279,7 +306,7 @@ const RegisterScreen = () => {
             }}
           />
           <SelectDropdown
-            data={college}
+            data={college[Number(selectedCampus === "안성캠퍼스")]}
             defaultButtonText={"대학을 선택하세요"}
             onSelect={(selectedItem) => {
               collegeSelected(selectedItem);
@@ -306,7 +333,7 @@ const RegisterScreen = () => {
             취향에 알맞는 동아리를 추천해드려요 :)
           </Text>
         </View>
-        <View style={styles.keywordList}>{/* TODO keyword iteration */}</View>
+        <View style={styles.keywordList}>{keywordComps}</View>
 
         <View style={styles.center}>
           {/* 예빈 버튼 스타일 부탁해용 */}
@@ -383,7 +410,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   keywordList: {
-    height: 100,
     marginTop: 10,
     marginLeft: 20,
     marginRight: 20,

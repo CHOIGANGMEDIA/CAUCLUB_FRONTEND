@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "75062907686",
+    "firebase_url": "https://cauclub1-default-rtdb.firebaseio.com",
+    "project_id": "cauclub1",
+    "storage_bucket": "cauclub1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75062907686:android:9fba2549123e4df26e27e7",
+        "android_client_info": {
+          "package_name": "com.ttmp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75062907686-pht0adk1eo389l0pupil8074p29jssu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcubOEDSykHv7v_R7d5iuo7MCOKWNLouc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75062907686-pht0adk1eo389l0pupil8074p29jssu0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "75062907686-6jrio6hju0u4isgem7pf1ircob4mkhlc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.ttmp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

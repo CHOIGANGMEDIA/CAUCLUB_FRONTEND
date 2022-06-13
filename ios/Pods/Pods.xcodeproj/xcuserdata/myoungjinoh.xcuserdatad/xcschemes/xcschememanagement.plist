@@ -29,17 +29,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Firebase-Auth-Core-CoreOnly-Firestore-Storage.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Firebase-Core-CoreOnly.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FirebaseAnalytics.xcscheme</key>
+		<key>Firebase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -60,11 +50,6 @@
 			<false/>
 		</dict>
 		<key>FirebaseFirestore.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FirebaseInstallations.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -124,11 +109,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>GoogleAppMeasurement.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>GoogleDataTransport.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -149,12 +129,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ttmp-ttmpTests.xcscheme</key>
+		<key>Pods-CAUCLUB-CAUCLUBTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ttmp.xcscheme</key>
+		<key>Pods-CAUCLUB.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -245,6 +225,16 @@
 			<false/>
 		</dict>
 		<key>React-Codegen.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>React-Core-60309c9c-AccessibilityResources.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>React-Core-60309c9c.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

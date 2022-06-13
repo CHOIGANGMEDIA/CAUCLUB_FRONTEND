@@ -57,7 +57,7 @@ const SearchPW = () => {
     if (cert) {
       sended
         ? customAxios
-            .post(`/member/validIdCertification?certification=${cert}`)
+            .post(`/member/validPasswordCertification?certification=${cert}`)
             .then((request) => {
               request.data
                 ? navigation.reset({
@@ -102,6 +102,7 @@ const SearchPW = () => {
       <TextInput
         style={Style.boxStyle}
         placeholder={"이메일 입력"}
+        autoCapitalize="none"
         onChangeText={(email) => emailChanged(email)}
       ></TextInput>
       <View style={Style.center}>

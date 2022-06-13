@@ -1,11 +1,16 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { View, Text, Image, TouchableHighlight, Alert } from "react-native";
-import InitialStlye from "../Style/InitialStyle";
+
 import ProfilePageStyle from "../Style/ProfilePageStyle";
 import Keyword from "./Keyword";
-import Archieve from "./Archieve";
+
 import { SafeAreaView } from "../navigation/SafeAreaView";
 import { NavigationHeader } from "../navigation/NavigationHeader";
 import {
@@ -15,16 +20,26 @@ import {
 } from "@react-navigation/native";
 import { Club } from "./Club";
 import { customAxios } from "../../src/axiosModule/customAxios";
+import instance from "../../data/FirebaseStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let imagePath = require("../images/푸앙_윙크.png");
 
+type ArchPair = {
+  first: number;
+  second: string;
+};
+
 const ProfilePage = () => {
   const route = useRoute<any>();
-  const { clubId, loggedId } = route.params;
+  const { clubId } = route.params;
   const [club, setClub] = useState<Club>();
   const [leaderName, setLeaderName] = useState<string>();
   const [myRole, setMyRole] = useState<number>();
   const [actionText, setActionText] = useState<string>();
+  const [archPair, setArchPairs] = useState<ArchPair[]>([]);
+  const [loggedId, setLoggedId] = useState<string>("");
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -32,6 +47,14 @@ const ProfilePage = () => {
       .get(`/club/${clubId}`)
       .then((response) => setClub(response.data))
       .catch((error) => console.log(error));
+    AsyncStorage.getItem("loggedId").then((result) => {
+      if (result !== null) {
+        setLoggedId(result);
+      } else {
+        Alert.alert("다시 로그인 해 주세요");
+        navigation.reset({ routes: [{ name: "LoginScreen" }] });
+      }
+    });
     return setClub(undefined);
   }, [isFocused]);
 
@@ -42,21 +65,30 @@ const ProfilePage = () => {
         .then((response) => {
           setLeaderName(response.data.name.trim());
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(`/member//${club?.leaderId}`, error));
       console.log(`/${loggedId}/${clubId}/enterValid`);
+
       customAxios
         .get(`/${loggedId}/${clubId}/enterValid`)
         .then((response) => {
           setMyRole(response.data);
-          console.log(response.data);
+          console.log("entervalid", response.data);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("entervalid", error));
+
+      customAxios.get(`/club/${clubId}/archive`).then((response) => {
+        setArchPairs(response.data);
+      });
     }
 
-    return setLeaderName(undefined);
-  }, [club]);
+    return () => {
+      setLeaderName(undefined);
+      setMyRole(undefined);
+    };
+  }, [loggedId, isFocused, club]);
 
   const enterClub = useCallback(() => {
+    console.log(`${loggedId}/${clubId}/enterClub`);
     customAxios
       .post(`${loggedId}/${clubId}/enterClub`)
       .then((response) => {
@@ -66,7 +98,7 @@ const ProfilePage = () => {
         } else Alert.alert("가입 실패 관리자에게 문의하세요");
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [loggedId, clubId]);
 
   const resignCLub = useCallback(() => {
     customAxios
@@ -78,7 +110,7 @@ const ProfilePage = () => {
         } else Alert.alert("탈퇴 실패 관리자에게 문의하세요");
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [loggedId, clubId]);
 
   const navigation = useNavigation<any>();
 
@@ -90,7 +122,7 @@ const ProfilePage = () => {
     });
   }, [club]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     switch (myRole) {
       case 0:
         setActionText("가입 불가");
@@ -134,7 +166,15 @@ const ProfilePage = () => {
           </TouchableHighlight>
         </View>
         <View style={{ height: 40, width: 150 }}>
-          <TouchableHighlight style={ProfilePageStyle.generateButton}>
+          <TouchableHighlight
+            style={ProfilePageStyle.generateButton}
+            onPress={() => {
+              navigation.navigate("GenerateBoard", {
+                clubId: clubId,
+                loggedId: loggedId,
+              });
+            }}
+          >
             <Text style={{ color: "white", fontWeight: "900", margin: 5 }}>
               게시판 글쓰기
             </Text>
@@ -145,7 +185,91 @@ const ProfilePage = () => {
   };
 
   const keywords = club?.keyword.map((keyword, idx) => {
-    return <Keyword key={idx} keyword={keyword} />;
+    return (
+      <Keyword
+        key={keyword}
+        keyword={keyword}
+        onPress={() => {}}
+        touchable={false}
+      />
+    );
+  });
+
+  //채팅 시작
+  const startChat = () => {
+    // 존재하는 채팅방이 있는지 확인
+    if (club && loggedId && loggedId != "") {
+      // 있으면
+      instance.ref
+        .child("userRooms")
+        .child(loggedId)
+        .child(club.leaderId)
+        .once("value", (snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.key, snapshot.child("roomId").val());
+          } else {
+            // room 생성
+            const newRoom: any = instance.ref.child("rooms").push();
+            instance.ref
+              .child("userRooms")
+              .child(loggedId)
+              .child(club.leaderId)
+              .set({
+                opName: club.name,
+                picture: club.picture,
+                roomId: newRoom.key,
+                recent: "",
+              });
+            instance.ref
+              .child("userRooms")
+              .child(club.leaderId)
+              .child(loggedId)
+              .set({
+                opName: loggedId,
+                picture: club.picture,
+                roomId: newRoom.key,
+                recent: "",
+              });
+          }
+          navigation.navigate("ChatMessage", {
+            myId: loggedId,
+            opId: snapshot.key,
+            opName: club.name,
+            roomId: snapshot.child("roomId").val(),
+          });
+        });
+      // 없으면 새로 만들기
+    }
+  };
+
+  const archiveComps = archPair.map((archP: ArchPair) => {
+    return (
+      <TouchableHighlight
+        key={archP.first}
+        onPress={() =>
+          navigation.navigate("ArchiveView", {
+            loggedId: loggedId,
+            archiveId: archP.first,
+            myRole: myRole,
+            clubId: clubId,
+          })
+        }
+      >
+        <View
+          style={{
+            width: 120,
+            height: 120,
+            borderWidth: 1,
+            borderColor: "#a4a4a4",
+          }}
+        >
+          <Image
+            style={ProfilePageStyle.image}
+            source={{ uri: archP.second }}
+          ></Image>
+        </View>
+      </TouchableHighlight>
+    );
   });
 
   return (
@@ -154,8 +278,18 @@ const ProfilePage = () => {
       <KeyboardAwareScrollView>
         <View style={{ flex: 1, height: 100, flexDirection: "row" }}>
           <View style={{ width: "80%", flexDirection: "column" }}>
-            <View style={{ height: 65 }}>
+            <View style={{ height: 65, flexDirection: "row" }}>
               <Text style={ProfilePageStyle.profileList}>동아리 프로필</Text>
+              {myRole !== 3 ? (
+                <TouchableHighlight
+                  style={ProfilePageStyle.chatButton}
+                  onPress={startChat}
+                >
+                  <Text style={{ color: "white", fontWeight: "900" }}>
+                    채팅 보내기
+                  </Text>
+                </TouchableHighlight>
+              ) : null}
             </View>
             <View style={{ height: 35, flexDirection: "row" }}>
               <View style={{ width: "40%" }}>
@@ -315,7 +449,7 @@ const ProfilePage = () => {
             </Text>
           </View>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {/* TODO <Archieve /> iteration*/}
+            {archiveComps}
           </View>
         </View>
       </KeyboardAwareScrollView>

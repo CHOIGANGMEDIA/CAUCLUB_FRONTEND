@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import Style from "./Style/Style";
 import {
   View,
@@ -14,13 +19,13 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { customAxios } from "../src/axiosModule/customAxios";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcon as Icon } from "./navigation/MaterialCommunityIcon";
 import crypto from "crypto";
+import Keyword from "./Profile/Keyword";
+import EveryKeywords from "../data/EveryKeywords";
 
 let imagePath = require("./images/푸앙_의복야구점퍼.png");
-
-// TODO css
 
 const MyPage = () => {
   const [id, setId] = useState<string>("");
@@ -31,27 +36,57 @@ const MyPage = () => {
   const [password, setPassword] = useState<string>("");
   const [repassMsg, setRepassMsg] = useState<string>();
   const [valid, setValid] = useState<boolean>();
+  const [keyword, setKeyword] = useState<string[]>([]);
+  const [keywordComps, setKeywordComps] = useState<JSX.Element[]>([]);
+  const navigation = useNavigation<any>();
+  const isFocused = useIsFocused();
 
-  const loadData = async () => {
-    const loggedId = await AsyncStorage.getItem("loggedId");
-    console.log(loggedId);
-    if (loggedId) {
-      setId(loggedId);
-      await customAxios
-        .get(`/member/${loggedId}`)
-        .then((response) => {
-          setName(response.data.name.trim());
-          setEmail(response.data.email);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const loadData = async () => {
+      const loggedId = await AsyncStorage.getItem("loggedId");
+      console.log(loggedId);
+      if (loggedId) {
+        setId(loggedId);
+        await customAxios
+          .get(`/member/${loggedId}`)
+          .then((response) => {
+            setName(response.data.name.trim());
+            setEmail(response.data.email);
+            setKeyword([]);
+            setKeyword(response.data.keyword);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
     loadData();
-  }, []);
+  }, [isFocused]);
+
+  useLayoutEffect(() => {
+    setKeywordComps((kc) => {
+      return EveryKeywords.map((kw, i) => {
+        return (
+          <Keyword
+            key={i}
+            keyword={kw}
+            sel={keyword.includes(kw)}
+            onPress={() => {
+              setKeyword((k) => {
+                if (!k.includes(kw)) {
+                  return [...k, kw];
+                }
+                const ret = k;
+                ret.splice(ret.indexOf(kw), 1);
+                return ret;
+              });
+              console.log(keyword);
+            }}
+          />
+        );
+      });
+    });
+  }, [id, keyword]);
 
   const emailChanged = useCallback(
     (email: string) => {
@@ -72,8 +107,8 @@ const MyPage = () => {
     [email]
   );
 
-  // TODO pw, salt 제대로 가나 확인
   const modifyPressed = () => {
+    console.log("a");
     if (password !== "") {
       if (!valid) Alert.alert("비밀번호가 일치하지 않습니다");
       else {
@@ -93,17 +128,25 @@ const MyPage = () => {
             customAxios
               .post(`/member/resetPassword`, data, config)
               .then((response) => {
+                console.log("b");
                 if (response.data) {
                   if (validEmail) {
+                    console.log("c");
                     customAxios
-                      .post(`/member/${id}?name=${name}&email=${email}`)
-                      .then((result) => {
-                        if (result.data == true)
+                      .post(
+                        `/member/${id}?name=${name}&email=${email}&keyword=${keyword}`
+                      )
+                      .then((res) => {
+                        console.log("d");
+                        if (res.data) {
                           Alert.alert(
                             "수정 성공",
                             "회원 정보가 수정되었습니다"
                           );
-                        navigation.goBack();
+                          navigation.reset({
+                            routes: [{ name: "LoginScreen" }],
+                          });
+                        }
                       })
                       .catch((error) => {
                         Alert.alert("오류 발생", error);
@@ -119,23 +162,21 @@ const MyPage = () => {
       }
     } else if (validEmail) {
       customAxios
-        .post(`/member/${id}?name=${name}&email=${email}`)
+        .post(`/member/${id}?name=${name}&email=${email}&keyword=${keyword}`)
         .then((result) => {
-          if (result.data == true)
+          if (result.data) {
             Alert.alert("수정 성공", "회원 정보가 수정되었습니다");
-          navigation.goBack();
+            navigation.goBack();
+          }
         })
         .catch((error) => {
           Alert.alert("오류 발생", error);
         });
-    } else Alert.alert("실패", "이름과 이메일을 확인해 주세요");
+    } else Alert.alert("실패", "비밀번호를 확인해주세요");
   };
-
-  const navigation = useNavigation<any>();
 
   const goBack = useCallback(() => {
     navigation.canGoBack() && navigation.goBack();
-    console.log("back pressed");
   }, []);
 
   const repasswordChanged = useCallback(
@@ -165,7 +206,7 @@ const MyPage = () => {
               onPress={goBack}
               style={{ backgroundColor: "transparent" }}
             />
-            <Text style={[Style.appTitle, { padding: 0 }]}>My Page</Text>
+            <Text style={[Style.appTitle, { marginRight: 90 }]}>My Page</Text>
           </View>
           <View style={Style.imageContainer}>
             <Image style={Style.image} source={imagePath} />
@@ -181,7 +222,7 @@ const MyPage = () => {
               ]}
             >
               {" "}
-              뭐라할까{" "}
+              개인정보 수정!{" "}
             </Text>
           </View>
           <View style={[{ margin: 10 }]} />
@@ -189,6 +230,8 @@ const MyPage = () => {
           <TextInput
             style={Style.boxStyle}
             placeholder={"비밀번호를 유지하시려면 비워두세요"}
+            secureTextEntry={true}
+            textContentType="password"
             onChangeText={(text: string) => {
               setPassword(text);
             }}
@@ -200,6 +243,8 @@ const MyPage = () => {
           <TextInput
             style={Style.boxStyle}
             placeholder={"비밀번호를 한 번 더 입력하세요"}
+            secureTextEntry={true}
+            textContentType="password"
             onChangeText={(text: string) => {
               repasswordChanged(text);
             }}
@@ -217,6 +262,19 @@ const MyPage = () => {
             onChangeText={(text) => emailChanged(text)}
             value={email}
           ></TextInput>
+
+          <View
+            style={{
+              marginTop: 10,
+              marginLeft: 20,
+              marginRight: 20,
+              flexDirection: "row",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+            }}
+          >
+            {keywordComps}
+          </View>
 
           <View style={[{ margin: 10 }]} />
           <View style={Style.center}>
@@ -237,12 +295,43 @@ const MyPage = () => {
           </View>
         </View>
         <View style={Style.lastCenter}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              customAxios
+                .put("member/logout")
+                .then((response) => {
+                  if (response.data) {
+                    Alert.alert("성공적으로 로그아웃되었습니다.");
+                    AsyncStorage.setItem("loggedId", "").then(() => {
+                      navigation.reset({ routes: [{ name: "LoginScreen" }] });
+                    });
+                  }
+                })
+                .catch((error) => console.log("logout: ", error));
+            }}
+          >
             <Text style={{ margin: 20 }}>로그아웃</Text>
           </TouchableOpacity>
           <Text style={{ margin: 20 }}>|</Text>
           <TouchableOpacity>
-            <Text style={{ margin: 20 }}>회원탈퇴</Text>
+            <Text
+              style={{ margin: 20 }}
+              onPress={() => {
+                customAxios
+                  .delete("member/withdraw")
+                  .then((response) => {
+                    if (response.data) {
+                      Alert.alert("성공적으로 탈퇴되었습니다.");
+                      AsyncStorage.setItem("loggedId", "").then(() => {
+                        navigation.reset({ routes: [{ name: "LoginScreen" }] });
+                      });
+                    }
+                  })
+                  .catch((error) => console.log("resign: ", error));
+              }}
+            >
+              회원탈퇴
+            </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
